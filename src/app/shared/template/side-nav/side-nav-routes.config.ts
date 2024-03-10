@@ -119,7 +119,7 @@ export const AdminRoutes: SideNavInterface[] = [
     ]
   },
   {
-    path: 'administrador/catalogoarticulos',
+    path: 'administrador/mensajes-institucionales',
     title: 'Mensajes institucionales',
     iconType: 'nzIcon',
     iconTheme: 'outline',
@@ -135,7 +135,7 @@ export const AdminRoutes: SideNavInterface[] = [
     submenu:[]
   },
   {
-    path: 'administrador/catalogoarticulos',
+    path: 'administrador/proveedores',
     title: 'Administrar proveedores',
     iconType: 'nzIcon',
     iconTheme: 'outline',
@@ -143,7 +143,7 @@ export const AdminRoutes: SideNavInterface[] = [
     submenu:[]
   },
   {
-    path: 'administrador/catalogoarticulos',
+    path: 'administrador/usuarios',
     title: 'Administración de usuarios',
     iconType: 'nzIcon',
     iconTheme: 'outline',

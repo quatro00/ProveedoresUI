@@ -44,6 +44,9 @@ import { PerfectScrollbarModule } from 'ngx-om-perfect-scrollbar';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { OrdenCompraComponent } from './orden-compra/orden-compra.component';
 import { ThemeConstantService } from 'src/app/shared/services/theme-constant.service';
+import { UsuariosComponent } from './usuarios/usuarios.component';
+import { ProveedoresComponent } from './proveedores/proveedores.component';
+import { MensajesInstitucionalesComponent } from './mensajes-institucionales/mensajes-institucionales.component';
 
 const antdModule = [
   NzDropDownModule,
@@ -86,6 +89,9 @@ const antdModule = [
   declarations: [
     DashboardComponent,
     OrdenCompraComponent,
+    UsuariosComponent,
+    ProveedoresComponent,
+    MensajesInstitucionalesComponent,
   ],
   imports: [
     CommonModule,
