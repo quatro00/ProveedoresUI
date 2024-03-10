@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiBaseUrl:'https://localhost:7175'
+  apiBaseUrl:'https://apidevproveedores.bodesa.com.mx:7678'
 };

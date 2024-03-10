@@ -38,8 +38,10 @@ export class AuthService {
     localStorage.setItem('user-apellidos',user.apellidos);
     localStorage.setItem('user-roles',user.roles.join(','));
   }
-
+   
   getUser():UserModel | undefined{
+
+ 
     const email = localStorage.getItem('user-email');
     const username = localStorage.getItem('user-username');
     const nombre = localStorage.getItem('user-nombre');
@@ -56,6 +58,7 @@ export class AuthService {
       }
 
       return user;
+      
     }
 
     return undefined;

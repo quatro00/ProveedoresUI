@@ -13,16 +13,8 @@ export const AdminRoutes: SideNavInterface[] = [
     submenu:[]
   },
   {
-    path: 'administrador/catalogoarticulos',
-    title: 'Catalogo de articulos',
-    iconType: 'nzIcon',
-    iconTheme: 'outline',
-    icon: '',
-    submenu:[]
-  },
-  {
-    path: 'administrador/usuarios',
-    title: 'Usuarios',
+    path: 'administrador/orden-compra',
+    title: 'Ordenes de compra',
     iconType: 'nzIcon',
     iconTheme: 'outline',
     icon: '',
@@ -30,14 +22,14 @@ export const AdminRoutes: SideNavInterface[] = [
   },
   {
     path: '',
-    title: 'Catalogos',
+    title: 'Citas',
     iconType: 'nzIcon',
     iconTheme: 'outline',
     icon: '',
     submenu:[
       {
         path: 'administrador/catalogo-pacientes',
-        title: 'Pacientes',
+        title: 'Control de citas',
         iconType: 'nzIcon',
         iconTheme: 'outline',
         icon: '',
@@ -45,7 +37,7 @@ export const AdminRoutes: SideNavInterface[] = [
       },
       {
         path: 'administrador/catalogo-medicamentos',
-        title: 'Medicamentos',
+        title: 'Citas diarias',
         iconType: 'nzIcon',
         iconTheme: 'outline',
         icon: '',
@@ -53,7 +45,15 @@ export const AdminRoutes: SideNavInterface[] = [
       },
       {
         path: 'administrador/catalogo-sucursales',
-        title: 'Sucursales',
+        title: 'Bloquear andenes',
+        iconType: 'nzIcon',
+        iconTheme: 'outline',
+        icon: '',
+        submenu:[]
+      },
+      {
+        path: 'administrador/catalogo-sucursales',
+        title: 'Centros de distribucion',
         iconType: 'nzIcon',
         iconTheme: 'outline',
         icon: '',
@@ -62,15 +62,31 @@ export const AdminRoutes: SideNavInterface[] = [
     ]
   },
   {
+    path: 'administrador/catalogoarticulos',
+    title: 'Etiquetas',
+    iconType: 'nzIcon',
+    iconTheme: 'outline',
+    icon: '',
+    submenu:[]
+  },
+  {
+    path: 'administrador/catalogoarticulos',
+    title: 'Incidencias',
+    iconType: 'nzIcon',
+    iconTheme: 'outline',
+    icon: '',
+    submenu:[]
+  },
+  {
     path: '',
-    title: 'Inventarios',
+    title: 'Facturacion',
     iconType: 'nzIcon',
     iconTheme: 'outline',
     icon: '',
     submenu:[
       {
         path: 'inventario/entrada-inventario',
-        title: 'Entrada de inventario',
+        title: 'Administración de facturas',
         iconType: 'nzIcon',
         iconTheme: 'outline',
         icon: '',
@@ -78,7 +94,23 @@ export const AdminRoutes: SideNavInterface[] = [
       },
       {
         path: 'inventario/equivalencia-inventario',
-        title: 'Equivalencias',
+        title: 'Cargos y devoluciones',
+        iconType: 'nzIcon',
+        iconTheme: 'outline',
+        icon: '',
+        submenu:[]
+      },
+      {
+        path: 'inventario/equivalencia-inventario',
+        title: 'Historico de pagos',
+        iconType: 'nzIcon',
+        iconTheme: 'outline',
+        icon: '',
+        submenu:[]
+      },
+      {
+        path: 'inventario/equivalencia-inventario',
+        title: 'Facturas sin asn',
         iconType: 'nzIcon',
         iconTheme: 'outline',
         icon: '',
@@ -87,23 +119,37 @@ export const AdminRoutes: SideNavInterface[] = [
     ]
   },
   {
-    path: '',
-    title: 'Solicitudes',
+    path: 'administrador/catalogoarticulos',
+    title: 'Mensajes institucionales',
     iconType: 'nzIcon',
     iconTheme: 'outline',
     icon: '',
-    submenu:[
-      {
-        path: 'solicitante/nueva-solicitud',
-        title: 'Registrar solicitud',
-        iconType: 'nzIcon',
-        iconTheme: 'outline',
-        icon: '',
-        submenu:[]
-      },
-    ]
+    submenu:[]
   },
-  
+  {
+    path: 'administrador/catalogoarticulos',
+    title: 'Configuración',
+    iconType: 'nzIcon',
+    iconTheme: 'outline',
+    icon: '',
+    submenu:[]
+  },
+  {
+    path: 'administrador/catalogoarticulos',
+    title: 'Administrar proveedores',
+    iconType: 'nzIcon',
+    iconTheme: 'outline',
+    icon: '',
+    submenu:[]
+  },
+  {
+    path: 'administrador/catalogoarticulos',
+    title: 'Administración de usuarios',
+    iconType: 'nzIcon',
+    iconTheme: 'outline',
+    icon: '',
+    submenu:[]
+  },
 ]
 
 export const InventarioRoutes: SideNavInterface[] = [

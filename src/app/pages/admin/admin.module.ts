@@ -21,7 +21,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzTimePickerModule } from 'ng-zorro-antd/time-picker';
-import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzOptionComponent, NzSelectModule } from 'ng-zorro-antd/select';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
@@ -42,9 +42,10 @@ import { NzCollapseModule } from 'ng-zorro-antd/collapse';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { PerfectScrollbarModule } from 'ngx-om-perfect-scrollbar';
 import { NzButtonModule } from 'ng-zorro-antd/button';
+import { OrdenCompraComponent } from './orden-compra/orden-compra.component';
+import { ThemeConstantService } from 'src/app/shared/services/theme-constant.service';
 
 const antdModule = [
-  NzButtonModule,
   NzDropDownModule,
   AngularSvgIconModule.forRoot(),
   NgChartsModule,
@@ -52,52 +53,49 @@ const antdModule = [
   NzLayoutModule,
   NzGridModule,
   NzSkeletonModule,
-  AdminRoutingModule,
-  NzModalModule,
-  PerfectScrollbarModule,
   //FeaturesRoutingModule,
+  AdminRoutingModule,
   FormsModule,
   ReactiveFormsModule,
   NzInputModule,
   NzFormModule,
-  //NzInputNumberModule,
+  NzInputNumberModule,
   NzDatePickerModule,
   NzTimePickerModule,
   NzSelectModule,
- //NzUploadModule,
+  NzUploadModule,
   NzCheckboxModule,
   NzRadioModule,
   NzTagModule,
   NzSwitchModule,
-  //NzSliderModule,
+  NzSliderModule,
   NzTableModule,
-  //EditorModule,
+  EditorModule,
   //DashboardModule,
-  //AppsModule,
+ // AppsModule,
   NzProgressModule,
   NzAvatarModule,
   NzToolTipModule,
   //NzStepsModule,
-  //GoogleMapsModule
-  NzMessageModule,
-  NzCollapseModule
+  GoogleMapsModule
+  
 
 ]
 
 @NgModule({
   declarations: [
-  
     DashboardComponent,
+    OrdenCompraComponent,
   ],
   imports: [
     CommonModule,
-    SharedModule,
-    NzCardModule,
-    HttpClientModule,
-    NzSliderModule,
+        SharedModule,
+        NzCardModule,
+        HttpClientModule,
     ...antdModule
   ],
   providers: [
+    ThemeConstantService,
     NzMessageService
   ]
 })
