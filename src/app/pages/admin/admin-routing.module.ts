@@ -6,6 +6,7 @@ import { OrdenCompraComponent } from './orden-compra/orden-compra.component';
 import { MensajesInstitucionalesComponent } from './mensajes-institucionales/mensajes-institucionales.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { ProveedoresComponent } from './proveedores/proveedores.component';
+import { NuevoMensajeComponent } from './nuevo-mensaje/nuevo-mensaje.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,14 @@ const routes: Routes = [
   {
     path: 'mensajes-institucionales',
     component: MensajesInstitucionalesComponent,
+    data: {
+        title: 'Mensajes Institucionales',
+    },
+    //canActivate: [authAdminGuard]
+  },
+  {
+    path: 'mensajes-institucionales/nuevo-mensaje',
+    component: NuevoMensajeComponent,
     data: {
         title: 'Mensajes Institucionales',
     },

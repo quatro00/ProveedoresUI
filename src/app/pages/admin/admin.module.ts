@@ -47,8 +47,11 @@ import { ThemeConstantService } from 'src/app/shared/services/theme-constant.ser
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { ProveedoresComponent } from './proveedores/proveedores.component';
 import { MensajesInstitucionalesComponent } from './mensajes-institucionales/mensajes-institucionales.component';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
+import { NuevoMensajeComponent } from './nuevo-mensaje/nuevo-mensaje.component';
 
 const antdModule = [
+  NzPaginationModule,
   NzDropDownModule,
   AngularSvgIconModule.forRoot(),
   NgChartsModule,
@@ -92,6 +95,7 @@ const antdModule = [
     UsuariosComponent,
     ProveedoresComponent,
     MensajesInstitucionalesComponent,
+    NuevoMensajeComponent,
   ],
   imports: [
     CommonModule,

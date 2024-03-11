@@ -1,11 +1,8 @@
 
 import { Component } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
-import { MensajeModel } from 'src/app/models/mensajes/mensaje-model';
-import { MensajesService } from 'src/app/services/mensajes.service';
 
 @Component({
   styles:  [`
@@ -22,30 +19,44 @@ import { MensajesService } from 'src/app/services/mensajes.service';
       @apply dark:bg-white/10 dark:border-white/10 dark:text-white/60 dark:hover:text-white/100;
     }
   `],
-  selector: 'app-mensajes-institucionales',
-  templateUrl: './mensajes-institucionales.component.html',
-  styleUrls: ['./mensajes-institucionales.component.css']
+  selector: 'app-nuevo-mensaje',
+  templateUrl: './nuevo-mensaje.component.html',
+  styleUrls: ['./nuevo-mensaje.component.css']
 })
-export class MensajesInstitucionalesComponent {
+export class NuevoMensajeComponent {
   isLoading = true;
   showContent = false;
+  demoValue: number = 0;
+  selectedColor = '#8e1dce'; // Initialize the selected color
   myGroup: FormGroup;
   listOfOption: Array<{ label: string; value: string }> = [];
-  mensajes:MensajeModel[] = [];
-  filteredData: any[] = [];
+  listOfTagOptions = [];
+  radioValue = 'A';
   disabled = true;
 
- 
-  listOfCurrentPageData: readonly any[] = [];
-  listOfData: readonly any[] = [];
-
+  colorChanged() {
+    console.log('Selected color:', this.selectedColor);
+    // Do something with the selected color
+  }
 
   ngOnInit() {
     // Simulate loading time
     this.loadData();
 
     // Initialize the form group
-   
+    this.myGroup = new FormGroup({
+      bc1: new FormControl(),
+      bc2: new FormControl(),
+      bc3: new FormControl(),
+      bc4: new FormControl(),
+      bc5: new FormControl(),
+      bc6: new FormControl(),
+      bc9: new FormControl(),
+      datePicker: new FormControl(), // Add this control
+      monthPicker: new FormControl(), // Add this control
+      timePicker: new FormControl() // Add this control
+    });
+
     // Initialize the list of options
     const children: Array<{ label: string; value: string }> = [];
     for (let i = 10; i < 36; i++) {
@@ -56,42 +67,32 @@ export class MensajesInstitucionalesComponent {
 
   loadData() {
     // Simulate an asynchronous data loading operation
-
-    this.mensajesService.getAll()
-      .subscribe({
-        next:(response)=>{
-          this.mensajes = response;
-          this.filteredData = response;
-
-          this.isLoading = false;
-          this.showContent = true;
-        }
-      })
+    setTimeout(() => {
+      this.isLoading = false;
+      this.showContent = true;
+    }, 500);
   }
 
   // Upload
-  constructor(
-    private msg: NzMessageService,
-    private mensajesService: MensajesService,
-    private router: Router, 
-    ) {}
+  constructor(private msg: NzMessageService) {}
 
-
-    nuevoMensaje() {
-      this.router.navigateByUrl(`administrador/mensajes-institucionales/nuevo-mensaje`); 
+  handleChange(info: NzUploadChangeParam): void {
+    if (info.file.status !== 'uploading') {
+      console.log(info.file, info.fileList);
     }
-
-
-  log(value: string[]): void {
-    if(value.length === 0) {
-      this.filteredData = this.mensajes;
+    if (info.file.status === 'done') {
+      this.msg.success(`${info.file.name} file uploaded successfully`);
+    } else if (info.file.status === 'error') {
+      this.msg.error(`${info.file.name} file upload failed.`);
     }
-    else{
-      this.filteredData = this.mensajes.filter(mensaje => value.includes(mensaje.tipoMensajeInstitucional));
-    }
-   
-    
   }
 
- 
+  //Checkbox
+  log(value: string[]): void {
+    console.log(value);
+  }
+
+  isDarkMode(): boolean {
+    return false;//this.document.body.classList.contains('dark');
+  }
 }

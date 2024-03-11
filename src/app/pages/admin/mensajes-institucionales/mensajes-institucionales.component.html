@@ -1,1 +1,88 @@
-<p>mensajes-institucionales works!</p>
+<div nz-row nzGutter="25">
+    <!-- skeleton -->
+    <ng-template #loadingSkeleton>
+      <nz-skeleton class="bg-white dark:bg-white/10 rounded-6 p-[30px] pt-[15px]" [nzShape]="circle" [nzActive]="true"
+        [nzParagraph]="{ rows: 6 }"></nz-skeleton>
+    </ng-template>
+    <!-- skeleton -->
+  
+    <div nz-col nzXs="24" class="mb-[25px]">
+        <!-- New Contact -->
+        <div class="flex items-center justify-center md:justify-end">
+         <button class="flex items-center px-[14px] text-sm text-white rounded-md font-semibold bg-primary border-primary h-10 gap-[6px]" (click)="nuevoMensaje()" nz-button >
+           <i class="text-[12px]" nz-icon nzType="plus"></i>
+           <span class="m-0">Crear mensaje</span>
+         </button>
+       </div>
+         <!-- end: New Contact -->
+      </div>
+
+    <div nz-col nzXs="6" >
+      <ng-container *ngIf="showContent; else loadingSkeleton">
+        <div
+          class="bg-white dark:bg-white/10 m-0 p-0 text-theme-gray dark:text-white/60 text-[15px] rounded-10 relative mb-[25px]">
+          <div
+            class="py-[16px] px-[25px] text-dark dark:text-white/[.87] font-medium text-[17px] border-regular dark:border-white/10 border-b">
+            <h4 class="mb-0 text-lg font-medium text-dark dark:text-white/[.87]">Filtro</h4>
+          </div>
+          <div class="p-[25px]">
+            <div class="p-[25px]">
+                <nz-checkbox-wrapper class="flex flex-col w-full capitalize basic-checkbox text-theme-gray dark:text-white/60 gap-[5px] mb-[15px]" (nzOnChange)="log($event)">
+                  <label class=" m-0 text-dark dark:text-white/[.87]" nz-checkbox nzValue="Servicios">Servicios</label>
+                  <label class=" m-0 text-dark dark:text-white/[.87]" nz-checkbox nzValue="Mercaderia">Mercaderia</label>
+                  <label class=" m-0 text-dark dark:text-white/[.87]" nz-checkbox nzValue="Cuenta">Cuenta</label>
+                </nz-checkbox-wrapper>
+              </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  
+    
+    <div nz-col nzXs="18" class="mb-[25px]">
+      <ng-container *ngIf="showContent; else loadingSkeleton">
+        <div
+          class="bg-white dark:bg-white/10 m-0 p-0 text-theme-gray dark:text-white/60 text-[15px] rounded-10 relative h-full">
+          <div
+            class="py-[16px] px-[25px] text-dark dark:text-white/[.87] font-medium text-[17px] border-regular dark:border-white/10 border-b">
+            <h4 class="mb-0 text-lg font-medium text-dark dark:text-white/[.87]">Mensajes</h4>
+          </div>
+
+          
+          <div class="p-[25px]">
+            <div class="w-full overflow-x-auto">
+                <nz-table #basicTable 
+                nzShowSizeChanger
+                [nzData]="filteredData">
+                  <thead>
+                    <tr>
+                      <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Publicacion</th>
+                      <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Caducidad</th>
+                      <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Autor</th>
+                      <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Titulo</th>
+                      <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Mensaje</th>
+                      <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Tipo</th>
+                      <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Leidos</th>
+                      
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="group" *ngFor="let person of basicTable.data">
+                     <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ person.fechaPublicacion  | date: 'dd/MM/yyyy' }}</td>
+                     <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ person.fechaCaducidad | date: 'dd/MM/yyyy' }}</td> 
+                     <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ person.autor }}</td>
+                     <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ person.titulo }}</td>
+                     <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ person.contenido }}</td>
+                     <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ person.tipoMensajeInstitucional }}</td>
+                      <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">0</td>
+                      
+                    </tr>
+                  </tbody>
+                </nz-table>
+              </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    </div>
+  
