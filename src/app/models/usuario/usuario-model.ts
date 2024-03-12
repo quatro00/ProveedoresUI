@@ -13,3 +13,10 @@ class RolListModel{
     id:string;
     nombre:string;
 }
+
+export class UsuarioCmbModel{
+    id:string;
+    user:string;
+    cargo:string;
+    nombreCompleto:string;
+}

@@ -1,8 +1,9 @@
 
 import { Component } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, UntypedFormGroup, Validators, FormBuilder } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
+import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
+import { UsuariosService } from 'src/app/services/usuarios.service';
 
 @Component({
   styles:  [`
@@ -33,6 +34,9 @@ export class NuevoMensajeComponent {
   listOfTagOptions = [];
   radioValue = 'A';
   disabled = true;
+  usuarios = [];
+  archivos:NzUploadFile[]=[];
+  validateForm!: UntypedFormGroup;
 
   colorChanged() {
     console.log('Selected color:', this.selectedColor);
@@ -40,54 +44,59 @@ export class NuevoMensajeComponent {
   }
 
   ngOnInit() {
-    // Simulate loading time
-    this.loadData();
 
-    // Initialize the form group
-    this.myGroup = new FormGroup({
-      bc1: new FormControl(),
-      bc2: new FormControl(),
-      bc3: new FormControl(),
-      bc4: new FormControl(),
-      bc5: new FormControl(),
-      bc6: new FormControl(),
-      bc9: new FormControl(),
-      datePicker: new FormControl(), // Add this control
-      monthPicker: new FormControl(), // Add this control
-      timePicker: new FormControl() // Add this control
+    this.validateForm = this.fb.group({
+      titulo: ['',[Validators.required]],
+      tipoMensaje: ['',[Validators.required]],
+      fechaCaducidad: ['',[Validators.required]],
+      mensaje: ['',[Validators.required]],
+      //area: ['',[Validators.required]],
+      //prioridad: ['',[Validators.required]],
+      //descripcion: ['',[Validators.required]]
     });
 
-    // Initialize the list of options
-    const children: Array<{ label: string; value: string }> = [];
-    for (let i = 10; i < 36; i++) {
-      children.push({ label: i.toString(36) + i, value: i.toString(36) + i });
-    }
-    this.listOfOption = children;
+    // Simulate loading time
+    this.usuariosService.get()
+    .subscribe({
+      next:(response)=>{
+        console.log(response);
+        this.usuarios = response;
+        this.isLoading = false;
+        this.showContent = true;
+      }
+    })
+
+    //this.loadData();
+
+    // Initialize the form group
+    
+
+   
   }
 
-  loadData() {
-    // Simulate an asynchronous data loading operation
-    setTimeout(() => {
-      this.isLoading = false;
-      this.showContent = true;
-    }, 500);
+  tipoMensajeChanged(){
+    console.log(11);
+    console.log(this.validateForm.value.tipoMensaje);
   }
-
   // Upload
-  constructor(private msg: NzMessageService) {}
+  constructor(private msg: NzMessageService, private usuariosService: UsuariosService, private fb: FormBuilder,) {}
 
-  handleChange(info: NzUploadChangeParam): void {
-    if (info.file.status !== 'uploading') {
-      console.log(info.file, info.fileList);
+  handleChange({ file, fileList }: NzUploadChangeParam): void {
+    const status = file.status;
+
+    console.log(file.status);
+
+    if (status !== 'uploading') {
+      console.log(file, fileList);
     }
-    if (info.file.status === 'done') {
-      this.msg.success(`${info.file.name} file uploaded successfully`);
-    } else if (info.file.status === 'error') {
-      this.msg.error(`${info.file.name} file upload failed.`);
+    if (status === 'done') {
+      this.archivos = fileList;
+      this.msg.success(`${file.name} file uploaded successfully.`);
+    } else if (status === 'error') {
+      this.msg.error(`${file.name} file upload failed.`);
     }
   }
 
-  //Checkbox
   log(value: string[]): void {
     console.log(value);
   }
@@ -95,4 +104,54 @@ export class NuevoMensajeComponent {
   isDarkMode(): boolean {
     return false;//this.document.body.classList.contains('dark');
   }
+
+  submitForm(){
+    if (this.validateForm.valid) {
+      console.log(this.archivos);
+      /*
+     console.log(this.archivos);
+     var archivosList:CrearTicketArchivoRequest[] = [];
+     this.archivos.forEach(archivo => {
+      if(archivo.status == 'done')
+      {
+        var archivoRequest:CrearTicketArchivoRequest = {
+          nombreFisico : archivo.response[0],
+          nombre : archivo.name
+        };
+        archivosList.push(archivoRequest);
+      }
+      
+      })
+
+      var request: CrearTicketRequest = {
+        //id: '',
+        areaId: this.validateForm.value.area,
+        prioridadId: this.validateForm.value.prioridad,
+        titulo: this.validateForm.value.titulo,
+        subCategoriaId: this.validateForm.value.subcategoria,
+        descripcion:this.validateForm.value.descripcion,
+        archivos: archivosList
+      };
+
+      
+      this.ticketService.crearTicket(request)
+      .subscribe({
+        next:(response)=>{
+          this.msg.success("Ticket creado correctamente.");
+          
+          this.validateForm.reset();
+          this.loadData();
+        }
+      })
+      */
+    } else {
+      Object.values(this.validateForm.controls).forEach((control) => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
+  }
+
 }

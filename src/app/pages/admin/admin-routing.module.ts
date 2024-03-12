@@ -7,6 +7,7 @@ import { MensajesInstitucionalesComponent } from './mensajes-institucionales/men
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { ProveedoresComponent } from './proveedores/proveedores.component';
 import { NuevoMensajeComponent } from './nuevo-mensaje/nuevo-mensaje.component';
+import { CentrosDistribucionComponent } from './centros-distribucion/centros-distribucion.component';
 
 const routes: Routes = [
   {
@@ -37,7 +38,15 @@ const routes: Routes = [
     path: 'mensajes-institucionales/nuevo-mensaje',
     component: NuevoMensajeComponent,
     data: {
-        title: 'Mensajes Institucionales',
+        title: 'Nuevo mensaje institucional',
+    },
+    //canActivate: [authAdminGuard]
+  },
+  {
+    path: 'centros-distribucion',
+    component: CentrosDistribucionComponent,
+    data: {
+        title: 'Centros de distribucion',
     },
     //canActivate: [authAdminGuard]
   },

@@ -17,35 +17,89 @@
             <h4 class="mb-0 text-lg font-medium text-dark dark:text-white/[.87]">Nuevo mensaje</h4>
           </div>
           <div class="p-[25px]">
-            <form nz-form>
+            <form nz-form [formGroup]="validateForm">
               <nz-form-item>
                 <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="3" nzFor="text2">Titulo</nz-form-label>
-                <nz-form-control nzXs="21">
-                  <input
+                <nz-form-control nzXs="6" nzErrorTip="Campo requerido." >
+                  <input formControlName="titulo"
                     class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
                     nz-input name="text2" type="text" id="text2">
                 </nz-form-control>
+             
+                <nz-form-control nzXs="1">
+                
+                </nz-form-control>
+
+                <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="2" nzFor="text2">Tipo de mensaje</nz-form-label>
+                <nz-form-control nzXs="3" nzErrorTip="Campo requerido.">
+                  <nz-select (change)="tipoMensajeChanged()" class="basic-select" name="basicSelect" formControlName="tipoMensaje">
+                    <nz-option nzValue="Servicios" nzLabel="Servicios"></nz-option>
+                    <nz-option nzValue="Mercaderia" nzLabel="Mercaderia"></nz-option>
+                    <nz-option nzValue="Cuenta" nzLabel="Cuenta"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              
+                <nz-form-control nzXs="1"></nz-form-control>
+
+                <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="2" nzFor="text2">Caducidad</nz-form-label>
+                <nz-form-control nzXs="3" nzErrorTip="Campo requerido.">
+                  <input formControlName="fechaCaducidad"
+                    class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                    nz-input name="text2" type="date" id="text2">
+                </nz-form-control>
+
+                <nz-form-control nzXs="1"></nz-form-control>
+
+                <nz-form-control nzXs="2">
+                  <br/>
+                  <nz-checkbox-wrapper class="flex flex-col w-full capitalize basic-checkbox text-theme-gray dark:text-white/60 gap-[5px] mb-[15px]" (nzOnChange)="log($event)">
+                    <label class=" m-0 text-dark dark:text-white/[.87]" nz-checkbox nzValue="A">Obligatorio</label>
+                  </nz-checkbox-wrapper>
+                </nz-form-control>
+
               </nz-form-item>
 
               <nz-form-item>
-                <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="3" nzFor="text2">Tipo</nz-form-label>
-                <nz-form-control nzXs="21">
-                  <input
-                    class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
-                    nz-input name="text2" type="text" id="text2">
+                <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="3"
+                  nzFor="pass">Cuentas</nz-form-label>
+                  <nz-form-control nzXs="21">
+                    <nz-select class="basic-select" name="basicSelect" nzMode="tags">
+                      <nz-option *ngFor="let option of usuarios" [nzLabel]="option.nombreCompleto" [nzValue]="option.id">
+                      </nz-option>
+                    </nz-select>
+                  </nz-form-control>
+              </nz-form-item>
+
+
+              <nz-form-item>
+                <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="3"
+                  nzFor="pass">Archivos</nz-form-label>
+                <nz-form-control nzErrorTip="Selecciona una prioridad." nzXs="21">
+                  <nz-upload
+                  
+                  class="block [&>div>div]:min-h-[110px] dark:[&>div]:bg-white/10 [&>div]:bg-[#fafafa] dark:[&>div]:border-white/10 dark:hover:[&>div]:border-primary"
+                    nzType="drag"
+                    [nzMultiple]="true"
+                    nzAction="https://localhost:7074/api/MensajesInstitucionales/UploadFile"
+                    (nzChange)="handleChange($event)"
+                  >
+                    <p class="ant-upload-text">Arrastra los archivos para adjuntarlos.</p>
+                  </nz-upload>
                 </nz-form-control>
               </nz-form-item>
 
               <nz-form-item>
                 <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="24" nzFor="text2">Mensaje</nz-form-label>
-                <nz-form-control nzErrorTip="Ingresa una descripción." nzXs="24">
+                <nz-form-control nzErrorTip="Campo requerido." nzXs="24">
                   <div class="p-[25px]">
                     <div *nzIf=""></div>
   
                     <div *ngIf="isDarkMode(); then thenTemplateName else elseTemplateName"></div>
   
                     <ng-template #thenTemplateName>
-                      <editor [init]="{
+                      <editor 
+                      formControlName="mensaje"
+                      apiKey="okigakre3cf2mv7k6w9wrb1hfyigbirehygh7a12o179ax5t" [init]="{
                       plugins: 'lists table code help wordcount',
                       toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | ltr rtl',
                       skin: 'oxide-dark',
@@ -54,7 +108,9 @@
                     </ng-template>
   
                     <ng-template #elseTemplateName>
-                      <editor [init]="{
+                      <editor 
+                      formControlName="mensaje"
+                      apiKey="okigakre3cf2mv7k6w9wrb1hfyigbirehygh7a12o179ax5t" [init]="{
                     plugins: 'lists table code help wordcount',
                     toolbar: 'undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent | numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | ltr rtl',
                       
@@ -64,16 +120,19 @@
                 </nz-form-control>
               </nz-form-item>
 
-              <nz-form-item>
-                <nz-form-label class="flex items-center font-medium dark:text-white/60" nzLg="6" nzMd="9" nzXs="24"
-                  nzFor="text3">Small Input
-                </nz-form-label>
-                <nz-form-control nzLg="18" nzMd="15" nzXs="24">
-                  <input
-                    class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[30px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
-                    nz-input name="text3" type="text" id="text3" placeholder="size='Small'">
+              
+              <nz-form-item nzJustify="end">
+                <nz-form-control nzXs="19"></nz-form-control>
+                <nz-form-control nzXs="3">
+                  <div class="flex flex-wrap gap-[15px]">
+                    <button nz-button (click)="submitForm()"
+                      class="bg-primary hover:bg-primary-hbr border-solid border-1 border-primary text-white dark:text-white/[.87] text-[14px] font-semibold leading-[22px] inline-flex items-center justify-center rounded-[4px] px-[20px] h-[44px] duration-300">
+                      <span>Crear ticket</span>
+                    </button>
+                  </div>
                 </nz-form-control>
               </nz-form-item>
+
             </form>
           </div>
         </div>

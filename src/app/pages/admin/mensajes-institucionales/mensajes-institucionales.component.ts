@@ -89,8 +89,6 @@ export class MensajesInstitucionalesComponent {
     else{
       this.filteredData = this.mensajes.filter(mensaje => value.includes(mensaje.tipoMensajeInstitucional));
     }
-   
-    
   }
 
  

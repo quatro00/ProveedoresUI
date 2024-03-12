@@ -52,7 +52,7 @@ export const AdminRoutes: SideNavInterface[] = [
         submenu:[]
       },
       {
-        path: 'administrador/catalogo-sucursales',
+        path: 'administrador/centros-distribucion',
         title: 'Centros de distribucion',
         iconType: 'nzIcon',
         iconTheme: 'outline',

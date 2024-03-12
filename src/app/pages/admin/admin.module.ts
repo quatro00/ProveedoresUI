@@ -49,8 +49,10 @@ import { ProveedoresComponent } from './proveedores/proveedores.component';
 import { MensajesInstitucionalesComponent } from './mensajes-institucionales/mensajes-institucionales.component';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NuevoMensajeComponent } from './nuevo-mensaje/nuevo-mensaje.component';
+import { CentrosDistribucionComponent } from './centros-distribucion/centros-distribucion.component';
 
 const antdModule = [
+  NzModalModule,
   NzPaginationModule,
   NzDropDownModule,
   AngularSvgIconModule.forRoot(),
@@ -96,6 +98,7 @@ const antdModule = [
     ProveedoresComponent,
     MensajesInstitucionalesComponent,
     NuevoMensajeComponent,
+    CentrosDistribucionComponent,
   ],
   imports: [
     CommonModule,
