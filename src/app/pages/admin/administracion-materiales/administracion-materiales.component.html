@@ -4,17 +4,18 @@
     <nz-skeleton class="bg-white dark:bg-white/10 rounded-6 p-[30px] pt-[15px]" [nzShape]="circle" [nzActive]="true"
       [nzParagraph]="{ rows: 6 }"></nz-skeleton>
   </ng-template>
-  <!-- skeleton -->
 
+  <nz-modal
+      [nzWidth]="'80%'"
+      [(nzVisible)]="isVisible"
+      [nzTitle]="modalTitle"
+      [nzContent]="modalContent"
+      [nzFooter]="modalFooter"
+      (nzOnCancel)="handleCancel()"
+    >
+      <ng-template #modalTitle>Carga de tiempos de materiales</ng-template>
 
-  <div nz-col nzXs="24" class="mb-[25px]">
-    <ng-container *ngIf="showContent; else loadingSkeleton">
-      <div
-        class="bg-white dark:bg-white/10 m-0 p-0 text-theme-gray dark:text-white/60 text-[15px] rounded-10 relative h-full">
-        <div
-          class="py-[16px] px-[25px] text-dark dark:text-white/[.87] font-medium text-[17px] border-regular dark:border-white/10 border-b">
-          <h4 class="mb-0 text-lg font-medium text-dark dark:text-white/[.87]">Ordenes de compra</h4>
-        </div>
+      <ng-template #modalContent>
         <div class="p-[25px]">
 
 
@@ -46,6 +47,74 @@
           </button>
 
         </div>
+      </ng-template>
+
+      <ng-template #modalFooter>
+        <button class="bg-primary hover:bg-primary-hbr hover:border-primary-hbr border-solid border-1 border-primary text-white dark:text-white/[.87] text-[14px] font-semibold leading-[22px] inline-flex items-center justify-center rounded-[4px] px-[20px] h-[44px]" nz-button nzType="primary" (click)="handleOk()" [nzLoading]="btnLoading">Guardar</button>
+      </ng-template>
+    </nz-modal>
+
+  <div nz-col nzXs="24" class="mb-[25px]">
+    <!-- New Contact -->
+    <div class="flex items-center justify-center md:justify-end">
+     <button class="flex items-center px-[14px] text-sm text-white rounded-md font-semibold bg-primary border-primary h-10 gap-[6px]" (click)="showNew()" nz-button >
+       <i class="text-[12px]" nz-icon nzType="plus"></i>
+       <span class="m-0">Cargar tiempos</span>
+     </button>
+   </div>
+     <!-- end: New Contact -->
+  </div>
+
+  <!-- skeleton -->
+  <div nz-col nzXs="24" class="mb-[25px]">
+    <ng-container *ngIf="showContent; else loadingSkeleton">
+      <div
+        class="bg-white dark:bg-white/10 m-0 p-0 text-theme-gray dark:text-white/60 text-[15px] rounded-10 relative h-full">
+        <div
+          class="py-[16px] px-[25px] text-dark dark:text-white/[.87] font-medium text-[17px] border-regular dark:border-white/10 border-b">
+          <h4 class="mb-0 text-lg font-medium text-dark dark:text-white/[.87]">Administracion de materiales</h4>
+        </div>
+        <div class="p-[25px]">
+          <div class="w-full overflow-x-auto">
+            <nz-table #basicTable 
+            nzShowSizeChanger
+            [nzData]="filteredData">
+              <thead>
+                <tr>
+                  <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Codigo SAP</th>
+                  <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Descripción</th>
+                  <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Rango inicio</th>
+                  <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Rango termino</th>
+                  <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Duracion</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="group" *ngFor="let person of basicTable.data">
+                 <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ person.sapId }}</td>
+                 <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ person.nombreMaterial }}</td> 
+                 <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ person.rangoInicio }}</td> 
+                 <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ person.rangoTermino }}</td> 
+                 <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ person.duracion }}</td> 
+
+
+                </tr>
+              </tbody>
+            </nz-table>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <div nz-col nzXs="24" class="mb-[25px]">
+    <ng-container *ngIf="showContent; else loadingSkeleton">
+      <div
+        class="bg-white dark:bg-white/10 m-0 p-0 text-theme-gray dark:text-white/60 text-[15px] rounded-10 relative h-full">
+        <div
+          class="py-[16px] px-[25px] text-dark dark:text-white/[.87] font-medium text-[17px] border-regular dark:border-white/10 border-b">
+          <h4 class="mb-0 text-lg font-medium text-dark dark:text-white/[.87]">Ordenes de compra</h4>
+        </div>
+        
       </div>
     </ng-container>
   </div>
