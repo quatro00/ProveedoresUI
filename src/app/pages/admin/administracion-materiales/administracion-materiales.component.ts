@@ -4,6 +4,7 @@ import { HotTableRegisterer } from '@handsontable/angular';
 import Handsontable from 'handsontable/base';
 import { MaterialEntregaService } from '../../../services/materialentrega.service';
 import { MaterialEntregaModel } from 'src/app/models/material-entrega/material-entrega-model';
+import { MaterialEntregaTiempoRequestModel } from 'src/app/models/material-entrega/material-tiempo-request-model';
 
 @Component({
   styles: [`
@@ -75,11 +76,13 @@ export class AdministracionMaterialesComponent {
 
   loadData() {
     // Simulate an asynchronous data loading operation
-    setTimeout(() => {
-
-      this.isLoading = false;
-      this.showContent = true;
-    }, 500);
+    this.materialEntregaService.getAll()
+    .subscribe({
+      next: (response) => {
+        this.materiales = response;
+        this.filteredData = response;
+      }
+    })
   }
 
   handleCancel() {
@@ -88,10 +91,11 @@ export class AdministracionMaterialesComponent {
 
   handleOk() {
     //console.log(this.hotRegisterer.getInstance(this.id).getData());
-    var dataGrid = this.hotRegisterer.getInstance(this.id).getData()
-    console.log(dataGrid);
+    this.btnLoading = true;
+    var dataGrid = this.hotRegisterer.getInstance(this.id).getData();
+    
 
-    const arrayOfObjects = dataGrid.map(array => {
+    const arrayOfObjects:MaterialEntregaTiempoRequestModel[] = dataGrid.map(array => {
       const [idSap, nombreMaterial, rangoInicio, rangoTermino, duracion] = array;
       return {
         idSap,
@@ -102,12 +106,20 @@ export class AdministracionMaterialesComponent {
       };
     });
 
-    console.log(arrayOfObjects);
+    this.materialEntregaService.create(arrayOfObjects)
+      .subscribe({
+        next:(response)=>{
+          this.loadData();
+          this.isVisible = false;
+          this.btnLoading = false;
+        }
+      })
 
-    this.btnLoading = true;
+   
   }
 
   showNew() {
+    //this.hotRegisterer.getInstance(this.id).loadData([]);
     this.isVisible = true;
     this.btnLoading = false;
 

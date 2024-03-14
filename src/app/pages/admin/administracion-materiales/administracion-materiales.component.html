@@ -37,15 +37,6 @@
                 <hot-column data="duracion" title="Tiempo descarga (minutos)" type="numeric"></hot-column>
             </hot-table>
           </div>
-
-
-          <button 
-          (click)="registraMateriales()"
-          class="flex items-center px-[14px] text-sm text-white rounded-md font-semibold bg-primary border-primary h-10 gap-[6px]" nz-button >
-            <i class="text-[12px]" nz-icon nzType="plus"></i>
-            <span class="m-0">Crear riel</span>
-          </button>
-
         </div>
       </ng-template>
 
@@ -83,9 +74,9 @@
                 <tr>
                   <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Codigo SAP</th>
                   <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Descripción</th>
-                  <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Rango inicio</th>
-                  <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Rango termino</th>
-                  <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Duracion</th>
+                  <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Rango inicio (piezas)</th>
+                  <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Rango termino (piezas)</th>
+                  <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Tiempo descarga por pieza (minutos)</th>
                 </tr>
               </thead>
               <tbody>
@@ -106,16 +97,5 @@
     </ng-container>
   </div>
 
-  <div nz-col nzXs="24" class="mb-[25px]">
-    <ng-container *ngIf="showContent; else loadingSkeleton">
-      <div
-        class="bg-white dark:bg-white/10 m-0 p-0 text-theme-gray dark:text-white/60 text-[15px] rounded-10 relative h-full">
-        <div
-          class="py-[16px] px-[25px] text-dark dark:text-white/[.87] font-medium text-[17px] border-regular dark:border-white/10 border-b">
-          <h4 class="mb-0 text-lg font-medium text-dark dark:text-white/[.87]">Ordenes de compra</h4>
-        </div>
-        
-      </div>
-    </ng-container>
-  </div>
+  
 </div>
