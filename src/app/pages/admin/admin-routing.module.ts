@@ -8,6 +8,8 @@ import { UsuariosComponent } from './usuarios/usuarios.component';
 import { ProveedoresComponent } from './proveedores/proveedores.component';
 import { NuevoMensajeComponent } from './nuevo-mensaje/nuevo-mensaje.component';
 import { CentrosDistribucionComponent } from './centros-distribucion/centros-distribucion.component';
+import { AndenesComponent } from './andenes/andenes.component';
+import { AdministracionMaterialesComponent } from './administracion-materiales/administracion-materiales.component';
 
 const routes: Routes = [
   {
@@ -15,6 +17,14 @@ const routes: Routes = [
     component: DashboardComponent,
     data: {
         title: 'Dashboard',
+    },
+    //canActivate: [authAdminGuard]
+  },
+  {
+    path: 'administracion-materiales',
+    component: AdministracionMaterialesComponent,
+    data: {
+        title: 'A dministracion-materiales',
     },
     //canActivate: [authAdminGuard]
   },
@@ -47,6 +57,14 @@ const routes: Routes = [
     component: CentrosDistribucionComponent,
     data: {
         title: 'Centros de distribucion',
+    },
+    //canActivate: [authAdminGuard]
+  },
+  {
+    path: 'andenes',
+    component: AndenesComponent,
+    data: {
+        title: 'Andenes',
     },
     //canActivate: [authAdminGuard]
   },

@@ -6,6 +6,8 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
 import { CentroModel } from 'src/app/models/centro/centro-model';
 import { CentrosService } from 'src/app/services/centros.service';
+import { RielModel } from '../../../models/riel/riel-model';
+import { RielService } from '../../../services/riel.service';
 @Component({
   styles:  [`
   :host ::ng-deep .basic-select .ant-select-selector{
@@ -26,20 +28,31 @@ import { CentrosService } from 'src/app/services/centros.service';
   styleUrls: ['./centros-distribucion.component.css']
 })
 export class CentrosDistribucionComponent {
+  isCheckedRiel=false;
+  rielActivo = true;
+  btnLoadingRiel = false;
+  btnLoading = false;
+  isVisible = false;
+  isVisibleRieles = false;
   isLoading = true;
   showContent = false;
   centros:CentroModel[] = [];
   filteredData: CentroModel[] = [];
+  
   validateForm!: UntypedFormGroup;
+  rielForm!: UntypedFormGroup;
+
   centroId:string;
   isChecked:boolean;
+  
 
    // Upload
    constructor(
     private modalService: NzModalService,
     private fb: FormBuilder,   
     private msg: NzMessageService, 
-    private centrosService:CentrosService) {}
+    private centrosService:CentrosService,
+    private rielService:RielService) {}
 
 
   ngOnInit() {
@@ -48,6 +61,31 @@ export class CentrosDistribucionComponent {
       descripcion: ['',[Validators.required]],
       activo: [''],
     });
+
+    this.rielForm = this.fb.group({
+      codigo: ['',[Validators.required]],
+      nombre: ['',[Validators.required]],
+
+      lunesInicio: ['',[Validators.required]],
+      martesInicio: ['',[Validators.required]],
+      miercolesInicio: ['',[Validators.required]],
+      juevesInicio: ['',[Validators.required]],
+      viernesInicio: ['',[Validators.required]],
+      sabadoInicio: ['',[Validators.required]],
+      domingoInicio: ['',[Validators.required]],
+
+      lunesTermino: ['',[Validators.required]],
+      martesTermino: ['',[Validators.required]],
+      miercolesTermino: ['',[Validators.required]],
+      juevesTermino: ['',[Validators.required]],
+      viernesTermino: ['',[Validators.required]],
+      sabadoTermino: ['',[Validators.required]],
+      domingoTermino: ['',[Validators.required]],
+
+
+      activo: [''],
+    });
+
     this.loadData();
     
   }
@@ -56,7 +94,7 @@ export class CentrosDistribucionComponent {
     this.centrosService.getAll()
     .subscribe({
       next:(response)=>{
-        console.log(response);
+        //console.log(response);
         this.centros = response;
         this.filteredData = response;
 
@@ -65,14 +103,86 @@ export class CentrosDistribucionComponent {
       }
     })
   }
+
+  guardarRiel(){
+    //console.log(this.validateForm);
+    //
+    if (this.rielForm.valid) {
+      this.btnLoadingRiel = true;
+      //console.log(this.validateForm);
+      var riel:RielModel = {
+        codigo: this.rielForm.value.codigo,
+        centroId: this.centroId,
+        riel: this.rielForm.value.nombre,
+        activo: this.isCheckedRiel,
+        horarios:[
+          { id:'', rielId:'', dia:1, activo:true, horaDesde: this.rielForm.value.lunesInicio, horaHasta: this.rielForm.value.lunesTermino,},
+          { id:'', rielId:'', dia:2, activo:true, horaDesde: this.rielForm.value.martesInicio, horaHasta: this.rielForm.value.martesTermino,},
+          { id:'', rielId:'', dia:3, activo:true, horaDesde: this.rielForm.value.miercolesInicio, horaHasta: this.rielForm.value.miercolesTermino,},
+          { id:'', rielId:'', dia:4, activo:true, horaDesde: this.rielForm.value.juevesInicio, horaHasta: this.rielForm.value.juevesTermino,},
+          { id:'', rielId:'', dia:5, activo:true, horaDesde: this.rielForm.value.viernesInicio, horaHasta: this.rielForm.value.viernesTermino,},
+          { id:'', rielId:'', dia:6, activo:true, horaDesde: this.rielForm.value.sabadoInicio, horaHasta: this.rielForm.value.sabadoTermino,},
+          { id:'', rielId:'', dia:7, activo:true, horaDesde: this.rielForm.value.domingoInicio, horaHasta: this.rielForm.value.domingoTermino,},
+        ]
+      }
+
+  
+      
+      this.btnLoading = true;
+      this.rielService.create(riel)
+      .subscribe({
+        next:(response)=>{
+          this.btnLoadingRiel = false;
+          this.modalService.closeAll();
+          this.rielForm.reset();
+          this.loadData();
+        }
+      })
+      
+      
+    } else {
+      Object.values(this.rielForm.controls).forEach((control) => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
+  }
+
+  handleCancel(){
+    this.isVisible = false;
+    this.isVisibleRieles = false;
+  }
+  showRieles(newItem: TemplateRef<{}>, model:any) {
+    this.centroId = model.id;
+    this.btnLoadingRiel = false;
+    this.isVisibleRieles = true;
+  }
+  handleOk(){
+
+    if(this.centroId == null){
+      this.submitForm();
+    }
+    else{
+      this.submitUpdForm(this.centroId);
+    }
+    
+  }
   showNew(newItem: TemplateRef<{}>) {
+    this.centroId = null;
     this.isChecked = false;
+    this.btnLoading = false;
     this.validateForm.reset();
+
+    this.isVisible = true;
+    return;
     const modal = this.modalService.create({
         nzTitle: 'Crear centro',
         nzContent: newItem,
         nzFooter: [
             {
+                isLoading:true,
                 label: 'Registrar',
                 type: 'primary',
                 onClick: () => {
@@ -85,14 +195,17 @@ export class CentrosDistribucionComponent {
   }
 
   showEdit(newItem: TemplateRef<{}>, model:any) {
-    console.log(model.activo);
+    this.centroId = model.id;
     this.isChecked = model.activo;
+    this.btnLoading = false;
     this.validateForm.setValue({
         idSap : model.idSap,
         descripcion : model.descripcion,
         activo:0
     })
 
+    this.isVisible = true;
+    /*
     const modal = this.modalService.create({
         nzTitle: 'Editar centro',
         nzContent: newItem,
@@ -108,10 +221,11 @@ export class CentrosDistribucionComponent {
         ],
         nzWidth: 620
     })
+    */
   }
 
   log(value: string[]): void {
-    console.log(value);
+    //console.log(value);
     if(value.length == 0){
       this.isChecked = false;
     }
@@ -120,8 +234,18 @@ export class CentrosDistribucionComponent {
     }
   }
 
+  logRiel(value: string[]): void {
+    //console.log(value);
+    if(value.length == 0){
+      this.isCheckedRiel = false;
+    }
+    else{
+      this.isCheckedRiel = true;
+    }
+  }
+
   submitForm(): void {
-    console.log(this.validateForm.valid);
+    //console.log(this.validateForm.valid);
     if (this.validateForm.valid) {
       var request:CentroModel = {
         idSap: this.validateForm.value.idSap,
@@ -129,15 +253,16 @@ export class CentrosDistribucionComponent {
         activo: this.isChecked,
       };
       
-      console.log(request);
+      //console.log(request);
 
-      
+      this.btnLoading = true;
       this.centrosService.create(request)
       .subscribe({
         next:(response)=>{
           this.loadData();
           this.modalService.closeAll();
           this.validateForm.reset();
+          this.btnLoading = false;
         }
       })
       
@@ -152,9 +277,9 @@ export class CentrosDistribucionComponent {
   }
 
   submitUpdForm(id:string): void {
-    console.log(this.validateForm);
+    //console.log(this.validateForm);
     if (this.validateForm.valid) {
-      console.log(this.validateForm);
+      //console.log(this.validateForm);
       
       
       var request:CentroModel = {
@@ -163,10 +288,11 @@ export class CentrosDistribucionComponent {
         activo: this.isChecked,
       };
       
-      console.log(request, id);
+      this.btnLoading = true;
       this.centrosService.update(id, request)
       .subscribe({
         next:(response)=>{
+          this.btnLoading = false;
           this.modalService.closeAll();
           this.validateForm.reset();
           this.loadData();

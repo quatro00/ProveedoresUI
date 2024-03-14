@@ -50,8 +50,15 @@ import { MensajesInstitucionalesComponent } from './mensajes-institucionales/men
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NuevoMensajeComponent } from './nuevo-mensaje/nuevo-mensaje.component';
 import { CentrosDistribucionComponent } from './centros-distribucion/centros-distribucion.component';
+import { AndenesComponent } from './andenes/andenes.component';
+import { AdministracionMaterialesComponent } from './administracion-materiales/administracion-materiales.component';
+import { HotTableModule } from '@handsontable/angular';
+
+import { registerAllModules } from 'handsontable/registry';
 
 const antdModule = [
+  HotTableModule.forRoot(),
+  NzButtonModule,
   NzModalModule,
   NzPaginationModule,
   NzDropDownModule,
@@ -90,6 +97,9 @@ const antdModule = [
 
 ]
 
+
+registerAllModules();
+
 @NgModule({
   declarations: [
     DashboardComponent,
@@ -99,6 +109,8 @@ const antdModule = [
     MensajesInstitucionalesComponent,
     NuevoMensajeComponent,
     CentrosDistribucionComponent,
+    AndenesComponent,
+    AdministracionMaterialesComponent,
   ],
   imports: [
     CommonModule,

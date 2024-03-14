@@ -58,6 +58,14 @@ export const AdminRoutes: SideNavInterface[] = [
         iconTheme: 'outline',
         icon: '',
         submenu:[]
+      },
+      {
+        path: 'administrador/administracion-materiales',
+        title: 'Administracion de materiales',
+        iconType: 'nzIcon',
+        iconTheme: 'outline',
+        icon: '',
+        submenu:[]
       }
     ]
   },

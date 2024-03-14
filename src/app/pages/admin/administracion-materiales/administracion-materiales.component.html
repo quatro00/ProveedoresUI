@@ -1,0 +1,52 @@
+<div nz-row nzGutter="25">
+  <!-- skeleton -->
+  <ng-template #loadingSkeleton>
+    <nz-skeleton class="bg-white dark:bg-white/10 rounded-6 p-[30px] pt-[15px]" [nzShape]="circle" [nzActive]="true"
+      [nzParagraph]="{ rows: 6 }"></nz-skeleton>
+  </ng-template>
+  <!-- skeleton -->
+
+
+  <div nz-col nzXs="24" class="mb-[25px]">
+    <ng-container *ngIf="showContent; else loadingSkeleton">
+      <div
+        class="bg-white dark:bg-white/10 m-0 p-0 text-theme-gray dark:text-white/60 text-[15px] rounded-10 relative h-full">
+        <div
+          class="py-[16px] px-[25px] text-dark dark:text-white/[.87] font-medium text-[17px] border-regular dark:border-white/10 border-b">
+          <h4 class="mb-0 text-lg font-medium text-dark dark:text-white/[.87]">Ordenes de compra</h4>
+        </div>
+        <div class="p-[25px]">
+
+
+          <div style="width: 100%;">
+            <hot-table
+            [data]="data"
+            [settings]="hotSettings"
+            [hotId]="id"
+              [colHeaders]="true"
+              [rowHeaders]="true"
+              height="auto"
+              [autoWrapRow]="true"
+              [autoWrapCol]="true"
+              licenseKey="non-commercial-and-evaluation">
+                <hot-column data="codigoSAP" title="Codigo SAP"></hot-column>
+                <hot-column data="descripcion" title="Descripcion material"></hot-column>
+                <hot-column data="inicio" title="Rango inicio" type="numeric"></hot-column>
+                <hot-column data="termino" title="Rango termino" type="numeric"></hot-column>
+                <hot-column data="duracion" title="Tiempo descarga (minutos)" type="numeric"></hot-column>
+            </hot-table>
+          </div>
+
+
+          <button 
+          (click)="registraMateriales()"
+          class="flex items-center px-[14px] text-sm text-white rounded-md font-semibold bg-primary border-primary h-10 gap-[6px]" nz-button >
+            <i class="text-[12px]" nz-icon nzType="plus"></i>
+            <span class="m-0">Crear riel</span>
+          </button>
+
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
