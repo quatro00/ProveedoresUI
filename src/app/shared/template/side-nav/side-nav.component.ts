@@ -1,5 +1,5 @@
 import { Component  } from '@angular/core';
-import { AdminRoutes, ClienteRoutes, InventarioRoutes, SupervisorRoutes } from './side-nav-routes.config';
+import { AdminRoutes, ClienteRoutes, MercaderiaRoutes, SupervisorRoutes } from './side-nav-routes.config';
 import { ThemeConstantService } from '../../services/theme-constant.service';
 import { UserModel } from 'src/app/models/auth/user-model.models';
 import { AuthService } from 'src/app/services/auth.service';
@@ -34,7 +34,7 @@ export class SideNavComponent{
         });
         this.user = this.authService.getUser();
         if(this.user.roles.includes('Administrador')){ this.menuItems = [...AdminRoutes]}
-        if(this.user.roles.includes('Mezclas-Inventario')){ this.menuItems = [...InventarioRoutes]}
+        if(this.user.roles.includes('Mercaderia')){ this.menuItems = [...MercaderiaRoutes]}
         if(this.user.roles.includes('Cliente')){ this.menuItems = [...ClienteRoutes]}
         if(this.user.roles.includes('Supervisor')){ this.menuItems = [...SupervisorRoutes]}
         

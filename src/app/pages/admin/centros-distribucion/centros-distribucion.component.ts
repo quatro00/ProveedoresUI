@@ -8,6 +8,7 @@ import { CentroModel } from 'src/app/models/centro/centro-model';
 import { CentrosService } from 'src/app/services/centros.service';
 import { RielModel } from '../../../models/riel/riel-model';
 import { RielService } from '../../../services/riel.service';
+import { HotTableRegisterer } from '@handsontable/angular';
 @Component({
   styles:  [`
   :host ::ng-deep .basic-select .ant-select-selector{
@@ -28,23 +29,31 @@ import { RielService } from '../../../services/riel.service';
   styleUrls: ['./centros-distribucion.component.css']
 })
 export class CentrosDistribucionComponent {
+  btnLoading_GrupoArticulo=false;
+  rielSelected:string='';
   isCheckedRiel=false;
   rielActivo = true;
   btnLoadingRiel = false;
   btnLoading = false;
   isVisible = false;
   isVisibleRieles = false;
+  isVisibleGruposArticulo = false;
   isLoading = true;
   showContent = false;
   centros:CentroModel[] = [];
   filteredData: CentroModel[] = [];
-  
+  filteredData_Riel: RielModel[] = [];
+  data: any[] = [
+    ['']
+  ];
   validateForm!: UntypedFormGroup;
   rielForm!: UntypedFormGroup;
 
   centroId:string;
   isChecked:boolean;
   
+  private hotRegisterer = new HotTableRegisterer();
+  id = 'hotInstance';
 
    // Upload
    constructor(
@@ -100,8 +109,7 @@ export class CentrosDistribucionComponent {
 
         this.isLoading = false;
         this.showContent = true;
-      }
-    })
+      }})
   }
 
   guardarRiel(){
@@ -153,12 +161,47 @@ export class CentrosDistribucionComponent {
   handleCancel(){
     this.isVisible = false;
     this.isVisibleRieles = false;
+    
+  }
+
+  handleCancel_GruposArticulo(){
+    this.isVisibleGruposArticulo = false;
   }
   showRieles(newItem: TemplateRef<{}>, model:any) {
-    this.centroId = model.id;
-    this.btnLoadingRiel = false;
-    this.isVisibleRieles = true;
+    this.rielService.getByCentro(model.id)
+    .subscribe({
+      next:(response)=>{
+        console.log(response);
+        this.filteredData_Riel = response;
+        this.centroId = model.id;
+        this.btnLoadingRiel = false;
+        this.isVisibleRieles = true;
+      }})
   }
+
+  showGruposArticulo(newItem: TemplateRef<{}>, model:any) {
+    this.btnLoading_GrupoArticulo = false;
+    this.isVisibleGruposArticulo = true;
+    this.rielSelected = model;
+    /*
+    this.rielService.getByCentro(model.id)
+    .subscribe({
+      next:(response)=>{
+        console.log(response);
+        this.filteredData_Riel = response;
+        this.centroId = model.id;
+        this.btnLoadingRiel = false;
+        this.isVisibleRieles = true;
+      }})
+      */
+  }
+
+  handleOk_GrupoArticulo(){
+    this.btnLoading_GrupoArticulo= true;
+    var dataGrid = this.hotRegisterer.getInstance(this.id).getData();
+   console.log(dataGrid);
+  }
+
   handleOk(){
 
     if(this.centroId == null){

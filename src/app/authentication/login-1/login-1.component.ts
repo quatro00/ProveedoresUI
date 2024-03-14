@@ -81,14 +81,14 @@ export class Login1Component {
           });; 
         }
         
-        if(response.roles.indexOf('Mezclas-Inventario') != -1){
-          this.router.navigateByUrl('/inventario/dashboard').then(() => {
+        if(response.roles.indexOf('Mercaderia') != -1){
+          this.router.navigateByUrl('/mercaderia/dashboard').then(() => {
             window.location.reload();
           });; 
         }
 
-        if(response.roles.indexOf('Cliente') != -1){
-          this.router.navigateByUrl('/cliente/dashboard').then(() => {
+        if(response.roles.indexOf('Servicios') != -1){
+          this.router.navigateByUrl('/servicios/dashboard').then(() => {
             window.location.reload();
           });; 
         }

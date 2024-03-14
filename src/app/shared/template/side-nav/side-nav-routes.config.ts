@@ -160,24 +160,33 @@ export const AdminRoutes: SideNavInterface[] = [
   },
 ]
 
-export const InventarioRoutes: SideNavInterface[] = [
+export const MercaderiaRoutes: SideNavInterface[] = [
   
   {
-    path: 'inventario/dashboard',
+    path: 'mercaderia/dashboard',
     title: 'Dashboard',
     iconType: 'nzIcon',
     iconTheme: 'outline',
-    icon: 'appstore-add',
+    icon: '',
     submenu:[]
 },
 {
-  path: 'inventario/entrada-inventario',
-  title: 'Entrada de inventario',
+  path: 'mercaderia/ordenes-compra',
+  title: 'Ordenes de compra',
   iconType: 'nzIcon',
   iconTheme: 'outline',
-  icon: 'appstore-add',
+  icon: '',
   submenu:[]
-}]
+},
+{
+  path: 'mercaderia/citas',
+  title: 'Citas',
+  iconType: 'nzIcon',
+  iconTheme: 'outline',
+  icon: '',
+  submenu:[]
+}
+]
 
   export const ClienteRoutes: SideNavInterface[] = [
   
