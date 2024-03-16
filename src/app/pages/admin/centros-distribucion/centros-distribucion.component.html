@@ -14,7 +14,7 @@
     [nzFooter]="modalFooter_GruposArticulo"
     (nzOnCancel)="handleCancel_GruposArticulo()"
   >
-    <ng-template #modalTitle_GruposArticulo>Carga de tiempos de materiales</ng-template>
+    <ng-template #modalTitle_GruposArticulo>Carga de grupos de articulo</ng-template>
 
     <ng-template #modalContent_GruposArticulo>
       <div class="p-[25px]">
@@ -33,16 +33,13 @@
             licenseKey="non-commercial-and-evaluation">
               <hot-column data="codigoSAP" title="Codigo SAP"></hot-column>
               <hot-column data="descripcion" title="Descripcion material"></hot-column>
-              <hot-column data="inicio" title="Rango inicio" type="numeric"></hot-column>
-              <hot-column data="termino" title="Rango termino" type="numeric"></hot-column>
-              <hot-column data="duracion" title="Tiempo descarga (minutos)" type="numeric"></hot-column>
           </hot-table>
         </div>
       </div>
     </ng-template>
 
     <ng-template #modalFooter_GruposArticulo>
-      <button class="bg-primary hover:bg-primary-hbr hover:border-primary-hbr border-solid border-1 border-primary text-white dark:text-white/[.87] text-[14px] font-semibold leading-[22px] inline-flex items-center justify-center rounded-[4px] px-[20px] h-[44px]" nz-button nzType="primary" (click)="handleOk_GrupoArticulo()" [nzLoading]="btnLoading">Guardar</button>
+      <button class="bg-primary hover:bg-primary-hbr hover:border-primary-hbr border-solid border-1 border-primary text-white dark:text-white/[.87] text-[14px] font-semibold leading-[22px] inline-flex items-center justify-center rounded-[4px] px-[20px] h-[44px]" nz-button nzType="primary" (click)="handleOk_GrupoArticulo()" [nzLoading]="btnLoading_GrupoArticulo">Guardar</button>
     </ng-template>
   </nz-modal>
 

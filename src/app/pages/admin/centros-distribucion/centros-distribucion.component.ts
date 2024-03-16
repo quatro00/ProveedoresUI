@@ -6,7 +6,7 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
 import { CentroModel } from 'src/app/models/centro/centro-model';
 import { CentrosService } from 'src/app/services/centros.service';
-import { RielModel } from '../../../models/riel/riel-model';
+import { RielModel, grupoDeArticuloModel } from '../../../models/riel/riel-model';
 import { RielService } from '../../../services/riel.service';
 import { HotTableRegisterer } from '@handsontable/angular';
 @Component({
@@ -198,8 +198,32 @@ export class CentrosDistribucionComponent {
 
   handleOk_GrupoArticulo(){
     this.btnLoading_GrupoArticulo= true;
+
     var dataGrid = this.hotRegisterer.getInstance(this.id).getData();
-   console.log(dataGrid);
+    var grupoArticulo:grupoDeArticuloModel={
+      rielId:this.rielSelected,
+      grupoMateriales:dataGrid.map(array => {
+        const [sapId, descripcion] = array;
+        return {
+          sapId,
+          descripcion
+        };
+      })
+    };
+
+    console.log(grupoArticulo);
+    this.rielService.createGrupoArticulo(grupoArticulo)
+      .subscribe({
+        next:(response)=>{
+          this.loadData();
+          this.modalService.closeAll();
+          this.btnLoading_GrupoArticulo = false;
+        },
+        complete:()=>{
+          this.btnLoading_GrupoArticulo = true;
+        },
+
+      })
   }
 
   handleOk(){

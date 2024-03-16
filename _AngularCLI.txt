@@ -1,3 +1,6 @@
-Generar un nuevo componente
+Generar un nuevo componente administrador
 ng generate component pages/admin/sucursal/sucursal
 ng generate component pages/admin/sucursal/departamento
+
+generar componente mercaderia
+ng generate component pages/mercaderia/

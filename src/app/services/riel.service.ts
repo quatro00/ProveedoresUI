@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CookieService } from 'ngx-cookie-service';
 import { CentroModel } from '../models/centro/centro-model';
-import { RielModel } from '../models/riel/riel-model';
+import { RielModel, grupoDeArticuloModel } from '../models/riel/riel-model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,12 +20,15 @@ export class RielService {
     return this.http.post<RielModel>(`${environment.apiBaseUrl}/api/${this.service}`,request);
   }
 
+  createGrupoArticulo(request:grupoDeArticuloModel):Observable<grupoDeArticuloModel>{
+    return this.http.post<grupoDeArticuloModel>(`${environment.apiBaseUrl}/api/${this.service}/CreateGrupoArticulo`,request);
+  }
+
   getByCentro(request:string):Observable<RielModel[]>{
     let params = new HttpParams().append('centroId', request);
 
     return this.http.get<any[]>(`${environment.apiBaseUrl}/api/${this.service}`,{params});
   }
-
 
   getAll():Observable<CentroModel[]>{
     return this.http.get<CentroModel[]>(`${environment.apiBaseUrl}/api/${this.service}`);

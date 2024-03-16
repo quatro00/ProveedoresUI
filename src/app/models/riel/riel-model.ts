@@ -16,3 +16,13 @@ export interface RielModel {
     horaDesde:string;
     horaHasta:string;
   }
+
+  export interface grupoDeArticuloModel{
+    rielId:string;
+    grupoMateriales:any[];
+  }
+
+  export interface grupoDeArticuloDetModel{
+    sapId:string;
+    descripcion:string;
+  }
