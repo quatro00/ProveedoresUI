@@ -7,75 +7,74 @@ import listPlugin from '@fullcalendar/list';
 import { INITIAL_EVENTS, createEventId } from './event-utils';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import enGbLocale from '@fullcalendar/core/locales/es';
+import { FormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-citas',
   templateUrl: './citas.component.html',
+  styleUrls: ['./citas.component.css'],
   styles: [`
-  .ant-radio-inner{
-    @apply dark:bg-white/10 dark:border-white/30;
-  }
-  .ant-radio-checked .ant-radio-inner{
-    @apply dark:border-primary;
-  }
-  .ant-radio-input:focus + .ant-radio-inner{
-    @apply dark:shadow-none;
-  }
-  .ant-radio.ant-radio-checked .ant-radio-inner {
-    @apply border-4 after:hidden;
-  }
-  :host ::ng-deep .mini-calendar .fc .fc-toolbar.fc-header-toolbar{
-      @apply justify-center gap-[15px] mb-[10px];
+  :host ::ng-deep nz-radio-group label{
+      @apply dark:bg-white/10 dark:border-white/10 dark:text-white/[.87];
     }
-    :host ::ng-deep .mini-calendar .fc .fc-toolbar.fc-header-toolbar .fc-button {
-      @apply bg-transparent border-0 text-theme-gray dark:text-white/[.60] shadow-none outline-none text-[20px];
+    :host ::ng-deep nz-radio-group label.ant-radio-button-wrapper-checked{
+      @apply dark:bg-primary dark:border-primary dark:text-white;
     }
-    :host ::ng-deep .mini-calendar .fc .fc-button .fc-icon {
-      @apply text-[15px];
+    :host ::ng-deep .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled){
+      @apply bg-primary text-white;
     }
-    :host ::ng-deep .mini-calendar .fc .fc-toolbar-title{
-      @apply text-[16px] font-medium text-dark dark:text-white/[.87];
+    :host ::ng-deep .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):first-child{
+      @apply border-primary;
     }
-    :host ::ng-deep .mini-calendar .fc td{
-      @apply h-[64px] w-[64px] max-w-[64px] rounded-6;
+    :host ::ng-deep .ant-radio-button-wrapper-checked:not([class*=" ant-radio-button-wrapper-disabled"]).ant-radio-button-wrapper:first-child {
+      @apply border-r-primary;
     }
-    :host ::ng-deep .mini-calendar .fc th{
-      @apply w-[64px];
+    :host ::ng-deep .ant-radio-button-wrapper {
+        @apply leading-[1.6] px-[25.25px] border-[#f1f2f6] dark:border-white/10 bg-white text-theme-gray;
     }
-    :host ::ng-deep .mini-calendar .fc-theme-standard .fc-scrollgrid,
-    :host ::ng-deep .mini-calendar .fc-theme-standard td,
-    :host ::ng-deep .mini-calendar .fc-theme-standard th{
-      @apply border-0;
+    :host ::ng-deep .ant-radio-button-wrapper:not(:first-child)::before {
+        @apply bg-[#f1f2f6] dark:bg-white/10;
     }
-    :host ::ng-deep .mini-calendar .fc .fc-daygrid-day-frame{
-      @apply flex items-center justify-center;
+    :host ::ng-deep .ant-radio-button-wrapper.ant-radio-button-wrapper-disabled {
+      @apply opacity-[0.4];
     }
-    :host ::ng-deep .mini-calendar .fc .fc-daygrid-day.fc-day-today{
-      @apply bg-primary border-primary rounded-6;
+
+
+   :host ::ng-deep nz-radio-group label{
+      @apply dark:bg-white/10 dark:border-white/10 dark:text-white/[.87];
     }
-    :host ::ng-deep .mini-calendar .fc .fc-day-other .fc-daygrid-day-top{
-      @apply text-light dark:text-white/[.60] text-[12px] font-medium;
+    :host ::ng-deep nz-radio-group label.ant-radio-button-wrapper-checked{
+      @apply dark:bg-primary dark:border-primary dark:text-white;
     }
-    :host ::ng-deep .mini-calendar .fc .fc-daygrid-day:not(.fc-day-other) .fc-daygrid-day-top{
-      @apply text-[12px] font-medium text-theme-gray dark:text-white/[.60];
+    :host ::ng-deep .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled){
+      @apply bg-primary text-white;
     }
-    :host ::ng-deep .mini-calendar .fc .fc-daygrid-day.fc-day-today .fc-daygrid-day-top a{
-      @apply text-white;
+    :host ::ng-deep .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):first-child{
+      @apply border-primary;
     }
-    :host ::ng-deep .mini-calendar .fc .fc-col-header-cell-cushion{
-      @apply text-[13px] font-medium text-theme-gray dark:text-white/[.60];
+    :host ::ng-deep .ant-radio-button-wrapper-checked:not([class*=" ant-radio-button-wrapper-disabled"]).ant-radio-button-wrapper:first-child {
+      @apply border-r-primary;
     }
-    :host ::ng-deep .mini-calendar .fc thead .fc-scroller{
-      @apply overflow-hidden #{!important};
+    :host ::ng-deep .ant-radio-button-wrapper {
+        @apply leading-[1.6] px-[25.25px] border-[#f1f2f6] dark:border-white/10 bg-white text-theme-gray;
+    }
+    :host ::ng-deep .ant-radio-button-wrapper:not(:first-child)::before {
+        @apply bg-[#f1f2f6] dark:bg-white/10;
+    }
+    :host ::ng-deep .ant-radio-button-wrapper.ant-radio-button-wrapper-disabled {
+      @apply opacity-[0.4];
     }
 `],
 
 })
 export class CitasComponent {
+  isVisible = false;
   isLoading = true;
   showContent = false;
+  validateForm!: UntypedFormGroup;
+  validateForm_paqueteria!: UntypedFormGroup;
 
-  radioValue = 'A';
+  radioValue:string;
 
   calendarVisible = signal(true);
 
@@ -93,13 +92,13 @@ export class CitasComponent {
     initialView: 'dayGridMonth',
     initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
     weekends: true,
-    editable: true,
-    selectable: true,
+    editable: false,
+    selectable: false,
     selectMirror: true,
     dayMaxEvents: true,
-    select: this.handleDateSelect.bind(this),
-    eventClick: this.handleEventClick.bind(this),
-    eventsSet: this.handleEvents.bind(this),
+    //select: this.handleDateSelect.bind(this),
+    //eventClick: this.handleEventClick.bind(this),
+    //eventsSet: this.handleEvents.bind(this),
     locale: enGbLocale
     /* you can update a remote database when these fire:
     eventAdd:
@@ -120,7 +119,10 @@ export class CitasComponent {
     // Add any other configurations you need...
   };
 
-  constructor(private changeDetector: ChangeDetectorRef,private modalService: NzModalService) {
+  constructor(
+    private changeDetector: ChangeDetectorRef,
+    private modalService: NzModalService,
+    private fb: FormBuilder, ) {
   }
 
   handleCalendarToggle() {
@@ -161,34 +163,23 @@ export class CitasComponent {
     this.changeDetector.detectChanges(); // workaround for pressionChangedAfterItHasBeenCheckedError
   }
 
-  // Show modal for creating a new project
-  showNewProject(newProjectContent: TemplateRef<{}>) {
-    const modal = this.modalService.create({
-      nzTitle: 'Create New event',
-      nzContent: newProjectContent,
-      nzFooter: [
-        {
-          label: 'Create Project',
-          type: 'primary',
-          onClick: () =>
-            this.modalService.confirm({
-              nzTitle: '<span class="text-dark dark:text-white/[.87]">Are you sure you want to create this project?</span>',
-              nzOnOk: () => this.modalService.closeAll()
-            })
-        }
-      ],
-      nzWidth: 520
-    });
-  }
-
-  // Inside your component class
-  getEventLabelClass(event: any): string {
-    return 'bg-' + event.label;
-  }
-
+ 
   ngOnInit() {
+    console.log(this.radioValue);
     // Simulate loading time
+    this.validateForm = this.fb.group({
+      inicio: ['',[Validators.required]],
+      termino: ['',[Validators.required]]
+    });
+
+    this.validateForm_paqueteria = this.fb.group({
+      fecha: ['',[Validators.required]]
+    });
     this.loadData();
+  }
+
+  log(value: string[]): void {
+    console.log(value);
   }
 
   loadData() {
@@ -197,5 +188,13 @@ export class CitasComponent {
       this.isLoading = false;
       this.showContent = true;
     }, 500);
+  }
+
+  showNew(){
+    this.isVisible = true;
+  }
+
+  handleCancel() {
+    this.isVisible = false;
   }
 }

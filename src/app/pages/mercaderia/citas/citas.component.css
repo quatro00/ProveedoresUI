@@ -1,0 +1,10 @@
+.calendar-container {
+    /*//width: 800px;  Ancho deseado */
+    height: 80%; /* Alto deseado */
+  }
+  
+  .fullcalendar-wrapper {
+    width: 100%;
+    height: 100%;
+  }
+
