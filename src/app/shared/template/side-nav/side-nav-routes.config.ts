@@ -184,7 +184,23 @@ export const MercaderiaRoutes: SideNavInterface[] = [
   iconType: 'nzIcon',
   iconTheme: 'outline',
   icon: '',
-  submenu:[]
+  submenu:[
+    {
+      path: 'mercaderia/citas',
+      title: 'Agenda',
+      iconType: 'nzIcon',
+      iconTheme: 'outline',
+      icon: '',
+      submenu:[]
+    },
+    {
+    path: 'mercaderia/citas/nueva-cita',
+    title: 'Registrar cita',
+    iconType: 'nzIcon',
+    iconTheme: 'outline',
+    icon: '',
+    submenu:[]
+  },]
 }
 ]
 

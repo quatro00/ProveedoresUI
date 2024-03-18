@@ -4,18 +4,7 @@ let eventGuid = 0;
 const TODAY_STR = new Date().toISOString().replace(/T.*$/, ''); // YYYY-MM-DD of today
 
 export const INITIAL_EVENTS: EventInput[] = [
-  {
-    id: createEventId(),
-    title: 'family event',
-    start: TODAY_STR,
-    label: 'success',
-    type: 'event',
-    description:
-    'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout',
-    color: '#00ba34',   // an option!
-    textColor: '#00ba34' // an option!
 
-  },
   {
     id: createEventId(),
     title: 'product launch',

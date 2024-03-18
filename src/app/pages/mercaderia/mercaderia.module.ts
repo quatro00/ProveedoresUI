@@ -50,6 +50,12 @@ import { registerAllModules } from 'handsontable/registry';
 import { MercaderiaRoutingModule } from './mercaderia-routing.module';
 import { CitasComponent } from './citas/citas.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import { NuevaCitaComponent } from './nueva-cita/nueva-cita.component';
+import { ConfirmacionComponent } from './nueva-cita/confirmacion';
+import { FechaAndenComponent } from './nueva-cita/fecha-anden';
+import { EntregaMaterialesComponent } from './nueva-cita/entrega-materiales';
+import { BusquedaOrdenesCompraComponent } from './nueva-cita/busqueda-ordenes-compra';
+import { NzStepsModule } from 'ng-zorro-antd/steps';
 
 const antdModule = [
   HotTableModule.forRoot(),
@@ -88,9 +94,8 @@ const antdModule = [
   NzToolTipModule,
   NzCalendarModule,
   FullCalendarModule,
-  //NzStepsModule,
+  NzStepsModule,
   GoogleMapsModule,
-
   
 
 ]
@@ -101,7 +106,12 @@ registerAllModules();
 @NgModule({
   declarations: [
     DashboardComponent,
-    CitasComponent
+    CitasComponent,
+    NuevaCitaComponent,
+    BusquedaOrdenesCompraComponent,
+        EntregaMaterialesComponent,
+        FechaAndenComponent,
+        ConfirmacionComponent,
   ],
   imports: [
     CommonModule,
