@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { RazonesSociale } from 'src/app/models/usuario/byuser-model';
+import { CitasService } from 'src/app/services/citas.service';
+import { UsuariosService } from 'src/app/services/usuarios.service';
 
 @Component({
   selector: 'app-nueva-cita',
@@ -10,10 +13,21 @@ export class NuevaCitaComponent {
   isLoading = true;
   showContent = false;
   step1Title: string = "Paso 1\ncon salto de línea";
+  razonesSociales:RazonesSociale[]=[];
 
   ngOnInit() {
     // Simulate loading time
-    this.loadData();
+    this.usuariosService.getByUser()
+    .subscribe({
+      next:(response)=>{
+        console.log(response);
+        this.razonesSociales = response.razonesSociales;
+        this.loadData();
+        //this.isVisible = false;
+        //this.btnLoading = false;
+      }
+    })
+    //this.loadData();
   }
   loadData() {
     // Simulate an asynchronous data loading operation
@@ -28,7 +42,10 @@ export class NuevaCitaComponent {
   showConfirmation = false;
   isReviewOrderFinished = false;
 
-  constructor(private modalService: NzModalService) {}
+  constructor(
+    private modalService: NzModalService, 
+    private usuariosService: UsuariosService,
+    private citasService: CitasService) {}
 
   pre(): void {
     this.current -= 1;

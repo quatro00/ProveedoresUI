@@ -21,7 +21,7 @@
                     <div *ngIf="!showConfirmation; else confirmationContent">
                       <div *ngIf="current === 0">
                         <!-- Custom form markup for the first step -->
-                        <busqueda-ordenes-compra></busqueda-ordenes-compra>
+                        <busqueda-ordenes-compra [razonesSociales]="razonesSociales"></busqueda-ordenes-compra>
                       </div>
                       <div *ngIf="current === 1">
                         <!-- Custom form markup for the second step -->

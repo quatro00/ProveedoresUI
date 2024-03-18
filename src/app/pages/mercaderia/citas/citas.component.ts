@@ -8,6 +8,7 @@ import { INITIAL_EVENTS, createEventId } from './event-utils';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import enGbLocale from '@fullcalendar/core/locales/es';
 import { FormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { UsuariosService } from 'src/app/services/usuarios.service';
 
 @Component({
   selector: 'app-citas',
@@ -122,7 +123,8 @@ export class CitasComponent {
   constructor(
     private changeDetector: ChangeDetectorRef,
     private modalService: NzModalService,
-    private fb: FormBuilder, ) {
+    private fb: FormBuilder,
+    private usuariosservice: UsuariosService ) {
   }
 
   handleCalendarToggle() {
@@ -175,6 +177,7 @@ export class CitasComponent {
     this.validateForm_paqueteria = this.fb.group({
       fecha: ['',[Validators.required]]
     });
+
     this.loadData();
   }
 

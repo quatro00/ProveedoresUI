@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CookieService } from 'ngx-cookie-service';
 import { UsuarioCmbModel } from '../models/usuario/usuario-model';
+import { ByUserModel } from '../models/usuario/byuser-model';
 //import { PrioridadModel } from '../models/prioridad/prioridad-model';
 //import { PrioridadListModel } from '../models/prioridad/prioridad-list-model';
 
@@ -19,6 +20,10 @@ export class UsuariosService {
  
   get():Observable<UsuarioCmbModel[]>{
     return this.http.get<UsuarioCmbModel[]>(`${environment.apiBaseUrl}/api/${this.service}`);
+  }
+
+  getByUser():Observable<ByUserModel>{
+    return this.http.get<ByUserModel>(`${environment.apiBaseUrl}/api/${this.service}/ByUser`);
   }
 
 }

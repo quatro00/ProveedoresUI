@@ -1,5 +1,7 @@
+
+import { DatePipe } from '@angular/common';
 import {
-  Component
+  Component, Input
 } from '@angular/core';
 import {
   UntypedFormBuilder,
@@ -11,13 +13,15 @@ import {
 import {
   NzFormTooltipIcon
 } from 'ng-zorro-antd/form';
+import { RazonesSociale } from 'src/app/models/usuario/byuser-model';
+import { CitasService } from 'src/app/services/citas.service';
 
 @Component({
   selector: 'busqueda-ordenes-compra',
   template: `
 <div>
   <h4 class="text-[20px] font-medium mb-[20px] text-dark dark:text-white/[.87]">1. Buqueda de ordenes de compra o asns</h4>
-  <form class="max-w-full" [formGroup]="validateForm" (ngSubmit)="submitForm()">
+  <form class="max-w-full" [formGroup]="validateForm">
     <nz-form-item>
       <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="3" nzFor="text2">Fecha de entrega</nz-form-label>
       <nz-form-control nzXs="3" nzErrorTip="Campo requerido." >
@@ -37,12 +41,18 @@ import {
       </nz-form-control>
       <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="2" nzFor="text2">Razon social</nz-form-label>
       <nz-form-control class="mb-[20px]" nzXs="5">
-        <nz-select class="w-full capitalize [&>nz-select-top-control]:border-regular dark:[&>nz-select-top-control]:border-white/10 [&>nz-select-top-control]:bg-white [&>nz-select-top-control]:dark:bg-white/10 [&>nz-select-top-control]:shadow-none [&>nz-select-top-control]:text-dark [&>nz-select-top-control]:dark:text-white/60 [&>nz-select-top-control]:h-[50px] [&>nz-select-top-control]:flex [&>nz-select-top-control]:items-center [&>nz-select-top-control]:rounded-[6px] [&>nz-select-top-control]:px-[20px] [&>.ant-select-arrow]:text-theme-gray dark:[&>.ant-select-arrow]:text-white/60" name="lucy" formControlName="razonSocial" [nzOptions]="listOfOption"></nz-select>
+      <nz-select class="w-full capitalize [&>nz-select-top-control]:border-regular dark:[&>nz-select-top-control]:border-white/10 [&>nz-select-top-control]:bg-white [&>nz-select-top-control]:dark:bg-white/10 [&>nz-select-top-control]:shadow-none [&>nz-select-top-control]:text-dark [&>nz-select-top-control]:dark:text-white/60 [&>nz-select-top-control]:h-[50px] [&>nz-select-top-control]:flex [&>nz-select-top-control]:items-center [&>nz-select-top-control]:rounded-[6px] [&>nz-select-top-control]:px-[20px] [&>.ant-select-arrow]:text-theme-gray dark:[&>.ant-select-arrow]:text-white/60" 
+      name="lucy" 
+      formControlName="razonSocial" >
+
+      <nz-option *ngFor="let option of razonesSociales" [nzValue]="option.numProveedor" [nzLabel]="option.nombre"></nz-option>
+
+      </nz-select>
       </nz-form-control>
       <nz-form-control nzXs="1">
       </nz-form-control>
       <nz-form-control nzXs="1">
-      <button class="bg-primary hover:bg-primary-hbr inline-flex items-center outline-none shadow-none w-fit duration-300 text-white capitalize px-[20px] text-[15px] border-primary hover:border-primary-hbr rounded-[5px] gap-[8px] h-[46px]" nz-button nzType="primary" >
+      <button [nzLoading]="btnLoading" (click)="submitForm()" class="bg-primary hover:bg-primary-hbr inline-flex items-center outline-none shadow-none w-fit duration-300 text-white capitalize px-[20px] text-[15px] border-primary hover:border-primary-hbr rounded-[5px] gap-[8px] h-[46px]" nz-button nzType="primary" >
             <span>Buscar</span>
             <span nz-icon nzType="search" nzTheme="outline"></span>
           </button>
@@ -77,6 +87,9 @@ import {
 `,
 })
 export class BusquedaOrdenesCompraComponent {
+  @Input() razonesSociales: RazonesSociale[];
+
+  btnLoading = false;
   passwordVisible = false;
   password?: string;
 
@@ -94,7 +107,28 @@ export class BusquedaOrdenesCompraComponent {
 
   submitForm(): void {
     if (this.validateForm.valid) {
-      console.log('submit', this.validateForm.value);
+
+      const desde = this.formatearFecha(this.validateForm.value.desde);
+      const hasta = this.formatearFecha(this.validateForm.value.hasta);
+
+      console.log(desde,hasta);
+      this.citasService.getOrdenesDeCompraAgendar(desde, hasta, this.validateForm.value.razonSocial,'')
+      .subscribe({
+        next:(response)=>{
+          console.log(response);
+          //this.razonesSociales = response.razonesSociales;
+        },
+        complete:()=>{
+          this.btnLoading = false;
+        }
+      })
+      
+
+      this.btnLoading = true;
+      
+      
+      //this.citasService.getOrdenesDeCompraAgendar()
+      console.log('submit!', this.validateForm.value);
     } else {
       Object.values(this.validateForm.controls).forEach(control => {
         if (control.invalid) {
@@ -105,6 +139,11 @@ export class BusquedaOrdenesCompraComponent {
         }
       });
     }
+  }
+
+  formatearFecha(fecha: string): string {
+    const fechaFormateada = this.datePipe.transform(fecha, 'yyyyMMdd');
+    return fechaFormateada || ''; // Devolver una cadena vacía si la fecha es nula o indefinida
   }
 
   updateConfirmValidator(): void {
@@ -125,9 +164,14 @@ export class BusquedaOrdenesCompraComponent {
     e.preventDefault();
   }
 
-  constructor(private fb: UntypedFormBuilder) { }
+  constructor(
+    private datePipe: DatePipe,
+    private fb: UntypedFormBuilder,
+    private citasService: CitasService) { }
 
   ngOnInit(): void {
+    
+
     this.validateForm = this.fb.group({
       desde: [null, [Validators.required]],
       hasta: [null, [Validators.required]],
