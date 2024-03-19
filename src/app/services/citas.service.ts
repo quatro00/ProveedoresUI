@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CookieService } from 'ngx-cookie-service';
 import { CentroModel } from '../models/centro/centro-model';
+import { CitaOrdenCompra } from '../models/cita/orden-compra-model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,13 +15,13 @@ export class CitasService {
 
   constructor(private http:HttpClient, private cookieService: CookieService) { }
 
-  getOrdenesDeCompraAgendar(fechaInicio:string, fechaTermino:string, noProveedor:string, centro:string):Observable<CentroModel[]>{
+  getOrdenesDeCompraAgendar(fechaInicio:string, fechaTermino:string, noProveedor:string, centro:string):Observable<CitaOrdenCompra[]>{
     let params = new HttpParams();
     params = params.append('fechaInicio', fechaInicio);
     params = params.append('fechaTermino', fechaTermino);
     params = params.append('noProveedor', noProveedor);
     params = params.append('centro', 'centro');
 
-    return this.http.get<any>(`${environment.apiBaseUrl}/api/${this.service}/GetOrdenesDeCompraAgendar`,{params});
+    return this.http.get<CitaOrdenCompra[]>(`${environment.apiBaseUrl}/api/${this.service}/GetOrdenesDeCompraAgendar`,{params});
   }
 }

@@ -1,7 +1,7 @@
 
 import { DatePipe } from '@angular/common';
 import {
-  Component, Input
+  Component, Input, Output,EventEmitter
 } from '@angular/core';
 import {
   UntypedFormBuilder,
@@ -13,6 +13,7 @@ import {
 import {
   NzFormTooltipIcon
 } from 'ng-zorro-antd/form';
+import { CitaOrdenCompra } from 'src/app/models/cita/orden-compra-model';
 import { RazonesSociale } from 'src/app/models/usuario/byuser-model';
 import { CitasService } from 'src/app/services/citas.service';
 
@@ -63,6 +64,7 @@ import { CitasService } from 'src/app/services/citas.service';
           <div class="w-full overflow-x-auto">
               <nz-table #basicTable 
               nzShowSizeChanger
+              [nzData]="ordenesCompra"
               >
                 <thead>
                   <tr>
@@ -78,7 +80,23 @@ import { CitasService } from 'src/app/services/citas.service';
                   </tr>
                 </thead>
                 <tbody>
-                
+                <tr class="group" *ngFor="let item of basicTable.data">
+                   <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">Orden de compra</td>
+                   <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.ordenCompra }}</td> 
+                   <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent"></td>
+                   <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.centro }}</td> 
+                   <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.fechaOrdenCompra | date: 'dd/MM/yyyy' }}</td> 
+                   <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.fechaVencimiento | date: 'dd/MM/yyyy' }}</td>
+                   <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.totalPiezas | number: '1.0-0'}}</td>
+                   <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.montoTotal | currency}}</td> 
+                   <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">
+                   <nz-switch [(ngModel)]="item.isActive"  (ngModelChange)="onChangeSwitch($event, item)"></nz-switch>
+
+                     
+                  </td> 
+
+
+                  </tr>
                 </tbody>
               </nz-table>
             </div>
@@ -88,10 +106,12 @@ import { CitasService } from 'src/app/services/citas.service';
 })
 export class BusquedaOrdenesCompraComponent {
   @Input() razonesSociales: RazonesSociale[];
+  @Output() enviarDatos = new EventEmitter<CitaOrdenCompra[]>();
 
   btnLoading = false;
   passwordVisible = false;
   password?: string;
+  ordenesCompra:CitaOrdenCompra[]=[];
 
   validateForm!: UntypedFormGroup;
   captchaTooltipIcon: NzFormTooltipIcon = {
@@ -105,17 +125,25 @@ export class BusquedaOrdenesCompraComponent {
     { label: 'disabled', value: 'disabled', disabled: true }
   ];
 
+  onChangeSwitch(checked: boolean, item: any) {
+    item.activo = checked;
+    const datos = this.ordenesCompra;
+    this.enviarDatos.emit(datos);
+    // Aquí puedes realizar otras acciones según sea necesario
+  }
+
   submitForm(): void {
     if (this.validateForm.valid) {
 
       const desde = this.formatearFecha(this.validateForm.value.desde);
       const hasta = this.formatearFecha(this.validateForm.value.hasta);
 
-      console.log(desde,hasta);
+      //console.log(desde,hasta);
       this.citasService.getOrdenesDeCompraAgendar(desde, hasta, this.validateForm.value.razonSocial,'')
       .subscribe({
         next:(response)=>{
-          console.log(response);
+          //console.log(response);
+          this.ordenesCompra=response;
           //this.razonesSociales = response.razonesSociales;
         },
         complete:()=>{
@@ -128,7 +156,7 @@ export class BusquedaOrdenesCompraComponent {
       
       
       //this.citasService.getOrdenesDeCompraAgendar()
-      console.log('submit!', this.validateForm.value);
+      //console.log('submit!', this.validateForm.value);
     } else {
       Object.values(this.validateForm.controls).forEach(control => {
         if (control.invalid) {

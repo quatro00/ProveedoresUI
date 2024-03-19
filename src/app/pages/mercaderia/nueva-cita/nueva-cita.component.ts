@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { CitaOrdenCompra } from 'src/app/models/cita/orden-compra-model';
 import { RazonesSociale } from 'src/app/models/usuario/byuser-model';
 import { CitasService } from 'src/app/services/citas.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-nueva-cita',
@@ -14,13 +16,15 @@ export class NuevaCitaComponent {
   showContent = false;
   step1Title: string = "Paso 1\ncon salto de línea";
   razonesSociales:RazonesSociale[]=[];
+  ordenesCompra:CitaOrdenCompra[]=[];
+  entregaMateriales:CitaOrdenCompra[]=[];
 
   ngOnInit() {
     // Simulate loading time
     this.usuariosService.getByUser()
     .subscribe({
       next:(response)=>{
-        console.log(response);
+        //console.log(response);
         this.razonesSociales = response.razonesSociales;
         this.loadData();
         //this.isVisible = false;
@@ -52,6 +56,50 @@ export class NuevaCitaComponent {
   }
 
   next(): void {
+    if(this.current == 0){
+      if(this.ordenesCompra.length == 0){
+        this.modalService.info({
+          nzTitle: '<h2 class="text-dark dark:text-white/[.87]"> Registrar cita</h2>',
+          nzContent: '<p class="text-theme-gray dark:text-white/60">Por favor selecciona al menos una orden de compra o un asn.</p>',
+          nzOnOk: () => console.log('Info OK')
+        });
+
+        return;
+      }
+    }
+
+    var entregasPendientes = true;
+    if(this.current == 1){
+
+      if(this.entregaMateriales.length == 0){
+        this.modalService.info({
+          nzTitle: '<h2 class="text-dark dark:text-white/[.87]"> Registrar cita</h2>',
+          nzContent: '<p class="text-theme-gray dark:text-white/60">Existen ordenes de compra o asns sin entregas de materiales.</p>',
+          nzOnOk: () => console.log('Info OK')
+        });
+        return;
+      }
+      
+      
+      this.entregaMateriales.forEach((element, index) => {
+      
+        if(element.detalle.length == element.detalle.filter(orden => orden.cantidadAEntregar == 0).length){
+          entregasPendientes = false;
+        }
+      });
+
+      if(!entregasPendientes){
+        this.modalService.info({
+          nzTitle: '<h2 class="text-dark dark:text-white/[.87]"> Registrar cita</h2>',
+          nzContent: '<p class="text-theme-gray dark:text-white/60">Existen ordenes de compra o asns sin entregas de materiales.</p>',
+          nzOnOk: () => console.log('Info OK')
+        });
+        return;
+      }
+     
+    }
+
+    console.log(this.current);
     this.current += 1;
   }
 
@@ -75,5 +123,15 @@ export class NuevaCitaComponent {
     } else {
       return 'wait';
     }
+  }
+
+  ordenesDeCompraSeleccionadas(datos: CitaOrdenCompra[]) {
+    this.ordenesCompra = datos.filter(orden => orden.isActive);
+    //console.log('Datos recibidos del hijo:', this.ordenesCompra);
+  }
+
+  ordenesDeCompraEntregaMateriales(datos: CitaOrdenCompra[]) {
+    this.entregaMateriales = datos.filter(orden => orden.isActive);
+    //console.log('Datos recibidos del hijo:', this.ordenesCompra);
   }
 }

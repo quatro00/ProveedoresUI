@@ -21,11 +21,11 @@
                     <div *ngIf="!showConfirmation; else confirmationContent">
                       <div *ngIf="current === 0">
                         <!-- Custom form markup for the first step -->
-                        <busqueda-ordenes-compra [razonesSociales]="razonesSociales"></busqueda-ordenes-compra>
+                        <busqueda-ordenes-compra (enviarDatos)="ordenesDeCompraSeleccionadas($event)" [razonesSociales]="razonesSociales"></busqueda-ordenes-compra>
                       </div>
                       <div *ngIf="current === 1">
                         <!-- Custom form markup for the second step -->
-                        <entrega-materiales></entrega-materiales>
+                        <entrega-materiales (enviarDatos)="ordenesDeCompraEntregaMateriales($event)" [ordenesCompra]="ordenesCompra"></entrega-materiales>
                       </div>
                       <div *ngIf="current === 2">
                         <!-- Custom form markup for the third step -->
