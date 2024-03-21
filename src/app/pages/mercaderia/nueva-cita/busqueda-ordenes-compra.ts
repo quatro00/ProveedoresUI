@@ -107,11 +107,13 @@ import { CitasService } from 'src/app/services/citas.service';
 export class BusquedaOrdenesCompraComponent {
   @Input() razonesSociales: RazonesSociale[];
   @Output() enviarDatos = new EventEmitter<CitaOrdenCompra[]>();
+  @Output() enviarProveedor = new EventEmitter<string>();
 
   btnLoading = false;
   passwordVisible = false;
   password?: string;
   ordenesCompra:CitaOrdenCompra[]=[];
+  proveeedorId:string;
 
   validateForm!: UntypedFormGroup;
   captchaTooltipIcon: NzFormTooltipIcon = {
@@ -137,7 +139,8 @@ export class BusquedaOrdenesCompraComponent {
 
       const desde = this.formatearFecha(this.validateForm.value.desde);
       const hasta = this.formatearFecha(this.validateForm.value.hasta);
-
+      //this.proveeedorId = this.validateForm.value.razonSocial;
+      this.enviarProveedor.emit(this.validateForm.value.razonSocial);
       //console.log(desde,hasta);
       this.citasService.getOrdenesDeCompraAgendar(desde, hasta, this.validateForm.value.razonSocial,'')
       .subscribe({

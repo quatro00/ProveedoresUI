@@ -1,4 +1,4 @@
-import { signal, ChangeDetectorRef,TemplateRef,ViewEncapsulation  } from '@angular/core';
+import { signal, ChangeDetectorRef,TemplateRef,ViewEncapsulation, ViewChild  } from '@angular/core';
 import { CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -7,10 +7,8 @@ import listPlugin from '@fullcalendar/list';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import enGbLocale from '@fullcalendar/core/locales/es';
 import { FormBuilder } from '@angular/forms';
+import { Component, Input, Output,EventEmitter } from '@angular/core';
 
-import {
-  Component
-} from '@angular/core';
 import {
   UntypedFormBuilder,
   UntypedFormControl,
@@ -22,13 +20,15 @@ import {
   NzFormTooltipIcon
 } from 'ng-zorro-antd/form';
 import { INITIAL_EVENTS } from '../citas/event-utils';
+import { CitaOrdenCompra } from 'src/app/models/cita/orden-compra-model';
+import { CitasService } from 'src/app/services/citas.service';
 
 @Component({
   selector: 'fecha-anden',
   template: `
   <h4 class="text-[20px] font-medium mb-[20px] text-dark dark:text-white/[.87]">3. Selecciona la fecha y el horario de entrega</h4>
  <div class="calendar-container">
-        <full-calendar style="height: 800px!important;" class="calendar-container relative bg-white main-calendar dark:bg-white/10 rounded-10 p-[25px] overflow-x-auto" *ngIf='calendarVisible()' [options]='calendarOptions()'>
+        <full-calendar class="calendar-container relative bg-white main-calendar dark:bg-white/10 rounded-10 p-[25px] overflow-x-auto" *ngIf='calendarVisible()' [options]='calendarOptions()'>
           <ng-template #eventContent let-arg>
             <div [ngClass]="['rounded-4 px-[5px] overflow-x-hidden w-full bg-' + arg.event.extendedProps.label]">
               <h6 class="text-[15px] text-white font-normal capitalize">{{ arg.event.title }}</h6>
@@ -41,15 +41,21 @@ import { INITIAL_EVENTS } from '../citas/event-utils';
 `,
 })
 export class FechaAndenComponent {
+  @Input() ordenesCompra:CitaOrdenCompra[]=[];
+  @Output() enviarDatos = new EventEmitter<CitaOrdenCompra[]>();
 
+  eventos:any[] = [];
   calendarVisible = signal(true);
+  fechaMin = '';
+  fechaMax = '';
+  eventoSeleccionado = null;
 
   calendarOptions = signal<CalendarOptions>({
     views: {
       timeGridWeek: {
         dayMaxEventRows: 0, // No muestra eventos de todo el día en la vista de timeGridWeek
         slotMinTime: '08:00:00', // Hora mínima (8 am)
-        slotMaxTime: '18:00:00',  // Hora máxima (6 pm)
+        //slotMaxTime: '18:00:00',  // Hora máxima (6 pm)
         slotDuration: '00:15:00',
         displayEventTime: true
       }
@@ -70,7 +76,7 @@ export class FechaAndenComponent {
       start: '2024-03-17', // Fecha de inicio del rango visible
       end: '2024-03-23'     // Fecha de fin del rango visible
     },
-    initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
+    initialEvents: this.eventos, // alternatively, use the `events` setting to fetch from a feed
     weekends: true,
     editable: false,
     selectable: false,
@@ -80,9 +86,10 @@ export class FechaAndenComponent {
     //eventsSet: this.handleEvents.bind(this),
     locale: enGbLocale,
     validRange: {
-      start: '2024-03-10', // Fecha de inicio del rango válido
-      end: '2024-03-30'     // Fecha de fin del rango válido
-    }
+      start: this.fechaMin, // Fecha de inicio del rango válido
+      end: this.fechaMax     // Fecha de fin del rango válido
+    },
+    eventClick: this.handleEventClick.bind(this)
     /* you can update a remote database when these fire:
     eventAdd:
     eventChange:
@@ -101,76 +108,150 @@ export class FechaAndenComponent {
     },
     // Add any other configurations you need...
   };
+  constructor(private fb: UntypedFormBuilder, private citasService:CitasService, private modalService: NzModalService,) {}
 
-  passwordVisible = false;
-  password?: string;
+  handleEventClick(clickInfo: any) {
 
-  validateForm!: UntypedFormGroup;
-  captchaTooltipIcon: NzFormTooltipIcon = {
-    type: 'info-circle',
-    theme: 'twotone'
-  };
+    //si seleccionamos el mismo lo pintamos verde y apagamos el evento seleccionado
+    if(clickInfo.event.id == this.eventoSeleccionado){
+      this.eventoSeleccionado = null;
+      const event = clickInfo.event;
+      this.enviarDatos.emit(null);
+      event.setProp('color', 'green');
+      return;
+    }
 
-  submitForm(): void {
-    if (this.validateForm.valid) {
-      console.log('submit', this.validateForm.value);
-    } else {
-      Object.values(this.validateForm.controls).forEach(control => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({
-            onlySelf: true
-          });
+    if(this.eventoSeleccionado == null){
+      this.eventoSeleccionado = clickInfo.event.id;
+      const event = clickInfo.event;
+      event.setProp('color', 'blue');
+
+      var evento = this.eventos.find(x => x.id === clickInfo.event.id);
+      this.enviarDatos.emit(evento);
+      return;
+    }
+
+    if(clickInfo.event.id != this.eventoSeleccionado){
+      this.modalService.info({
+        nzTitle: '<span class="text-dark dark:text-white/[.87]">Confirmación de cita</span>',
+        nzContent: `<div class="text-light dark:text-white/60 text-[15px]">No es posible seleccionar dos horarios?</div>`,
+        nzClassName: 'confirm-modal',
+        nzOnOk: () => {
+          //this.isReviewOrderFinished = true;
+          //this.showConfirmation = true;
         }
       });
+
+      return;
     }
-  }
 
-  updateConfirmValidator(): void {
-    /** wait for refresh value */
-    Promise.resolve().then(() => this.validateForm.controls.checkPassword.updateValueAndValidity());
-  }
+     /*
+    this.eventoSeleccionado = clickInfo.event.id;
+    const event = clickInfo.event;
+    event.setProp('color', 'blue');
 
-  confirmationValidator = (control: UntypedFormControl): {
-    [s: string]: boolean
-  } => {
-    if (!control.value) {
-      return {
-        required: true
-      };
-    } else if (control.value !== this.validateForm.controls.password.value) {
-      return {
-        confirm: true,
-        error: true
-      };
+
+    console.log('Evento clickeado:', clickInfo.event.title);
+    console.log('Evento clickeado:', clickInfo.event.id)
+    var evento = this.eventos.find(x => x.id === clickInfo.event.id);
+    
+
+    var fecha = 'fecha';
+    console.log(evento);
+
+   
+    let yearMax: number = evento.start.getFullYear();
+    let monthMax: number = evento.start.getMonth() + 1; // Se suma 1 porque los meses van de 0 a 11 en JavaScript
+    let dayMax: number = evento.start.getDate();
+
+    let horaInicio = evento.start.getMinutes();
+    let minutosInicio =  evento.start.getHours();
+
+    let horaTermino = evento.end.getMinutes();
+    let minutosTermino =  evento.end.getHours();
+
+    switch(monthMax){
+      case 1:
     }
-    return {};
-  };
-
-  getCaptcha(e: MouseEvent): void {
-    e.preventDefault();
+   
+    this.modalService.confirm({
+      nzTitle: '<span class="text-dark dark:text-white/[.87]">Confirmación de cita</span>',
+      nzContent: `<div class="text-light dark:text-white/60 text-[15px]">Deseas agendar el siguiente horario ${fecha}?</div>`,
+      nzClassName: 'confirm-modal',
+      nzOnOk: () => {
+        //this.isReviewOrderFinished = true;
+        //this.showConfirmation = true;
+      }
+    });
+ */
+    // Aquí puedes agregar cualquier otra lógica que desees realizar cuando se hace clic en un evento
+  }
+  
+  confirm(): void {
+    
   }
 
-  constructor(private fb: UntypedFormBuilder) {}
+  updateCalendarOptions(newOptions: any) {
+    this.calendarOptions = { ...this.calendarOptions, ...newOptions }; // Fusiona las opciones actuales con las nuevas
+  }
+
+  updateValidRange(start: Date, end: Date, eventos:any[]) {
+    this.eventos = eventos;
+    this.calendarOptions.set({ validRange: { start: start, end: end },events:eventos });
+    //this.calendarOptions.set({ events: eventos });
+    
+    //this.updateCalendarOptions({ validRange: { start: start, end: end } });
+  }
+
+  addNewEvents(newEvents: any[]) {
+    //const currentEvents = this.calendarOptions.get().events;
+    const updatedEvents = [...newEvents];
+    this.calendarOptions.set({ events: updatedEvents });
+  }
 
   ngOnInit(): void {
-    this.validateForm = this.fb.group({
-      name: [null, [Validators.required]],
-      email: [null, [Validators.email, Validators.required]],
-      phoneNumberPrefix: ['+86'],
-      phoneNumber: [null, [Validators.required]],
-      city: [null, [Validators.required]],
-      house: [null, [Validators.required]],
-      zip: [null, [Validators.required]],
-      cmName: [null, [Validators.required]],
-      apartment: [null, [Validators.required]],
-      lucy: [null, [Validators.required]],
-    });
+   console.log('Ordenes a analizar!',this.ordenesCompra);
+   this.citasService.getAgendaOC(this.ordenesCompra)
+   .subscribe({
+    next:(response)=>{
+      console.log('Agenda',response);
+      let fechas: Date[] = response.map(obj => new Date(obj.fecha));
+
+      // Encontrar la fecha mínima y máxima
+      let fechaMinima: Date = new Date(Math.min(...fechas.map(date => date.getTime())));
+      let fechaMaxima: Date = new Date(Math.max(...fechas.map(date => date.getTime())));
+
+      let yearMin: number = fechaMinima.getFullYear();
+      let monthMin: number = fechaMinima.getMonth() + 1; // Se suma 1 porque los meses van de 0 a 11 en JavaScript
+      let dayMin: number = fechaMinima.getDate();
+      
+      let yearMax: number = fechaMaxima.getFullYear();
+      let monthMax: number = fechaMaxima.getMonth() + 1; // Se suma 1 porque los meses van de 0 a 11 en JavaScript
+      let dayMax: number = fechaMaxima.getDate();
+
+      //console.log(yearMin, monthMin, dayMin);
+      //console.log(yearMax, monthMax, dayMax);
+      //console.log("Fecha mínima:", fechaMinima); // Imprime la fecha mínima en formato ISO
+      //console.log("Fecha máxima:", fechaMaxima); // Imprime la fecha máxima en formato ISO
+
+      this.fechaMin = `${yearMin}-${monthMin.toString().padStart(2, '0')}-${dayMin.toString().padStart(2, '0')}`;
+      this.fechaMax = `${yearMax}-${monthMax.toString().padStart(2, '0')}-${dayMax.toString().padStart(2, '0')}`;
+
+      var eventos:any[]=[];
+      response.forEach(element => {
+        eventos.push(...element.bloquesAndenes);
+      });
+      this.updateValidRange(fechaMinima, fechaMaxima, eventos)
+      //console.log("Fecha mínima:", fechaFormateadaMin); // Imprime la fecha mínima en formato ISO
+      //console.log("Fecha máxima:", fechaFormateadaMax); // Imprime la fecha máxima en formato ISO
+      //this.ordenesCompra=response;
+      //this.razonesSociales = response.razonesSociales;
+    },
+    complete:()=>{
+      //this.btnLoading = false;
+    }
+  })
   }
 
-  listOfOption = [
-    { label: 'Jack', value: 'jack' },
-    { label: 'Lucy', value: 'lucy' },
-    { label: 'disabled', value: 'disabled', disabled: true }
-  ];
+ 
 }

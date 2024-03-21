@@ -1,9 +1,7 @@
 import { HotTableRegisterer } from '@handsontable/angular';
 import Handsontable from 'handsontable/base';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import {
-  Component, Input, Output,EventEmitter
-} from '@angular/core';
+import { Component, Input, Output,EventEmitter } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { CitaOrdenCompra } from 'src/app/models/cita/orden-compra-model';
 @Component({

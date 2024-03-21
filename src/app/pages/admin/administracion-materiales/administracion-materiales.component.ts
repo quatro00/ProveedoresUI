@@ -33,6 +33,9 @@ export class AdministracionMaterialesComponent {
   materiales: MaterialEntregaModel[] = [];
   filteredData: MaterialEntregaModel[] = [];
 
+  //MaterialPendienteModel
+  data_MaterilPendiente: any[] = [];
+
   data: any[] = [
     ['']
   ];
@@ -51,6 +54,7 @@ export class AdministracionMaterialesComponent {
   isLoading = true;
   showContent = false;
   isVisible = false;
+  isVisibleMateriales = false;
   btnLoading = false;
 
   constructor(private msg: NzMessageService, private materialEntregaService: MaterialEntregaService) { }
@@ -63,6 +67,14 @@ export class AdministracionMaterialesComponent {
   ngOnInit() {
     // Simulate loading time
     //this.loadData();
+    this.materialEntregaService.getMaterialesPendientes()
+    .subscribe({
+      next: (response) => {
+        console.log(response);
+        this.data_MaterilPendiente = response;
+      }
+    })
+
     this.materialEntregaService.getAll()
       .subscribe({
         next: (response) => {
@@ -87,6 +99,11 @@ export class AdministracionMaterialesComponent {
 
   handleCancel() {
     this.isVisible = false;
+    this.isVisibleMateriales = false;
+  }
+
+  handleOk_materiales(){
+    this.isVisibleMateriales = false;
   }
 
   handleOk() {
@@ -96,8 +113,9 @@ export class AdministracionMaterialesComponent {
     
 
     const arrayOfObjects:MaterialEntregaTiempoRequestModel[] = dataGrid.map(array => {
-      const [idSap, nombreMaterial, rangoInicio, rangoTermino, duracion] = array;
+      const [centro,idSap, nombreMaterial, rangoInicio, rangoTermino, duracion] = array;
       return {
+        centro,
         idSap,
         nombreMaterial,
         rangoInicio,
@@ -125,5 +143,9 @@ export class AdministracionMaterialesComponent {
 
   }
 
-
+  showNewMaterialesPendientes(){
+    //this.hotRegisterer.getInstance(this.id).loadData([]);
+    this.isVisibleMateriales = true;
+    //this.btnLoading = false;
+  }
 }

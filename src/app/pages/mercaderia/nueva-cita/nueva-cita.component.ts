@@ -5,6 +5,7 @@ import { RazonesSociale } from 'src/app/models/usuario/byuser-model';
 import { CitasService } from 'src/app/services/citas.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 import { filter } from 'rxjs/operators';
+import { RegistrarCita } from 'src/app/models/cita/registrar-cita-model';
 
 @Component({
   selector: 'app-nueva-cita',
@@ -18,6 +19,9 @@ export class NuevaCitaComponent {
   razonesSociales:RazonesSociale[]=[];
   ordenesCompra:CitaOrdenCompra[]=[];
   entregaMateriales:CitaOrdenCompra[]=[];
+  horario:any=null;
+  proveedorId:string;
+  nuevaCita:RegistrarCita;
 
   ngOnInit() {
     // Simulate loading time
@@ -80,7 +84,7 @@ export class NuevaCitaComponent {
         return;
       }
       
-      
+      console.log('Materiales',this.entregaMateriales);
       this.entregaMateriales.forEach((element, index) => {
       
         if(element.detalle.length == element.detalle.filter(orden => orden.cantidadAEntregar == 0).length){
@@ -99,6 +103,16 @@ export class NuevaCitaComponent {
      
     }
 
+    if(this.current == 2){
+      if(this.horario == null){
+        this.modalService.info({
+          nzTitle: '<h2 class="text-dark dark:text-white/[.87]"> Registrar cita</h2>',
+          nzContent: '<p class="text-theme-gray dark:text-white/60">Favor de seleccionad un horario de entrega.</p>',
+          nzOnOk: () => console.log('Info OK')
+        });
+        return;
+      }
+    }
     console.log(this.current);
     this.current += 1;
   }
@@ -111,6 +125,13 @@ export class NuevaCitaComponent {
       nzOnOk: () => {
         this.isReviewOrderFinished = true;
         this.showConfirmation = true;
+        //console.log('Cita a registrar!', this.nuevaCita);
+        this.citasService.crearCita(this.nuevaCita)
+        .subscribe({
+          next:(response)=>{
+            console.log(response);
+          }
+        })
       }
     });
   }
@@ -125,6 +146,10 @@ export class NuevaCitaComponent {
     }
   }
 
+  proveedorIdSeleccionado(datos:string){
+    this.proveedorId = datos;
+  }
+
   ordenesDeCompraSeleccionadas(datos: CitaOrdenCompra[]) {
     this.ordenesCompra = datos.filter(orden => orden.isActive);
     //console.log('Datos recibidos del hijo:', this.ordenesCompra);
@@ -133,5 +158,13 @@ export class NuevaCitaComponent {
   ordenesDeCompraEntregaMateriales(datos: CitaOrdenCompra[]) {
     this.entregaMateriales = datos.filter(orden => orden.isActive);
     //console.log('Datos recibidos del hijo:', this.ordenesCompra);
+  }
+
+  eventoSeleccionado(datos: any) {
+    this.horario = datos;
+    //console.log('Datos recibidos del hijo:', this.ordenesCompra);
+  }
+  citaARegistrar(datos:RegistrarCita){
+    this.nuevaCita = datos;
   }
 }

@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { CookieService } from 'ngx-cookie-service';
 import { MaterialEntregaModel } from '../models/material-entrega/material-entrega-model';
 import { MaterialEntregaTiempoRequestModel } from '../models/material-entrega/material-tiempo-request-model';
+import { MaterialPendienteModel } from '../models/material-entrega/material-pendiente-model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,11 +24,7 @@ export class MaterialEntregaService {
     return this.http.post<MaterialEntregaTiempoRequestModel[]>(`${environment.apiBaseUrl}/api/${this.service}/InsMaterialEntregaList`,request);
   }
 
-/*
-  
-
-  update(id:string, request:CentroModel):Observable<CentroModel>{
-    return this.http.put<CentroModel>(`${environment.apiBaseUrl}/api/${this.service}/${id}`,request);
+  getMaterialesPendientes():Observable<MaterialPendienteModel[]>{
+    return this.http.get<MaterialPendienteModel[]>(`${environment.apiBaseUrl}/api/${this.service}/GetMaterialesPendientes`);
   }
-  */
 }

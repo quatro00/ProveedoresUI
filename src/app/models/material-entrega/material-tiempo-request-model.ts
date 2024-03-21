@@ -1,5 +1,6 @@
 export interface MaterialEntregaTiempoRequestModel {
-    nombreMaterial: string;
+  centro: string;  
+  nombreMaterial: string;
     rangoInicio: number;
     rangoTermino: number;
     duracion: number;

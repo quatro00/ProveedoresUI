@@ -1,6 +1,8 @@
-import {
-  Component
-} from '@angular/core';
+import { Component, Input, Output,EventEmitter } from '@angular/core';
+import { BloquesAndene } from 'src/app/models/cita/agenda-model';
+import { CitaOrdenCompra } from 'src/app/models/cita/orden-compra-model';
+import { RegistrarCita, RegistrarCitaOrdenCompra, RegistrarCitaOrdenCompraDetalle } from 'src/app/models/cita/registrar-cita-model';
+
 @Component({
   selector: 'confirmacion',
   template: `
@@ -23,5 +25,48 @@ styles: [`
 })
 
 export class ConfirmacionComponent {
+  @Input() ordenesCompra:CitaOrdenCompra[]=[];
+  @Input() horario:BloquesAndene;
+  @Input() proveedorId:string;
+  @Output() enviarDatos = new EventEmitter<RegistrarCita>();
+
+  registrarCita:RegistrarCita;
   checked = false;
+
+  ngOnInit(): void {
+
+    this.registrarCita ={
+      inicio: this.horario.start,
+      termino: this.horario.end,
+      rielId: this.horario.rielId,
+      proveedorId: this.proveedorId,
+      ordenesCompra: []
+    }
+
+    this.ordenesCompra.forEach(element => {
+
+
+
+      var citaOrdenCompra:RegistrarCitaOrdenCompra={
+        ordenCompra: element.ordenCompra,
+        detalle:[]
+      }
+      element.detalle.forEach(det => {
+        if(det.cantidadAEntregar ?? 0 > 0){
+          citaOrdenCompra.detalle.push({
+            posicion: det.posicion,
+            material: det.material,
+            descripcion: det.descripcion,
+            cantidadEntregar: det.cantidadAEntregar
+          });
+        }
+      });
+
+      this.registrarCita.ordenesCompra.push(citaOrdenCompra);
+    });
+    console.log('ordenes de compra:', this.ordenesCompra);
+    console.log('horario:', this.horario);
+    console.log('crear orden:', this.registrarCita);
+    this.enviarDatos.emit(this.registrarCita);
+   }
 }
