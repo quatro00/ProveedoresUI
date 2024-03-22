@@ -28,6 +28,8 @@ export class CitasService {
     return this.http.get<CitaOrdenCompra[]>(`${environment.apiBaseUrl}/api/${this.service}/GetOrdenesDeCompraAgendar`,{params});
   }
 
+
+  
   getAgendaOC(request:CitaOrdenCompra[]):Observable<AgendaModel[]>{
     return this.http.post<AgendaModel[]>(`${environment.apiBaseUrl}/api/${this.service}/GetAgendaOC`,request);
   }

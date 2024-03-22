@@ -96,7 +96,7 @@ const antdModule = [
   GoogleMapsModule,
   NzCalendarModule,
   FullCalendarModule,
-
+  NzStepsModule
 ]
 
 

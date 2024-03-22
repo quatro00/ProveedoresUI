@@ -13,6 +13,7 @@ import { INITIAL_EVENTS, createEventId } from '../../mercaderia/citas/event-util
 import { CentrosService } from 'src/app/services/centros.service';
 import { CentroModel } from 'src/app/models/centro/centro-model';
 import { CitasService } from 'src/app/services/citas.service';
+import resourceTimeGridPlugin from '@fullcalendar/resource-timegrid';
 
 
 @Component({
@@ -54,6 +55,7 @@ export class CitasDiariasComponent {
   calendarVisible = signal(true);
 
   calendarOptions = signal<CalendarOptions>({
+    schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
     views: {
       timeGridWeek: {
         dayMaxEventRows: 0, // No muestra eventos de todo el día en la vista de timeGridWeek
@@ -68,16 +70,18 @@ export class CitasDiariasComponent {
       dayGridPlugin,
       timeGridPlugin,
       listPlugin,
+      resourceTimeGridPlugin
     ],
     headerToolbar: {
       left: 'prev,title,next',
       right: ''
     },
-    initialView: 'timeGridWeek',
+    initialView: 'resourceTimeGridDay',
     visibleRange: {
       start: '2024-03-17', // Fecha de inicio del rango visible
       end: '2024-03-23'     // Fecha de fin del rango visible
     },
+    resources:[],
     initialEvents: this.eventos, // alternatively, use the `events` setting to fetch from a feed
     weekends: true,
     editable: false,
@@ -136,7 +140,9 @@ export class CitasDiariasComponent {
         console.log(response);
         this.eventos = response;
         this.showContentCalendar = true;
-        this.calendarOptions.set({ events:response });
+        console.log('Eventos!',this.eventos);
+        console.log('Resources!',this.resources);
+        this.calendarOptions.set({ events:this.eventos, resources:this.resources });
       }});
   }
 }

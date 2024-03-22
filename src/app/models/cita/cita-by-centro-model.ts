@@ -5,4 +5,5 @@ export interface CitaByCentroModel {
     inicio: string;
     terrmino: string;
     riel: string;
+    resourceId:string;
   }
