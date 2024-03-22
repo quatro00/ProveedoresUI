@@ -7,6 +7,7 @@ import { CentroModel } from '../models/centro/centro-model';
 import { CitaOrdenCompra } from '../models/cita/orden-compra-model';
 import { AgendaModel } from '../models/cita/agenda-model';
 import { RegistrarCita } from '../models/cita/registrar-cita-model';
+import { CitaByCentroModel } from '../models/cita/cita-by-centro-model';
 
 @Injectable({
   providedIn: 'root'
@@ -33,5 +34,12 @@ export class CitasService {
 
   crearCita(request:RegistrarCita):Observable<any>{
     return this.http.post<any>(`${environment.apiBaseUrl}/api/${this.service}/CrearCita`,request);
+  }
+
+  getCitasCentro(centro:string):Observable<CitaByCentroModel[]>{
+    let params = new HttpParams();
+    params = params.append('id', centro);
+
+    return this.http.get<CitaByCentroModel[]>(`${environment.apiBaseUrl}/api/${this.service}/GetCitas`,{params});
   }
 }

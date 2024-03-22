@@ -1,6 +1,6 @@
 
 import { NgModule } from '@angular/core';
-import { CommonModule } from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 import { SharedModule } from '../../shared/shared.module';
 
 import { HttpClientModule } from '@angular/common/http';
@@ -55,6 +55,9 @@ import { AdministracionMaterialesComponent } from './administracion-materiales/a
 import { HotTableModule } from '@handsontable/angular';
 
 import { registerAllModules } from 'handsontable/registry';
+import { CitasDiariasComponent } from './citas-diarias/citas-diarias.component';
+import { NzCalendarModule } from 'ng-zorro-antd/calendar';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 const antdModule = [
   HotTableModule.forRoot(),
@@ -92,7 +95,9 @@ const antdModule = [
   NzAvatarModule,
   NzToolTipModule,
   //NzStepsModule,
-  GoogleMapsModule
+  GoogleMapsModule,
+  NzCalendarModule,
+  FullCalendarModule,
   
 
 ]
@@ -111,6 +116,7 @@ registerAllModules();
     CentrosDistribucionComponent,
     AndenesComponent,
     AdministracionMaterialesComponent,
+    CitasDiariasComponent,
   ],
   imports: [
     CommonModule,
@@ -121,7 +127,8 @@ registerAllModules();
   ],
   providers: [
     ThemeConstantService,
-    NzMessageService
+    NzMessageService,
+    DatePipe
   ]
 })
 export class AdminModule { }

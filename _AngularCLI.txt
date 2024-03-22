@@ -4,3 +4,6 @@ ng generate component pages/admin/sucursal/departamento
 
 generar componente mercaderia
 ng generate component pages/mercaderia/
+
+generar componente admin
+ng generate component pages/admin/

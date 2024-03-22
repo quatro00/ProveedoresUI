@@ -92,10 +92,10 @@ const antdModule = [
   NzProgressModule,
   NzAvatarModule,
   NzToolTipModule,
+  //NzStepsModule,
+  GoogleMapsModule,
   NzCalendarModule,
   FullCalendarModule,
-  NzStepsModule,
-  GoogleMapsModule,
 
 ]
 

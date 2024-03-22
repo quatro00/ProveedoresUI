@@ -8,17 +8,8 @@ import { NzModalService } from 'ng-zorro-antd/modal';
 import enGbLocale from '@fullcalendar/core/locales/es';
 import { FormBuilder } from '@angular/forms';
 import { Component, Input, Output,EventEmitter } from '@angular/core';
-
-import {
-  UntypedFormBuilder,
-  UntypedFormControl,
-  UntypedFormGroup,
-  Validators
-} from '@angular/forms';
-
-import {
-  NzFormTooltipIcon
-} from 'ng-zorro-antd/form';
+import { UntypedFormBuilder, UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { NzFormTooltipIcon } from 'ng-zorro-antd/form';
 import { INITIAL_EVENTS } from '../citas/event-utils';
 import { CitaOrdenCompra } from 'src/app/models/cita/orden-compra-model';
 import { CitasService } from 'src/app/services/citas.service';

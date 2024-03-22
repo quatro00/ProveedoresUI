@@ -36,7 +36,7 @@ export const AdminRoutes: SideNavInterface[] = [
         submenu:[]
       },
       {
-        path: 'administrador/catalogo-medicamentos',
+        path: 'administrador/citas-diarias',
         title: 'Citas diarias',
         iconType: 'nzIcon',
         iconTheme: 'outline',

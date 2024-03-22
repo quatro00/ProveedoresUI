@@ -10,6 +10,7 @@ import { NuevoMensajeComponent } from './nuevo-mensaje/nuevo-mensaje.component';
 import { CentrosDistribucionComponent } from './centros-distribucion/centros-distribucion.component';
 import { AndenesComponent } from './andenes/andenes.component';
 import { AdministracionMaterialesComponent } from './administracion-materiales/administracion-materiales.component';
+import { CitasDiariasComponent } from './citas-diarias/citas-diarias.component';
 
 const routes: Routes = [
   {
@@ -81,6 +82,14 @@ const routes: Routes = [
     component: ProveedoresComponent,
     data: {
         title: 'Proveedores',
+    },
+    //canActivate: [authAdminGuard]
+  },
+  {
+    path: 'citas-diarias',
+    component: CitasDiariasComponent,
+    data: {
+        title: 'Citas diarias',
     },
     //canActivate: [authAdminGuard]
   },
