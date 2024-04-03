@@ -30,8 +30,8 @@ export class CitasService {
 
 
   
-  getAgendaOC(request:CitaOrdenCompra[]):Observable<AgendaModel[]>{
-    return this.http.post<AgendaModel[]>(`${environment.apiBaseUrl}/api/${this.service}/GetAgendaOC`,request);
+  getAgendaOC(request:CitaOrdenCompra[]):Observable<AgendaModel>{
+    return this.http.post<AgendaModel>(`${environment.apiBaseUrl}/api/${this.service}/GetAgendaOC`,request);
   }
 
   crearCita(request:RegistrarCita):Observable<any>{

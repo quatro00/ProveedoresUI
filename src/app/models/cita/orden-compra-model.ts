@@ -10,6 +10,8 @@ export interface CitaOrdenCompra {
     totalPiezas:      number;
     montoTotal:       number;
     piezasEntregadas: number;
+    tipo: string;
+    asn: string;
     detalle:          Detalle[];
     isActive?:string;
 }
@@ -29,4 +31,5 @@ export interface Detalle {
     valorBruto:         number;
     precio:             number;
     cantidadAEntregar?:number;
+    unidadMedida?:string;
 }

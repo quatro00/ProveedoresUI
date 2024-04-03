@@ -68,6 +68,7 @@ import { CitasService } from 'src/app/services/citas.service';
               >
                 <thead>
                   <tr>
+                    
                     <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Tipo</th>
                     <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Orden de compra</th>
                     <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Asn</th>
@@ -81,9 +82,9 @@ import { CitasService } from 'src/app/services/citas.service';
                 </thead>
                 <tbody>
                 <tr class="group" *ngFor="let item of basicTable.data">
-                   <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">Orden de compra</td>
+                   <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.tipo }}</td>
                    <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.ordenCompra }}</td> 
-                   <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent"></td>
+                   <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.asn }}</td>
                    <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.centro }}</td> 
                    <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.fechaOrdenCompra | date: 'dd/MM/yyyy' }}</td> 
                    <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.fechaVencimiento | date: 'dd/MM/yyyy' }}</td>
@@ -145,7 +146,7 @@ export class BusquedaOrdenesCompraComponent {
       this.citasService.getOrdenesDeCompraAgendar(desde, hasta, this.validateForm.value.razonSocial,'')
       .subscribe({
         next:(response)=>{
-          //console.log(response);
+          console.log(response);
           this.ordenesCompra=response;
           //this.razonesSociales = response.razonesSociales;
         },

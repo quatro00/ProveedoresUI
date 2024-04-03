@@ -34,9 +34,14 @@ import { CitaOrdenCompra } from 'src/app/models/cita/orden-compra-model';
               licenseKey="non-commercial-and-evaluation">
                 <hot-column data="grupoArticulos" title="Grupo de articulo" [readOnly]="true"></hot-column>
                 <hot-column data="material" title="Material" [readOnly]="true"></hot-column>
+                <hot-column data="unidadMedida" title="Unidad de medida" [readOnly]="true"></hot-column>
                 <hot-column data="descripcion" title="Descripcion" [readOnly]="true"></hot-column>
+                <hot-column data="cantidadSolicitada" title="Cantidad solicitada" type="numeric" [readOnly]="true"></hot-column>
+                <hot-column data="cantidadEntregada" title="Cantidad entregada" type="numeric" [readOnly]="true"></hot-column>
                 <hot-column data="cantidadDisponible" title="Cantidad disponible" type="numeric" [readOnly]="true"></hot-column>
-                <hot-column data="cantidadAEntregar" title="Cantidad a entregar" type="numeric"></hot-column>
+                <hot-column data="cantidadAEntregar" title="Cantidad a entregar" type="numeric" *ngIf="tipoSeleccionado === 'Asn'" [readOnly]="true"></hot-column>
+                <hot-column data="cantidadAEntregar" title="Cantidad a entregar" type="numeric" *ngIf="tipoSeleccionado === 'Orden de compra'"></hot-column>
+
             </hot-table>
           </div>
         </div>
@@ -133,7 +138,7 @@ export class EntregaMaterialesComponent {
 
   isVisible = false;
   btnLoading = false;
-
+  tipoSeleccionado = '';
   id = 'hotInstance';
 
   data: any[] = [
@@ -187,6 +192,7 @@ export class EntregaMaterialesComponent {
   }
   
   entregaDeMateriales(item){
+    this.tipoSeleccionado = item.tipo;
     item.detalle.forEach((element, index) => {
       if(element.cantidadAEntregar == null){
         element.cantidadAEntregar = 0;
@@ -207,13 +213,15 @@ export class EntregaMaterialesComponent {
     //console.log(this.hotRegisterer.getInstance(this.id).getData());
 
     this.enviarDatos.emit(this.ordenesCompra);
+    
+    console.log(this.ordenesCompra);
 
     var datosValidos = true;
     this.hotRegisterer.getInstance(this.id).getData().forEach((element, index) => {
-      if(element[4] > element[3]){
+      if(element[7] > element[6]){
         this.modalService.info({
           nzTitle: '<h2 class="text-dark dark:text-white/[.87]"> Captura de materiales</h2>',
-          nzContent: `<p class="text-theme-gray dark:text-white/60">La cantidad a entregar(${element[4]}) del material: ${element[2]} es mayor a la cantidad disponible(${element[3]}).</p>`,
+          nzContent: `<p class="text-theme-gray dark:text-white/60">La cantidad a entregar(${element[7]}) del material: ${element[3]} es mayor a la cantidad disponible(${element[6]}).</p>`,
           nzOnOk: () => console.log('Info OK')
         });
         datosValidos = false;

@@ -1,203 +1,118 @@
-import { Component, signal, ChangeDetectorRef,TemplateRef,ViewEncapsulation  } from '@angular/core';
-import { CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/core';
-import interactionPlugin from '@fullcalendar/interaction';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import listPlugin from '@fullcalendar/list';
-import { INITIAL_EVENTS, createEventId } from './event-utils';
-import { NzModalService } from 'ng-zorro-antd/modal';
-import enGbLocale from '@fullcalendar/core/locales/es';
-import { FormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+
+import { DatePipe } from '@angular/common';
+import { Component } from '@angular/core';
+import { FormGroup, FormControl, UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
+import { RazonesSociale } from 'src/app/models/usuario/byuser-model';
+import { CitasService } from 'src/app/services/citas.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 
 @Component({
+  styles:  [`
+  :host ::ng-deep .basic-select .ant-select-selector{
+    @apply h-[50px] rounded-4 border-normal px-[20px] flex items-center dark:bg-white/10 dark:border-white/10 dark:text-white/60 dark:hover:text-white/100;
+  }
+  :host ::ng-deep .basic-select.ant-select-multiple .ant-select-selection-item{
+      @apply bg-white dark:bg-white/10 border-normal dark:border-white/10;
+    }
+    ::ng-deep .ant-upload {
+      @apply w-full;
+    }
+    :host ::ng-deep .basic-select .ant-select-multiple.ant-select-disabled.ant-select:not(.ant-select-customize-input) .ant-select-selector{
+      @apply dark:bg-white/10 dark:border-white/10 dark:text-white/60 dark:hover:text-white/100;
+    }
+  `],
   selector: 'app-citas',
   templateUrl: './citas.component.html',
   styleUrls: ['./citas.component.css'],
-  styles: [`
-  :host ::ng-deep nz-radio-group label{
-      @apply dark:bg-white/10 dark:border-white/10 dark:text-white/[.87];
-    }
-    :host ::ng-deep nz-radio-group label.ant-radio-button-wrapper-checked{
-      @apply dark:bg-primary dark:border-primary dark:text-white;
-    }
-    :host ::ng-deep .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled){
-      @apply bg-primary text-white;
-    }
-    :host ::ng-deep .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):first-child{
-      @apply border-primary;
-    }
-    :host ::ng-deep .ant-radio-button-wrapper-checked:not([class*=" ant-radio-button-wrapper-disabled"]).ant-radio-button-wrapper:first-child {
-      @apply border-r-primary;
-    }
-    :host ::ng-deep .ant-radio-button-wrapper {
-        @apply leading-[1.6] px-[25.25px] border-[#f1f2f6] dark:border-white/10 bg-white text-theme-gray;
-    }
-    :host ::ng-deep .ant-radio-button-wrapper:not(:first-child)::before {
-        @apply bg-[#f1f2f6] dark:bg-white/10;
-    }
-    :host ::ng-deep .ant-radio-button-wrapper.ant-radio-button-wrapper-disabled {
-      @apply opacity-[0.4];
-    }
-
-
-   :host ::ng-deep nz-radio-group label{
-      @apply dark:bg-white/10 dark:border-white/10 dark:text-white/[.87];
-    }
-    :host ::ng-deep nz-radio-group label.ant-radio-button-wrapper-checked{
-      @apply dark:bg-primary dark:border-primary dark:text-white;
-    }
-    :host ::ng-deep .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled){
-      @apply bg-primary text-white;
-    }
-    :host ::ng-deep .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled):first-child{
-      @apply border-primary;
-    }
-    :host ::ng-deep .ant-radio-button-wrapper-checked:not([class*=" ant-radio-button-wrapper-disabled"]).ant-radio-button-wrapper:first-child {
-      @apply border-r-primary;
-    }
-    :host ::ng-deep .ant-radio-button-wrapper {
-        @apply leading-[1.6] px-[25.25px] border-[#f1f2f6] dark:border-white/10 bg-white text-theme-gray;
-    }
-    :host ::ng-deep .ant-radio-button-wrapper:not(:first-child)::before {
-        @apply bg-[#f1f2f6] dark:bg-white/10;
-    }
-    :host ::ng-deep .ant-radio-button-wrapper.ant-radio-button-wrapper-disabled {
-      @apply opacity-[0.4];
-    }
-`],
-
+  
 })
 export class CitasComponent {
-  isVisible = false;
   isLoading = true;
   showContent = false;
+  demoValue: number = 0;
+  selectedColor = '#8e1dce'; // Initialize the selected color
+  myGroup: FormGroup;
+  listOfOption: Array<{ label: string; value: string }> = [];
+  listOfTagOptions = [];
+  radioValue = 'A';
+  disabled = true;
+  razonesSociales:RazonesSociale[]=[];
+
   validateForm!: UntypedFormGroup;
-  validateForm_paqueteria!: UntypedFormGroup;
 
-  radioValue:string;
-
-  calendarVisible = signal(true);
-
-  calendarOptions = signal<CalendarOptions>({
-    plugins: [
-      interactionPlugin,
-      dayGridPlugin,
-      timeGridPlugin,
-      listPlugin,
-    ],
-    headerToolbar: {
-      left: 'today,prev,title,next',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-    },
-    initialView: 'dayGridMonth',
-    initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
-    weekends: true,
-    editable: false,
-    selectable: false,
-    selectMirror: true,
-    dayMaxEvents: true,
-    //select: this.handleDateSelect.bind(this),
-    //eventClick: this.handleEventClick.bind(this),
-    //eventsSet: this.handleEvents.bind(this),
-    locale: enGbLocale
-    /* you can update a remote database when these fire:
-    eventAdd:
-    eventChange:
-    eventRemove:
-    */
-  });
-  currentEvents = signal<EventApi[]>([]);
-
-  calendarOptions2: CalendarOptions = {
-    initialView: 'dayGridMonth',
-    plugins: [dayGridPlugin, listPlugin], // Add listPlugin here if you want the list view
-    headerToolbar: {
-      left: 'prev',
-      center: 'title',
-      right: 'next'
-    },
-    // Add any other configurations you need...
-  };
-
-  constructor(
-    private changeDetector: ChangeDetectorRef,
-    private modalService: NzModalService,
-    private fb: FormBuilder,
-    private usuariosservice: UsuariosService ) {
+  colorChanged() {
+    console.log('Selected color:', this.selectedColor);
+    // Do something with the selected color
   }
 
-  handleCalendarToggle() {
-    this.calendarVisible.update((bool) => !bool);
-  }
+  ngOnInit() {
+    // Simulate loading time
+    this.usuariosService.getByUser()
+    .subscribe({
+      next:(response)=>{
+        //console.log(response);
+        this.razonesSociales = response.razonesSociales;
+        console.log(response);
+        this.isLoading = false;
+        this.showContent = true;
+        //this.isVisible = false;
+        //this.btnLoading = false;
+      }
+    })
 
-  handleWeekendsToggle() {
-    this.calendarOptions.mutate((options) => {
-      options.weekends = !options.weekends;
+
+    this.validateForm = this.fb.group({
+      desde: [null, [Validators.required]],
+      hasta: [null, [Validators.required]],
+      razonSocial: [null, [Validators.required]],
     });
-  }
 
-  handleDateSelect(selectInfo: DateSelectArg) {
-    const title = prompt('Please enter a new title for your event');
-    const calendarApi = selectInfo.view.calendar;
+    // Initialize the form group
+    this.myGroup = new FormGroup({
+      bc1: new FormControl(),
+      bc2: new FormControl(),
+      bc3: new FormControl(),
+      bc4: new FormControl(),
+      bc5: new FormControl(),
+      bc6: new FormControl(),
+      bc9: new FormControl(),
+      datePicker: new FormControl(), // Add this control
+      monthPicker: new FormControl(), // Add this control
+      timePicker: new FormControl() // Add this control
+    });
 
-    calendarApi.unselect(); // clear date selection
-
-    if (title) {
-      calendarApi.addEvent({
-        id: createEventId(),
-        title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay
-      });
+    // Initialize the list of options
+    const children: Array<{ label: string; value: string }> = [];
+    for (let i = 10; i < 36; i++) {
+      children.push({ label: i.toString(36) + i, value: i.toString(36) + i });
     }
-  }
-
-  handleEventClick(clickInfo: EventClickArg) {
-    if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-      clickInfo.event.remove();
-    }
-  }
-
-  handleEvents(events: EventApi[]) {
-    this.currentEvents.set(events);
-    this.changeDetector.detectChanges(); // workaround for pressionChangedAfterItHasBeenCheckedError
+    this.listOfOption = children;
   }
 
  
-  ngOnInit() {
-    console.log(this.radioValue);
-    // Simulate loading time
-    this.validateForm = this.fb.group({
-      inicio: ['',[Validators.required]],
-      termino: ['',[Validators.required]]
-    });
 
-    this.validateForm_paqueteria = this.fb.group({
-      fecha: ['',[Validators.required]]
-    });
+  // Upload
+  constructor(private msg: NzMessageService,
+    private datePipe: DatePipe,
+    private fb: UntypedFormBuilder,
+    private citasService: CitasService,
+    private usuariosService: UsuariosService,) {}
 
-    this.loadData();
+  handleChange(info: NzUploadChangeParam): void {
+    if (info.file.status !== 'uploading') {
+      console.log(info.file, info.fileList);
+    }
+    if (info.file.status === 'done') {
+      this.msg.success(`${info.file.name} file uploaded successfully`);
+    } else if (info.file.status === 'error') {
+      this.msg.error(`${info.file.name} file upload failed.`);
+    }
   }
 
+  //Checkbox
   log(value: string[]): void {
     console.log(value);
-  }
-
-  loadData() {
-    // Simulate an asynchronous data loading operation
-    setTimeout(() => {
-      this.isLoading = false;
-      this.showContent = true;
-    }, 500);
-  }
-
-  showNew(){
-    this.isVisible = true;
-  }
-
-  handleCancel() {
-    this.isVisible = false;
   }
 }

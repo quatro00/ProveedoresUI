@@ -13,6 +13,7 @@ import { NzFormTooltipIcon } from 'ng-zorro-antd/form';
 import { INITIAL_EVENTS } from '../citas/event-utils';
 import { CitaOrdenCompra } from 'src/app/models/cita/orden-compra-model';
 import { CitasService } from 'src/app/services/citas.service';
+import { AgendaModel } from 'src/app/models/cita/agenda-model';
 
 @Component({
   selector: 'fecha-anden',
@@ -103,6 +104,18 @@ export class FechaAndenComponent {
 
   handleEventClick(clickInfo: any) {
 
+    if(clickInfo.event.extendedProps.disponible == false){
+      this.modalService.info({
+        nzTitle: '<span class="text-dark dark:text-white/[.87]">Confirmación de cita</span>',
+        nzContent: `<div class="text-light dark:text-white/60 text-[15px]">Favor de seleccionar un horario disponible</div>`,
+        nzClassName: 'confirm-modal',
+        nzOnOk: () => {
+          //this.isReviewOrderFinished = true;
+          //this.showConfirmation = true;
+        }
+      });
+      return;
+    }
     //si seleccionamos el mismo lo pintamos verde y apagamos el evento seleccionado
     if(clickInfo.event.id == this.eventoSeleccionado){
       this.eventoSeleccionado = null;
@@ -204,9 +217,9 @@ export class FechaAndenComponent {
    console.log('Ordenes a analizar!',this.ordenesCompra);
    this.citasService.getAgendaOC(this.ordenesCompra)
    .subscribe({
-    next:(response)=>{
+    next:(response:AgendaModel)=>{
       console.log('Agenda',response);
-      let fechas: Date[] = response.map(obj => new Date(obj.fecha));
+      let fechas: Date[] = response.bloques.map(obj => new Date(obj.fecha));
 
       // Encontrar la fecha mínima y máxima
       let fechaMinima: Date = new Date(Math.min(...fechas.map(date => date.getTime())));
@@ -229,7 +242,7 @@ export class FechaAndenComponent {
       this.fechaMax = `${yearMax}-${monthMax.toString().padStart(2, '0')}-${dayMax.toString().padStart(2, '0')}`;
 
       var eventos:any[]=[];
-      response.forEach(element => {
+      response.bloques.forEach(element => {
         eventos.push(...element.bloquesAndenes);
       });
       this.updateValidRange(fechaMinima, fechaMaxima, eventos)

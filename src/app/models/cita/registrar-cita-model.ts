@@ -8,6 +8,8 @@ export class RegistrarCita{
 
 export class RegistrarCitaOrdenCompra{
     ordenCompra:string;
+    tipo:string;
+    asn:string;
     detalle:RegistrarCitaOrdenCompraDetalle[]=[];
 }
 
@@ -16,4 +18,6 @@ export class RegistrarCitaOrdenCompraDetalle{
     material:string;
     descripcion:string;
     cantidadEntregar:number;
+    unidadMedida:string;
+    precio:number;
 }

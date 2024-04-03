@@ -8,7 +8,94 @@ import { RegistrarCita, RegistrarCitaOrdenCompra, RegistrarCitaOrdenCompraDetall
   template: `
 <div>
   <h4 class="text-[20px] font-medium mb-[20px] text-dark dark:text-white/[.87]">4. Confirmacion de la cita</h4>
-    <label class="review text-light dark:text-white/60 font-normal text-[14px]" nz-checkbox [(ngModel)]="checked">I Agree With The Terms And Conditions.</label>
+  
+
+  <table style="width: 100%; font-size: 18px;">
+  <tr>
+    <td colspan="4">
+    <h3 class="text-[20px] font-medium mb-[20px] text-dark dark:text-white/[.87]" style="text-align: center;">Datos del proveedor</h3>
+    </td>
+  </tr>
+  <tr>
+      <td>
+        <b>Nombre</b>
+      </td>
+      <td>
+        Levi straus
+      </td>
+
+      <td>
+       <b>Numero de proveedor</b>
+      </td>
+      <td>
+        0005125
+      </td>
+    </tr>
+
+    <tr>
+    <td colspan="4">
+    <h3 class="text-[20px] font-medium mb-[20px] text-dark dark:text-white/[.87]" style="text-align: center;">Datos generales</h3>
+    </td>
+  </tr>
+
+    <tr>
+      <td>
+        <b>Tipo de entrega</b>
+      </td>
+      <td>
+        Almacen
+      </td>
+
+      <td>
+        <b>Centro de distribucion</b>
+      </td>
+      <td>
+       Irapuato
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <b>Fecha de la cita</b>
+      </td>
+      <td>
+        15/01/2024
+      </td>
+
+      <td>
+        <b>Tiempo estimado</b>
+      </td>
+      <td>
+       100 min.
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <b>Ordenes de compra</b>
+      </td>
+      <td>
+        1,2,3,4
+      </td>
+
+      <td>
+        <b>Asns</b>
+      </td>
+      <td>
+       4,5,6
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        Total de piezas
+      </td>
+      <td>
+        100
+      </td>
+
+     
+    </tr>
+  </table>
 </div>
 `,
 styles: [`
@@ -49,6 +136,8 @@ export class ConfirmacionComponent {
 
       var citaOrdenCompra:RegistrarCitaOrdenCompra={
         ordenCompra: element.ordenCompra,
+        tipo:element.tipo,
+        asn:element.asn,
         detalle:[]
       }
       element.detalle.forEach(det => {
@@ -57,7 +146,9 @@ export class ConfirmacionComponent {
             posicion: det.posicion,
             material: det.material,
             descripcion: det.descripcion,
-            cantidadEntregar: det.cantidadAEntregar
+            cantidadEntregar: det.cantidadAEntregar,
+            unidadMedida: det.unidadMedida,
+            precio: det.precio
           });
         }
       });

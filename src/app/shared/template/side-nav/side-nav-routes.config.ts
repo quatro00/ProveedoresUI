@@ -187,7 +187,7 @@ export const MercaderiaRoutes: SideNavInterface[] = [
   submenu:[
     {
       path: 'mercaderia/citas',
-      title: 'Agenda',
+      title: 'Citas registradas',
       iconType: 'nzIcon',
       iconTheme: 'outline',
       icon: '',
