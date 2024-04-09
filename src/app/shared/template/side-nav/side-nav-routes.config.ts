@@ -44,7 +44,7 @@ export const AdminRoutes: SideNavInterface[] = [
         submenu:[]
       },
       {
-        path: 'administrador/catalogo-sucursales',
+        path: 'administrador/bloquear-andenes',
         title: 'Bloquear andenes',
         iconType: 'nzIcon',
         iconTheme: 'outline',
@@ -135,7 +135,7 @@ export const AdminRoutes: SideNavInterface[] = [
     submenu:[]
   },
   {
-    path: 'administrador/catalogoarticulos',
+    path: 'administrador/configuracion',
     title: 'Configuración',
     iconType: 'nzIcon',
     iconTheme: 'outline',

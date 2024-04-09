@@ -160,8 +160,7 @@ export class CentrosDistribucionComponent {
 
   handleCancel(){
     this.isVisible = false;
-    this.isVisibleRieles = false;
-    
+    this.isVisibleRieles = false; 
   }
 
   handleCancel_GruposArticulo(){

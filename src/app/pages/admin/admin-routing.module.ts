@@ -11,6 +11,8 @@ import { CentrosDistribucionComponent } from './centros-distribucion/centros-dis
 import { AndenesComponent } from './andenes/andenes.component';
 import { AdministracionMaterialesComponent } from './administracion-materiales/administracion-materiales.component';
 import { CitasDiariasComponent } from './citas-diarias/citas-diarias.component';
+import { BloquearAndenesComponent } from './bloquear-andenes/bloquear-andenes.component';
+import { ConfiguracionComponent } from './configuracion/configuracion.component';
 
 const routes: Routes = [
   {
@@ -90,6 +92,22 @@ const routes: Routes = [
     component: CitasDiariasComponent,
     data: {
         title: 'Citas diarias',
+    },
+    //canActivate: [authAdminGuard]
+  },
+  {
+    path: 'bloquear-andenes',
+    component: BloquearAndenesComponent,
+    data: {
+        title: 'Bloquear andenes',
+    },
+    //canActivate: [authAdminGuard]
+  },
+  {
+    path: 'configuracion',
+    component: ConfiguracionComponent,
+    data: {
+        title: 'Configuracion',
     },
     //canActivate: [authAdminGuard]
   },

@@ -58,6 +58,8 @@ import { registerAllModules } from 'handsontable/registry';
 import { CitasDiariasComponent } from './citas-diarias/citas-diarias.component';
 import { NzCalendarModule } from 'ng-zorro-antd/calendar';
 import { FullCalendarModule } from '@fullcalendar/angular';
+import { BloquearAndenesComponent } from './bloquear-andenes/bloquear-andenes.component';
+import { ConfiguracionComponent } from './configuracion/configuracion.component';
 
 const antdModule = [
   HotTableModule.forRoot(),
@@ -117,6 +119,8 @@ registerAllModules();
     AndenesComponent,
     AdministracionMaterialesComponent,
     CitasDiariasComponent,
+    BloquearAndenesComponent,
+    ConfiguracionComponent,
   ],
   imports: [
     CommonModule,

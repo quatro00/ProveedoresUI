@@ -3,10 +3,14 @@ import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormGroup, FormControl, UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { NzModalService } from 'ng-zorro-antd/modal';
 import { NzUploadChangeParam } from 'ng-zorro-antd/upload';
+import { CancelarCitaRequestModel } from 'src/app/models/cita/cancelar-cita-request-model';
+import { CitaFechaResponseModel } from 'src/app/models/cita/cita-fecha-response-model';
 import { RazonesSociale } from 'src/app/models/usuario/byuser-model';
 import { CitasService } from 'src/app/services/citas.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   styles:  [`
@@ -29,23 +33,15 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
   
 })
 export class CitasComponent {
+  btnLoading = false;
   isLoading = true;
   showContent = false;
-  demoValue: number = 0;
-  selectedColor = '#8e1dce'; // Initialize the selected color
-  myGroup: FormGroup;
-  listOfOption: Array<{ label: string; value: string }> = [];
-  listOfTagOptions = [];
-  radioValue = 'A';
-  disabled = true;
+ 
   razonesSociales:RazonesSociale[]=[];
+  citas:CitaFechaResponseModel[]=[];
 
   validateForm!: UntypedFormGroup;
 
-  colorChanged() {
-    console.log('Selected color:', this.selectedColor);
-    // Do something with the selected color
-  }
 
   ngOnInit() {
     // Simulate loading time
@@ -68,51 +64,84 @@ export class CitasComponent {
       hasta: [null, [Validators.required]],
       razonSocial: [null, [Validators.required]],
     });
-
-    // Initialize the form group
-    this.myGroup = new FormGroup({
-      bc1: new FormControl(),
-      bc2: new FormControl(),
-      bc3: new FormControl(),
-      bc4: new FormControl(),
-      bc5: new FormControl(),
-      bc6: new FormControl(),
-      bc9: new FormControl(),
-      datePicker: new FormControl(), // Add this control
-      monthPicker: new FormControl(), // Add this control
-      timePicker: new FormControl() // Add this control
-    });
-
-    // Initialize the list of options
-    const children: Array<{ label: string; value: string }> = [];
-    for (let i = 10; i < 36; i++) {
-      children.push({ label: i.toString(36) + i, value: i.toString(36) + i });
-    }
-    this.listOfOption = children;
   }
 
- 
+  submitForm(): void {
+    if (this.validateForm.valid) {
+      
+      this.citasService.getCitasFechas(this.validateForm.value.desde, this.validateForm.value.hasta, this.validateForm.value.razonSocial)
+      .subscribe({
+        next:(response)=>{
+          console.log(response);
+          this.citas = response;
+          //this.ordenesCompra=response;
+          //this.razonesSociales = response.razonesSociales;
+        },
+        complete:()=>{
+          this.btnLoading = false;
+        }
+      })
+      
+
+      this.btnLoading = true;
+    } else {
+      Object.values(this.validateForm.controls).forEach(control => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({
+            onlySelf: true
+          });
+        }
+      });
+    }
+  }
 
   // Upload
-  constructor(private msg: NzMessageService,
+  constructor(
+    private modalService: NzModalService, 
+    private msg: NzMessageService,
     private datePipe: DatePipe,
     private fb: UntypedFormBuilder,
     private citasService: CitasService,
     private usuariosService: UsuariosService,) {}
 
-  handleChange(info: NzUploadChangeParam): void {
-    if (info.file.status !== 'uploading') {
-      console.log(info.file, info.fileList);
+    verDetalle(item){
+      console.log(item);
     }
-    if (info.file.status === 'done') {
-      this.msg.success(`${info.file.name} file uploaded successfully`);
-    } else if (info.file.status === 'error') {
-      this.msg.error(`${info.file.name} file upload failed.`);
-    }
-  }
 
-  //Checkbox
-  log(value: string[]): void {
-    console.log(value);
-  }
+    showAcuseCita(item:CitaFechaResponseModel){
+      window.open(`${environment.apiBaseUrl}/api/Citas/GetAcusePdf/${item.id}`, '_blank');
+    }
+
+    showAcuseCitaXls(item:CitaFechaResponseModel){
+      window.open(`${environment.apiBaseUrl}/api/Citas/GetAcuseXls/${item.id}`, '_blank');
+    }
+
+    cancelarCita(item:CitaFechaResponseModel){
+
+      var request:CancelarCitaRequestModel = { 
+        id: item.id,
+      }
+
+      this.modalService.confirm({
+        nzTitle: '<span class="text-dark dark:text-white/[.87]">Confirmación</span>',
+        nzContent: '<div class="text-light dark:text-white/60 text-[15px]">¿Cancelar la cita con folio ' + item.folio.toString() +' ?</div>',
+        nzClassName: 'confirm-modal',
+        nzOnOk: () => {
+          this.citasService.cancelarCita(request)
+          .subscribe({
+            next:(response)=>{
+              this.submitForm();
+              //this.ordenesCompra=response;
+              //this.razonesSociales = response.razonesSociales;
+            },
+            complete:()=>{
+              //this.btnLoading = false;
+            }
+          })
+        }
+      });
+    }
+
+ 
 }

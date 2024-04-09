@@ -8,6 +8,8 @@ import { CitaOrdenCompra } from '../models/cita/orden-compra-model';
 import { AgendaModel } from '../models/cita/agenda-model';
 import { RegistrarCita } from '../models/cita/registrar-cita-model';
 import { CitaByCentroModel } from '../models/cita/cita-by-centro-model';
+import { CitaFechaResponseModel } from '../models/cita/cita-fecha-response-model';
+import { CancelarCitaRequestModel } from '../models/cita/cancelar-cita-request-model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,14 +30,32 @@ export class CitasService {
     return this.http.get<CitaOrdenCompra[]>(`${environment.apiBaseUrl}/api/${this.service}/GetOrdenesDeCompraAgendar`,{params});
   }
 
+  getCitasFechas(fechaInicio:string, fechaTermino:string, noProveedor:string):Observable<CitaFechaResponseModel[]>{
+    let params = new HttpParams();
+    params = params.append('proveedorId', noProveedor);
+    params = params.append('inicio', fechaInicio);
+    params = params.append('termino', fechaTermino);
 
+    return this.http.get<CitaFechaResponseModel[]>(`${environment.apiBaseUrl}/api/${this.service}/GetCitasFechas`,{params});
+  }
   
   getAgendaOC(request:CitaOrdenCompra[]):Observable<AgendaModel>{
     return this.http.post<AgendaModel>(`${environment.apiBaseUrl}/api/${this.service}/GetAgendaOC`,request);
   }
 
+  getAcuse(id:string):Observable<any>{
+    let params = new HttpParams();
+    params = params.append('id', id);
+
+    return this.http.get(`${environment.apiBaseUrl}/api/${this.service}/GetAcusePdf/${id}`);
+  }
+
   crearCita(request:RegistrarCita):Observable<any>{
     return this.http.post<any>(`${environment.apiBaseUrl}/api/${this.service}/CrearCita`,request);
+  }
+
+  cancelarCita(request:CancelarCitaRequestModel):Observable<any>{
+    return this.http.post<any>(`${environment.apiBaseUrl}/api/${this.service}/CancelarCita`,request);
   }
 
   getCitasCentro(centro:string):Observable<CitaByCentroModel[]>{
