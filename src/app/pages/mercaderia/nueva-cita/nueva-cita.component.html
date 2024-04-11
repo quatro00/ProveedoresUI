@@ -25,15 +25,22 @@
                       </div>
                       <div *ngIf="current === 1">
                         <!-- Custom form markup for the second step -->
-                        <entrega-materiales (enviarDatos)="ordenesDeCompraEntregaMateriales($event)" [ordenesCompra]="ordenesCompra"></entrega-materiales>
+                        <entrega-materiales (tipoEntrega)="tipoEntrega($event)" (enviarDatos)="ordenesDeCompraEntregaMateriales($event)" [ordenesCompra]="ordenesCompra"></entrega-materiales>
                       </div>
-                      <div *ngIf="current === 2">
+                      <div *ngIf="current === 2 && tipoEntregaSeleccionada === 'almacen'">
                         <!-- Custom form markup for the third step -->
                         <fecha-anden (enviarDatos)="eventoSeleccionado($event)" [ordenesCompra]="entregaMateriales"></fecha-anden>
                       </div>
+
+                      <div *ngIf="current === 2 && tipoEntregaSeleccionada === 'paqueteria'">
+                        <!-- Custom form markup for the third step -->
+                        <fecha-anden-paqueteria (enviarDatos)="eventoSeleccionado($event)" [ordenesCompra]="entregaMateriales" (fechaEntregaPaqueteria)="fechaSeleccionadaPaqueteria($event)"></fecha-anden-paqueteria>
+                      </div>
+
+
                       <div *ngIf="current === 3">
                         <!-- Custom form markup for the fourth step -->
-                        <confirmacion (enviarDatos)="citaARegistrar($event)" [ordenesCompra]="entregaMateriales" [horario]="horario" [proveedorId]="proveedorId"></confirmacion>
+                        <confirmacion (enviarDatos)="citaARegistrar($event)" [ordenesCompra]="entregaMateriales" [horario]="horario" [proveedorId]="proveedorId" [tipoEntrega]="tipoEntregaSeleccionada" [fechaPaqueteria]="fechaEntregaPaqueteria" [centro]="centroSeleccionado"></confirmacion>
                       </div>
                     </div>
                     <ng-template #confirmationContent>

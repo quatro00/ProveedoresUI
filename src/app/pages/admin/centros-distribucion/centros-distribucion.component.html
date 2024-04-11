@@ -70,6 +70,16 @@
            </nz-form-item>
          
            <nz-form-item>
+            <nz-form-control nzErrorTip="Campo requerido.">
+              <nz-form-label class="text-[15px] font-semibold text-dark capitalize mb-[10px]">Dias recepción de paquetería:</nz-form-label>
+              <nz-select formControlName="diasPaqueteria" class="basic-select" name="basicSelect" nzMode="tags">
+                <nz-option *ngFor="let dia of dias" [nzLabel]="dia.nombre" [nzValue]="dia.id">
+                </nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+
+           <nz-form-item>
              <nz-form-control nzErrorTip="Campo requerido.">
                <nz-checkbox-wrapper class="flex flex-col w-full capitalize basic-checkbox text-theme-gray dark:text-white/60 gap-[5px] mb-[15px]" (nzOnChange)="log($event)">
                  <label class=" m-0 text-dark dark:text-white/[.87]" nz-checkbox nzValue="1" [nzChecked]="isChecked">Activo</label>
@@ -109,6 +119,17 @@
              </nz-form-control>
            </nz-form-item>
          
+           <nz-form-item>
+            <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="3"
+              nzFor="pass">Dias recepción de paquetería</nz-form-label>
+              <nz-form-control nzXs="21">
+                <nz-select class="basic-select" name="basicSelect" nzMode="tags">
+                  <nz-option *ngFor="let dia of dias" [nzLabel]="dia.nombre" [nzValue]="dia.id">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+          </nz-form-item>
+
            <nz-form-item>
              <nz-form-control nzErrorTip="Campo requerido.">
                <nz-checkbox-wrapper class="flex flex-col w-full capitalize basic-checkbox text-theme-gray dark:text-white/60 gap-[5px] mb-[15px]" (nzOnChange)="log($event)">

@@ -43,6 +43,15 @@ export class CentrosDistribucionComponent {
   centros:CentroModel[] = [];
   filteredData: CentroModel[] = [];
   filteredData_Riel: RielModel[] = [];
+  dias = [
+    { id:'1', nombre:'Lunes'},
+    { id:'2', nombre:'Martes'},
+    { id:'3', nombre:'Miercoles'},
+    { id:'4', nombre:'Jueves'},
+    { id:'5', nombre:'Viernes'},
+    { id:'6', nombre:'Sabado'},
+    { id:'7', nombre:'Domingo'},
+  ]
   data: any[] = [
     ['']
   ];
@@ -68,6 +77,7 @@ export class CentrosDistribucionComponent {
     this.validateForm = this.fb.group({
       idSap: ['',[Validators.required]],
       descripcion: ['',[Validators.required]],
+      diasPaqueteria: [],
       activo: [''],
     });
 
@@ -103,7 +113,7 @@ export class CentrosDistribucionComponent {
     this.centrosService.getAll()
     .subscribe({
       next:(response)=>{
-        //console.log(response);
+        console.log(response);
         this.centros = response;
         this.filteredData = response;
 
@@ -267,7 +277,8 @@ export class CentrosDistribucionComponent {
     this.validateForm.setValue({
         idSap : model.idSap,
         descripcion : model.descripcion,
-        activo:0
+        activo:0,
+        diasPaqueteria:model.diasPaqueteria
     })
 
     this.isVisible = true;
@@ -314,13 +325,13 @@ export class CentrosDistribucionComponent {
     //console.log(this.validateForm.valid);
     if (this.validateForm.valid) {
       var request:CentroModel = {
+        diasPaqueteria:this.validateForm.value.diasPaqueteria,
         idSap: this.validateForm.value.idSap,
         descripcion: this.validateForm.value.descripcion,
         activo: this.isChecked,
       };
       
-      //console.log(request);
-
+    
       this.btnLoading = true;
       this.centrosService.create(request)
       .subscribe({
@@ -352,6 +363,7 @@ export class CentrosDistribucionComponent {
         idSap: this.validateForm.value.idSap,
         descripcion: this.validateForm.value.descripcion,
         activo: this.isChecked,
+        diasPaqueteria:this.validateForm.value.diasPaqueteria,
       };
       
       this.btnLoading = true;

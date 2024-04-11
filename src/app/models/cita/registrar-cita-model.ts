@@ -1,7 +1,8 @@
 export class RegistrarCita{
     inicio:string;
     termino:string;
-    rielId:string;
+    rielId?:string;
+    centro?:string;
     proveedorId:string;
     ordenesCompra:RegistrarCitaOrdenCompra[]=[];
 }

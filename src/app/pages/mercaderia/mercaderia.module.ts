@@ -56,6 +56,7 @@ import { FechaAndenComponent } from './nueva-cita/fecha-anden';
 import { EntregaMaterialesComponent } from './nueva-cita/entrega-materiales';
 import { BusquedaOrdenesCompraComponent } from './nueva-cita/busqueda-ordenes-compra';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
+import { FechaAndenPaqueteriaComponent } from './nueva-cita/fecha-anden-paqueteria';
 
 const antdModule = [
   HotTableModule.forRoot(),
@@ -109,6 +110,7 @@ registerAllModules();
     NuevaCitaComponent,
     BusquedaOrdenesCompraComponent,
         EntregaMaterialesComponent,
+        FechaAndenPaqueteriaComponent,
         FechaAndenComponent,
         ConfirmacionComponent,
   ],

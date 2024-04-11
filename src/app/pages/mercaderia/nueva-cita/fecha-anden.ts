@@ -206,6 +206,7 @@ export class FechaAndenComponent {
     
     //this.updateCalendarOptions({ validRange: { start: start, end: end } });
   }
+  
 
   addNewEvents(newEvents: any[]) {
     //const currentEvents = this.calendarOptions.get().events;

@@ -1,3 +1,8 @@
+export interface AgendaPaqueteriaModel {
+  minutos:number;
+  fechas:string[];
+}
+
 export interface AgendaModel {
   minutos:number;
   bloques:Bloques[];

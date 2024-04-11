@@ -115,6 +115,11 @@ export class ConfirmacionComponent {
   @Input() ordenesCompra:CitaOrdenCompra[]=[];
   @Input() horario:BloquesAndene;
   @Input() proveedorId:string;
+  @Input() centro:string;
+
+  @Input() tipoEntrega:string;
+  @Input() fechaPaqueteria:string;
+
   @Output() enviarDatos = new EventEmitter<RegistrarCita>();
 
   registrarCita:RegistrarCita;
@@ -122,13 +127,29 @@ export class ConfirmacionComponent {
 
   ngOnInit(): void {
 
-    this.registrarCita ={
-      inicio: this.horario.start,
-      termino: this.horario.end,
-      rielId: this.horario.rielId,
-      proveedorId: this.proveedorId,
-      ordenesCompra: []
+    console.log(this.ordenesCompra);
+
+    if(this.tipoEntrega == 'almacen'){
+      this.registrarCita ={
+        inicio: this.horario.start,
+        termino: this.horario.end,
+        rielId: this.horario.rielId,
+        proveedorId: this.proveedorId,
+        ordenesCompra: []
+      }
     }
+
+    if(this.tipoEntrega == 'paqueteria'){
+      this.registrarCita ={
+        inicio: this.fechaPaqueteria,
+        termino: this.fechaPaqueteria,
+        //rielId: this.horario.rielId,
+        proveedorId: this.proveedorId,
+        centro:this.centro,
+        ordenesCompra: []
+      }
+    }
+    
 
     this.ordenesCompra.forEach(element => {
 

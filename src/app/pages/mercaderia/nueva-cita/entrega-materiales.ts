@@ -54,7 +54,20 @@ import { CitaOrdenCompra } from 'src/app/models/cita/orden-compra-model';
 
 <div>
   <h4 class="text-[20px] font-medium mb-[20px] text-dark dark:text-white/[.87]">2. Ingresa la entrega de materiales</h4>
-  <form class="max-w-full" [formGroup]="validateForm">
+
+  <div class="bg-white dark:bg-white/10 m-0 p-0 text-theme-gray dark:text-white/60 text-[15px] rounded-10 relative">
+      <div class="py-[16px] px-[25px] text-dark dark:text-white/[.87] font-medium text-[17px]">
+        <h4 class="mb-0 text-lg font-medium text-dark dark:text-white/[.87] capitalize">Selecciona el tipo de entrega</h4>
+      </div>
+      <div class="p-[25px] pt-0">
+      <nz-radio-group [(ngModel)]="tipoEntregaSeleccionada" (ngModelChange)="tipoEntregaSelected($event)">
+      <label class="dark:text-white/[.87]" nz-radio nzValue="almacen">Entrega en almacen</label>
+      <label class="dark:text-white/[.87]" nz-radio nzValue="paqueteria">Entrega en paqueteria</label>
+    </nz-radio-group>
+      </div>
+    </div>
+
+  <form class="max-w-full" [formGroup]="validateForm" *ngIf="false">
     <nz-form-item>
       <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="2" nzFor="text2">Ordenes</nz-form-label>
       <nz-form-control nzXs="3" nzErrorTip="Campo requerido." >
@@ -133,13 +146,16 @@ import { CitaOrdenCompra } from 'src/app/models/cita/orden-compra-model';
 export class EntregaMaterialesComponent {
   @Input() ordenesCompra:CitaOrdenCompra[]=[];
   @Output() enviarDatos = new EventEmitter<CitaOrdenCompra[]>();
+  @Output() tipoEntrega = new EventEmitter<string>();
 
   private hotRegisterer = new HotTableRegisterer();
 
+  tipoEntregaSeleccionada;
   isVisible = false;
   btnLoading = false;
   tipoSeleccionado = '';
   id = 'hotInstance';
+  //tipoEntrega;
 
   data: any[] = [
     ['']
@@ -208,6 +224,10 @@ export class EntregaMaterialesComponent {
     });
   }
 
+  tipoEntregaSelected(value){
+    
+    this.tipoEntrega.emit(this.tipoEntregaSeleccionada);
+  }
   handleOk(){
     var captura
     //console.log(this.hotRegisterer.getInstance(this.id).getData());

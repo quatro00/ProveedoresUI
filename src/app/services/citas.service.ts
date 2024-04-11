@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
 import { CookieService } from 'ngx-cookie-service';
 import { CentroModel } from '../models/centro/centro-model';
 import { CitaOrdenCompra } from '../models/cita/orden-compra-model';
-import { AgendaModel } from '../models/cita/agenda-model';
+import { AgendaModel, AgendaPaqueteriaModel } from '../models/cita/agenda-model';
 import { RegistrarCita } from '../models/cita/registrar-cita-model';
 import { CitaByCentroModel } from '../models/cita/cita-by-centro-model';
 import { CitaFechaResponseModel } from '../models/cita/cita-fecha-response-model';
@@ -43,6 +43,10 @@ export class CitasService {
     return this.http.post<AgendaModel>(`${environment.apiBaseUrl}/api/${this.service}/GetAgendaOC`,request);
   }
 
+  GetAgendaPaqueteriaOC(request:CitaOrdenCompra[]):Observable<AgendaPaqueteriaModel>{
+    return this.http.post<AgendaPaqueteriaModel>(`${environment.apiBaseUrl}/api/${this.service}/GetAgendaPaqueteriaOC`,request);
+  }
+
   getAcuse(id:string):Observable<any>{
     let params = new HttpParams();
     params = params.append('id', id);
@@ -50,8 +54,12 @@ export class CitasService {
     return this.http.get(`${environment.apiBaseUrl}/api/${this.service}/GetAcusePdf/${id}`);
   }
 
-  crearCita(request:RegistrarCita):Observable<any>{
+  crearCitaAlmacen(request:RegistrarCita):Observable<any>{
     return this.http.post<any>(`${environment.apiBaseUrl}/api/${this.service}/CrearCita`,request);
+  }
+
+  crearCitaPaqueteria(request:RegistrarCita):Observable<any>{
+    return this.http.post<any>(`${environment.apiBaseUrl}/api/${this.service}/CrearCitaPaqueteria`,request);
   }
 
   cancelarCita(request:CancelarCitaRequestModel):Observable<any>{

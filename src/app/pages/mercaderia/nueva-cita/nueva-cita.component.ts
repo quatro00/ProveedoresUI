@@ -16,25 +16,29 @@ export class NuevaCitaComponent {
   isLoading = true;
   showContent = false;
   step1Title: string = "Paso 1\ncon salto de línea";
-  razonesSociales:RazonesSociale[]=[];
-  ordenesCompra:CitaOrdenCompra[]=[];
-  entregaMateriales:CitaOrdenCompra[]=[];
-  horario:any=null;
-  proveedorId:string;
-  nuevaCita:RegistrarCita;
+  razonesSociales: RazonesSociale[] = [];
+  ordenesCompra: CitaOrdenCompra[] = [];
+  entregaMateriales: CitaOrdenCompra[] = [];
+  fechaEntregaPaqueteria: string;
+  horario: any = null;
+  proveedorId: string;
+  nuevaCita: RegistrarCita;
+
+  centros:string[]=[];
+  centroSeleccionado:string;
 
   ngOnInit() {
     // Simulate loading time
     this.usuariosService.getByUser()
-    .subscribe({
-      next:(response)=>{
-        //console.log(response);
-        this.razonesSociales = response.razonesSociales;
-        this.loadData();
-        //this.isVisible = false;
-        //this.btnLoading = false;
-      }
-    })
+      .subscribe({
+        next: (response) => {
+          //console.log(response);
+          this.razonesSociales = response.razonesSociales;
+          this.loadData();
+          //this.isVisible = false;
+          //this.btnLoading = false;
+        }
+      })
     //this.loadData();
   }
   loadData() {
@@ -49,19 +53,20 @@ export class NuevaCitaComponent {
   current = 0;
   showConfirmation = false;
   isReviewOrderFinished = false;
+  tipoEntregaSeleccionada;
 
   constructor(
-    private modalService: NzModalService, 
+    private modalService: NzModalService,
     private usuariosService: UsuariosService,
-    private citasService: CitasService) {}
+    private citasService: CitasService) { }
 
   pre(): void {
     this.current -= 1;
   }
 
   next(): void {
-    if(this.current == 0){
-      if(this.ordenesCompra.length == 0){
+    if (this.current == 0) {
+      if (this.ordenesCompra.length == 0) {
         this.modalService.info({
           nzTitle: '<h2 class="text-dark dark:text-white/[.87]"> Registrar cita</h2>',
           nzContent: '<p class="text-theme-gray dark:text-white/60">Por favor selecciona al menos una orden de compra o un asn.</p>',
@@ -70,12 +75,22 @@ export class NuevaCitaComponent {
 
         return;
       }
+
+      if (this.centros.length > 1) {
+        this.modalService.info({
+          nzTitle: '<h2 class="text-dark dark:text-white/[.87]"> Registrar cita</h2>',
+          nzContent: '<p class="text-theme-gray dark:text-white/60">No puedes agendar ordenes de compra/asns de centros distintos.</p>',
+          nzOnOk: () => console.log('Info OK')
+        });
+        return;
+      }
     }
 
     var entregasPendientes = true;
-    if(this.current == 1){
 
-      if(this.entregaMateriales.length == 0){
+    if (this.current == 1) {
+
+      if (this.entregaMateriales.length == 0) {
         this.modalService.info({
           nzTitle: '<h2 class="text-dark dark:text-white/[.87]"> Registrar cita</h2>',
           nzContent: '<p class="text-theme-gray dark:text-white/60">Existen ordenes de compra o asns sin entregas de materiales.</p>',
@@ -83,16 +98,16 @@ export class NuevaCitaComponent {
         });
         return;
       }
-      
-      console.log('Materiales',this.entregaMateriales);
+
+      console.log('Materiales', this.entregaMateriales);
       this.entregaMateriales.forEach((element, index) => {
-      
-        if(element.detalle.length == element.detalle.filter(orden => orden.cantidadAEntregar == 0).length){
+
+        if (element.detalle.length == element.detalle.filter(orden => orden.cantidadAEntregar == 0).length) {
           entregasPendientes = false;
         }
       });
 
-      if(!entregasPendientes){
+      if (!entregasPendientes) {
         this.modalService.info({
           nzTitle: '<h2 class="text-dark dark:text-white/[.87]"> Registrar cita</h2>',
           nzContent: '<p class="text-theme-gray dark:text-white/60">Existen ordenes de compra o asns sin entregas de materiales.</p>',
@@ -100,11 +115,19 @@ export class NuevaCitaComponent {
         });
         return;
       }
-     
+
+      if (!this.tipoEntregaSeleccionada) {
+        this.modalService.info({
+          nzTitle: '<h2 class="text-dark dark:text-white/[.87]"> Registrar cita</h2>',
+          nzContent: '<p class="text-theme-gray dark:text-white/60">Debes seleccionar un tipo de entrega.</p>',
+          nzOnOk: () => console.log('Info OK')
+        });
+        return;
+      }
     }
 
-    if(this.current == 2){
-      if(this.horario == null){
+    if (this.current == 2) {
+      if (this.horario == null && this.tipoEntregaSeleccionada == 'almacen') {
         this.modalService.info({
           nzTitle: '<h2 class="text-dark dark:text-white/[.87]"> Registrar cita</h2>',
           nzContent: '<p class="text-theme-gray dark:text-white/60">Favor de seleccionad un horario de entrega.</p>',
@@ -112,12 +135,29 @@ export class NuevaCitaComponent {
         });
         return;
       }
+
+
+      if (this.tipoEntregaSeleccionada == 'paqueteria') {
+        console.log(this.fechaEntregaPaqueteria);
+
+        if (this.fechaEntregaPaqueteria == null) {
+          this.modalService.info({
+            nzTitle: '<h2 class="text-dark dark:text-white/[.87]"> Registrar cita</h2>',
+            nzContent: '<p class="text-theme-gray dark:text-white/60">Favor de seleccionad un dia para la entrega.</p>',
+            nzOnOk: () => console.log('Info OK')
+          });
+          return;
+        }
+      }
+      //return;
     }
     console.log(this.current);
     this.current += 1;
   }
 
   confirm(): void {
+
+    console.log(this.nuevaCita);
     this.modalService.confirm({
       nzTitle: '<span class="text-dark dark:text-white/[.87]">Confirmación</span>',
       nzContent: '<div class="text-light dark:text-white/60 text-[15px]">¿Los datos de la cita son correctos?</div>',
@@ -126,12 +166,24 @@ export class NuevaCitaComponent {
         this.isReviewOrderFinished = true;
         this.showConfirmation = true;
         //console.log('Cita a registrar!', this.nuevaCita);
-        this.citasService.crearCita(this.nuevaCita)
-        .subscribe({
-          next:(response)=>{
-            console.log(response);
-          }
-        })
+        if (this.tipoEntregaSeleccionada == 'almacen') {
+          this.citasService.crearCitaAlmacen(this.nuevaCita)
+            .subscribe({
+              next: (response) => {
+                console.log(response);
+              }
+            })
+        }
+
+        if (this.tipoEntregaSeleccionada == 'paqueteria') {
+          this.citasService.crearCitaPaqueteria(this.nuevaCita)
+            .subscribe({
+              next: (response) => {
+                console.log(response);
+              }
+            })
+        }
+
       }
     });
   }
@@ -146,12 +198,20 @@ export class NuevaCitaComponent {
     }
   }
 
-  proveedorIdSeleccionado(datos:string){
+  proveedorIdSeleccionado(datos: string) {
     this.proveedorId = datos;
   }
 
   ordenesDeCompraSeleccionadas(datos: CitaOrdenCompra[]) {
     this.ordenesCompra = datos.filter(orden => orden.isActive);
+    this.centros = Array.from(new Set(this.ordenesCompra.map(objeto => objeto.centro)));
+
+    if(this.centros.length == 1){
+      this.centroSeleccionado = this.centros[0];
+    }
+    else{
+      this.centroSeleccionado == null;
+    }
     //console.log('Datos recibidos del hijo:', this.ordenesCompra);
   }
 
@@ -160,11 +220,22 @@ export class NuevaCitaComponent {
     //console.log('Datos recibidos del hijo:', this.ordenesCompra);
   }
 
+  tipoEntrega(datos: string) {
+    console.log(datos);
+    this.tipoEntregaSeleccionada = datos;
+    //this.entregaMateriales = datos.filter(orden => orden.isActive);
+    //console.log('Datos recibidos del hijo:', this.ordenesCompra);
+  }
+
   eventoSeleccionado(datos: any) {
     this.horario = datos;
     //console.log('Datos recibidos del hijo:', this.ordenesCompra);
   }
-  citaARegistrar(datos:RegistrarCita){
+
+  fechaSeleccionadaPaqueteria(fecha: string) {
+    this.fechaEntregaPaqueteria = fecha;
+  }
+  citaARegistrar(datos: RegistrarCita) {
     this.nuevaCita = datos;
   }
 }
