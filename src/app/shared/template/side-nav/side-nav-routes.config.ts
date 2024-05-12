@@ -78,12 +78,29 @@ export const AdminRoutes: SideNavInterface[] = [
     submenu:[]
   },
   {
-    path: 'administrador/catalogoarticulos',
-    title: 'Incidencias',
+    path: '',
+    title: 'Administración de incidencias',
     iconType: 'nzIcon',
     iconTheme: 'outline',
     icon: '',
-    submenu:[]
+    submenu:[
+      {
+        path: 'administrador/incidencias',
+        title: 'Incidencias',
+        iconType: 'nzIcon',
+        iconTheme: 'outline',
+        icon: '',
+        submenu:[]
+      },
+      {
+        path: 'administrador/tipos-incidencia',
+        title: 'Tipos de incidencia',
+        iconType: 'nzIcon',
+        iconTheme: 'outline',
+        icon: '',
+        submenu:[]
+      },
+    ]
   },
   {
     path: '',
@@ -196,6 +213,30 @@ export const MercaderiaRoutes: SideNavInterface[] = [
     {
     path: 'mercaderia/citas/nueva-cita',
     title: 'Registrar cita',
+    iconType: 'nzIcon',
+    iconTheme: 'outline',
+    icon: '',
+    submenu:[]
+  },]
+},
+{
+  path: 'mercaderia/facturacion',
+  title: 'Facturas',
+  iconType: 'nzIcon',
+  iconTheme: 'outline',
+  icon: '',
+  submenu:[
+    {
+      path: 'mercaderia/facturacion/subir-factura',
+      title: 'Subir factura',
+      iconType: 'nzIcon',
+      iconTheme: 'outline',
+      icon: '',
+      submenu:[]
+    },
+    {
+    path: 'mercaderia/facturacion/reporte-facturas',
+    title: 'Reporte de facturas',
     iconType: 'nzIcon',
     iconTheme: 'outline',
     icon: '',

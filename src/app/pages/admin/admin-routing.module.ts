@@ -13,6 +13,9 @@ import { AdministracionMaterialesComponent } from './administracion-materiales/a
 import { CitasDiariasComponent } from './citas-diarias/citas-diarias.component';
 import { BloquearAndenesComponent } from './bloquear-andenes/bloquear-andenes.component';
 import { ConfiguracionComponent } from './configuracion/configuracion.component';
+import { IncidenciasComponent } from './incidencias/incidencias.component';
+import { CrearIncidenciaComponent } from './crear-incidencia/crear-incidencia.component';
+import { TiposIncidenciaComponent } from './tipos-incidencia/tipos-incidencia.component';
 
 const routes: Routes = [
   {
@@ -108,6 +111,30 @@ const routes: Routes = [
     component: ConfiguracionComponent,
     data: {
         title: 'Configuracion',
+    },
+    //canActivate: [authAdminGuard]
+  },
+  {
+    path: 'incidencias',
+    component: IncidenciasComponent,
+    data: {
+        title: 'Incidencias',
+    },
+    //canActivate: [authAdminGuard]
+  },
+  {
+    path: 'tipos-incidencia',
+    component: TiposIncidenciaComponent,
+    data: {
+        title: 'Incidencias',
+    },
+    //canActivate: [authAdminGuard]
+  },
+  {
+    path: 'incidencias/crear-incidencia',
+    component: CrearIncidenciaComponent,
+    data: {
+        title: 'Incidencias',
     },
     //canActivate: [authAdminGuard]
   },

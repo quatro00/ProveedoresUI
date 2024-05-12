@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { CitasComponent } from './citas/citas.component';
 import { NuevaCitaComponent } from './nueva-cita/nueva-cita.component';
+import { ReporteFacturasComponent } from './reporte-facturas/reporte-facturas.component';
+import { SubirFacturaComponent } from './subir-factura/subir-factura.component';
 
 const routes: Routes = [
   {
@@ -26,6 +28,22 @@ const routes: Routes = [
     component: NuevaCitaComponent,
     data: {
         title: 'Citas',
+    },
+    //canActivate: [authAdminGuard]
+  },
+  {
+    path: 'facturacion/subir-factura',
+    component: SubirFacturaComponent,
+    data: {
+        title: 'Reporte de facturas',
+    },
+    //canActivate: [authAdminGuard]
+  },
+  {
+    path: 'facturacion/reporte-facturas',
+    component: ReporteFacturasComponent,
+    data: {
+        title: 'Reporte de facturas',
     },
     //canActivate: [authAdminGuard]
   }

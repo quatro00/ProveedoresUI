@@ -1,0 +1,202 @@
+<nz-modal
+[nzMaskClosable]="false" [nzKeyboard]="false"  [nzClosable]="false"
+      [nzWidth]="'80%'"
+      [(nzVisible)]="isVisible"
+      [nzTitle]="modalTitle"
+      [nzContent]="modalContent"
+      [nzFooter]="modalFooter"
+      (nzOnCancel)="handleCancel()"
+    >
+      <ng-template #modalTitle>Detalle del asn</ng-template>
+
+      <ng-template #modalContent>
+        <div class="p-[25px]">
+          <div style="width: 100%;">
+            <hot-table
+            [data]="data"
+            [settings]="hotSettings"
+            [hotId]="id"
+              [colHeaders]="true"
+              [rowHeaders]="true"
+              height="auto"
+              [autoWrapRow]="true"
+              [autoWrapCol]="true"
+              licenseKey="non-commercial-and-evaluation">
+                <hot-column data="material" title="Material" [readOnly]="true"></hot-column>
+                <hot-column data="posicion" title="Posicion" [readOnly]="true"></hot-column>
+                <hot-column data="departamento" title="Departamento" [readOnly]="true"></hot-column>
+                <hot-column data="sku" title="SKU" [readOnly]="true"></hot-column>
+                <hot-column data="descripcion" title="descripcion" [readOnly]="true"></hot-column>
+                <hot-column data="cantidadSolicitada" title="Cantidad solicitada" [readOnly]="true"></hot-column>
+                <hot-column data="cantidadRecibida" title="Cantidad recibida" [readOnly]="true"></hot-column>
+                <hot-column data="precioUnitario" title="Precio unitario" [readOnly]="true"></hot-column>
+                <hot-column data="subTotal" title="Subtotal" [readOnly]="true"></hot-column>
+                <hot-column data="importe" title="Importe" [readOnly]="true"></hot-column>
+
+            </hot-table>
+          </div>
+        </div>
+
+        
+        <h4 class="mb-0 text-lg font-medium text-dark dark:text-white/[.87]">Subir factura</h4>
+        <form class="max-w-full" [formGroup]="validateFormFactura">
+          <nz-form-item>
+              <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="2" nzFor="text2">Sociedad</nz-form-label>
+            <nz-form-control class="mb-[20px]" nzXs="4">
+            <nz-select class="w-full capitalize [&>nz-select-top-control]:border-regular dark:[&>nz-select-top-control]:border-white/10 [&>nz-select-top-control]:bg-white [&>nz-select-top-control]:dark:bg-white/10 [&>nz-select-top-control]:shadow-none [&>nz-select-top-control]:text-dark [&>nz-select-top-control]:dark:text-white/60 [&>nz-select-top-control]:h-[50px] [&>nz-select-top-control]:flex [&>nz-select-top-control]:items-center [&>nz-select-top-control]:rounded-[6px] [&>nz-select-top-control]:px-[20px] [&>.ant-select-arrow]:text-theme-gray dark:[&>.ant-select-arrow]:text-white/60" 
+            name="lucy" 
+            formControlName="sociedad" >
+      
+            <nz-option *ngFor="let option of sociedades" [nzValue]="option.sociedad" [nzLabel]="option.nombre"></nz-option>
+      
+            </nz-select>
+            </nz-form-control>
+
+            <nz-form-control nzXs="1">
+          </nz-form-control>
+
+          <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="1" nzFor="text2">Xml</nz-form-label>
+          <nz-form-control class="mb-[20px]" nzXs="6">
+            <div class="p-[25px]">
+              <input formControlName="xml" type="file" (change)="onFileSelectXml($event)">
+            </div>
+          </nz-form-control>
+
+          <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="1" nzFor="text2">Pdf</nz-form-label>
+          <nz-form-control class="mb-[20px]" nzXs="6">
+            <div class="p-[25px]">
+              <input formControlName="pdf" type="file" (change)="onFileSelectPdf($event)">
+            </div>
+          </nz-form-control>
+            
+
+           
+            
+            
+            
+
+          
+          </nz-form-item>
+        </form>
+        <table></table>
+      </ng-template>
+
+      <ng-template #modalFooter>
+        <button class="bg-primary hover:bg-primary-hbr hover:border-primary-hbr border-solid border-1 border-primary text-white dark:text-white/[.87] text-[14px] font-semibold leading-[22px] inline-flex items-center justify-center rounded-[4px] px-[20px] h-[44px]" nz-button nzType="primary" (click)="handleOk()" [nzLoading]="isLoadingMdl">Guardar</button>
+      </ng-template>
+    </nz-modal>
+
+
+<div nz-row nzGutter="25">
+    <!-- skeleton -->
+    <ng-template #loadingSkeleton>
+      <nz-skeleton class="bg-white dark:bg-white/10 rounded-6 p-[30px] pt-[15px]" [nzShape]="circle" [nzActive]="true"
+        [nzParagraph]="{ rows: 6 }"></nz-skeleton>
+    </ng-template>
+    <!-- skeleton -->
+    
+    <div nz-col nzXs="24" class="mb-[25px]">
+      <ng-container *ngIf="showContent; else loadingSkeleton">
+        <div
+          class="bg-white dark:bg-white/10 m-0 p-0 text-theme-gray dark:text-white/60 text-[15px] rounded-10 relative h-full">
+          <div
+            class="py-[16px] px-[25px] text-dark dark:text-white/[.87] font-medium text-[17px] border-regular dark:border-white/10 border-b">
+            <h4 class="mb-0 text-lg font-medium text-dark dark:text-white/[.87]">Subir factura</h4>
+          </div>
+          <div class="p-[25px]">
+            <div>
+                <h4 class="mb-0 text-lg font-medium text-dark dark:text-white/[.87]">Busqueda de asns</h4>
+              <form class="max-w-full" [formGroup]="validateForm">
+                <nz-form-item>
+                    <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="2" nzFor="text2">razon social</nz-form-label>
+                  <nz-form-control class="mb-[20px]" nzXs="4">
+                  <nz-select class="w-full capitalize [&>nz-select-top-control]:border-regular dark:[&>nz-select-top-control]:border-white/10 [&>nz-select-top-control]:bg-white [&>nz-select-top-control]:dark:bg-white/10 [&>nz-select-top-control]:shadow-none [&>nz-select-top-control]:text-dark [&>nz-select-top-control]:dark:text-white/60 [&>nz-select-top-control]:h-[50px] [&>nz-select-top-control]:flex [&>nz-select-top-control]:items-center [&>nz-select-top-control]:rounded-[6px] [&>nz-select-top-control]:px-[20px] [&>.ant-select-arrow]:text-theme-gray dark:[&>.ant-select-arrow]:text-white/60" 
+                  name="lucy" 
+                  formControlName="razonSocial" >
+            
+                  <nz-option *ngFor="let option of razonesSociales" [nzValue]="option.id" [nzLabel]="option.nombre"></nz-option>
+            
+                  </nz-select>
+                  </nz-form-control>
+
+                  <nz-form-control nzXs="1">
+                </nz-form-control>
+
+                  <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="1" nzFor="text2">Fecha</nz-form-label>
+                  <nz-form-control nzXs="3" nzErrorTip="Campo requerido." >
+                    <input formControlName="fecha"
+                      class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                      nz-input name="text2" type="month" id="text2">
+                  </nz-form-control>
+
+                  
+                  <nz-form-control nzXs="1">
+                  </nz-form-control>
+                
+
+                  <nz-form-control nzXs="1">
+                  <button [nzLoading]="btnLoading" (click)="submitForm()" class="bg-primary hover:bg-primary-hbr inline-flex items-center outline-none shadow-none w-fit duration-300 text-white capitalize px-[20px] text-[15px] border-primary hover:border-primary-hbr rounded-[5px] gap-[8px] h-[46px]" nz-button nzType="primary" >
+                        <span>Buscar</span>
+                        <span nz-icon nzType="search" nzTheme="outline"></span>
+                      </button>
+                  </nz-form-control>
+                </nz-form-item>
+              </form>
+              <div class="p-[25px]">
+                      <div class="w-full overflow-x-auto">
+                          <nz-table #basicTable 
+                          nzShowSizeChanger
+                          [nzData]="facturas"
+                          >
+                            <thead>
+                              <tr>
+                                
+                                <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Orden de compra</th>
+                                <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Asn</th>
+                                <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Fecha de recepción</th>
+                                <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Piezas recibidas</th>
+                                <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Importe a pagar</th>
+                                <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize"></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="group" *ngFor="let item of basicTable.data">
+                               <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.ordenCompra }}</td>
+                               <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.asn }}</td> 
+                               <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.fechaRecepcion | date: 'dd/MM/yyyy' }}</td>
+                               <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.piezasRecibidas }}</td> 
+                               <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.importeAPagar | currency}}</td> 
+                               <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">
+                                <div class="flex items-center gap-[10px]">
+                                  <a class="text-light-extra text-18" nz-dropdown nzPlacement="bottomRight" nzTrigger="click"
+                                      [nzDropdownMenu]="projectListSetting2">
+                                      <span nz-icon nzType="more" nzTheme="outline"></span>
+                                    </a>
+                                    <nz-dropdown-menu #projectListSetting2="nzDropdownMenu">
+                                      <ul
+                                        class="block bg-white dark:bg-[#1b1e2b] shadow-regular dark:shadow-[0_5px_30px_rgba(1,4,19,.60)] rounded-4 capitalize"
+                                        nz-menu nzSelectable>
+        
+                                     
+                                      <li  (click)="abrirDetalle(item)"
+                                      class="flex items-center text-theme-gray dark:text-white/60 hover:bg-primary/10 hover:text-primary dark:hover:bg-white/10 px-3 py-1.5 text-sm dark:hover:text-white/[.87] gap-[6px]"
+                                      nz-menu-item>
+                                        <i nz-icon nzType="file-pdf" theme="outline"></i>
+                                        <span class="m-l-10">Ver detalle</span>
+                                      </li>
+                                      </ul>
+                                    </nz-dropdown-menu>
+                                </div>
+                               </td>
+                              </tr>
+                            </tbody>
+                          </nz-table>
+                        </div>
+                    </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    </div>
+  

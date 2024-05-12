@@ -60,6 +60,9 @@ import { NzCalendarModule } from 'ng-zorro-antd/calendar';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { BloquearAndenesComponent } from './bloquear-andenes/bloquear-andenes.component';
 import { ConfiguracionComponent } from './configuracion/configuracion.component';
+import { IncidenciasComponent } from './incidencias/incidencias.component';
+import { CrearIncidenciaComponent } from './crear-incidencia/crear-incidencia.component';
+import { TiposIncidenciaComponent } from './tipos-incidencia/tipos-incidencia.component';
 
 const antdModule = [
   HotTableModule.forRoot(),
@@ -121,6 +124,9 @@ registerAllModules();
     CitasDiariasComponent,
     BloquearAndenesComponent,
     ConfiguracionComponent,
+    IncidenciasComponent,
+    CrearIncidenciaComponent,
+    TiposIncidenciaComponent,
   ],
   imports: [
     CommonModule,
