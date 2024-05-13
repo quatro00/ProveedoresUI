@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { CookieService } from 'ngx-cookie-service';
 import { MensajeModel } from '../models/mensajes/mensaje-model';
+import { CrearMensajeModel } from '../models/mensajes/crear-mensaje-model';
 //import { PrioridadModel } from '../models/prioridad/prioridad-model';
 //import { PrioridadListModel } from '../models/prioridad/prioridad-list-model';
 
@@ -20,10 +21,13 @@ export class MensajesService {
   getAll():Observable<MensajeModel[]>{
     return this.http.get<MensajeModel[]>(`${environment.apiBaseUrl}/api/${this.service}`);
   }
- /*
-  create(request:PrioridadModel):Observable<PrioridadModel>{
-    return this.http.post<PrioridadModel>(`${environment.apiBaseUrl}/api/${this.service}`,request);
+
+  create(formData:FormData):Observable<any>{
+    return this.http.post<any>(`${environment.apiBaseUrl}/api/${this.service}`,formData);
   }
+
+ /*
+  
 
   update(id:string, request:PrioridadModel):Observable<PrioridadModel>{
     return this.http.put<PrioridadModel>(`${environment.apiBaseUrl}/api/${this.service}/${id}`,request);

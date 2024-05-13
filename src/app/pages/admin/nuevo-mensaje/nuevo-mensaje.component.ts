@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { FormGroup, FormControl, UntypedFormGroup, Validators, FormBuilder } from '@angular/forms';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
+import { CrearMensajeModel } from 'src/app/models/mensajes/crear-mensaje-model';
+import { MensajesService } from 'src/app/services/mensajes.service';
 import { UsuariosService } from 'src/app/services/usuarios.service';
 
 @Component({
@@ -25,6 +27,7 @@ import { UsuariosService } from 'src/app/services/usuarios.service';
   styleUrls: ['./nuevo-mensaje.component.css']
 })
 export class NuevoMensajeComponent {
+  btnLoading = false;
   isLoading = true;
   showContent = false;
   demoValue: number = 0;
@@ -37,6 +40,10 @@ export class NuevoMensajeComponent {
   usuarios = [];
   archivos:NzUploadFile[]=[];
   validateForm!: UntypedFormGroup;
+  tipoMensaje = '';
+  archivo:any=null;
+  obligatorio:any[]=[];
+  selectedUserId: any;
 
   colorChanged() {
     console.log('Selected color:', this.selectedColor);
@@ -50,7 +57,8 @@ export class NuevoMensajeComponent {
       tipoMensaje: ['',[Validators.required]],
       fechaCaducidad: ['',[Validators.required]],
       mensaje: ['',[Validators.required]],
-      //area: ['',[Validators.required]],
+      archivo: [''],
+      cuentas: [[]],
       //prioridad: ['',[Validators.required]],
       //descripcion: ['',[Validators.required]]
     });
@@ -74,12 +82,17 @@ export class NuevoMensajeComponent {
    
   }
 
+  onFileSelect(event): void {
+    if (event.target.files.length > 0) {
+      this.archivo = event.target.files[0];
+    }
+  }
+
   tipoMensajeChanged(){
-    console.log(11);
-    console.log(this.validateForm.value.tipoMensaje);
+    this.tipoMensaje = this.validateForm.value.tipoMensaje;
   }
   // Upload
-  constructor(private msg: NzMessageService, private usuariosService: UsuariosService, private fb: FormBuilder,) {}
+  constructor(private msg: NzMessageService, private usuariosService: UsuariosService, private fb: FormBuilder, private mensajesService:MensajesService) {}
 
   handleChange({ file, fileList }: NzUploadChangeParam): void {
     const status = file.status;
@@ -97,8 +110,12 @@ export class NuevoMensajeComponent {
     }
   }
 
+  selectCuentas(userId: any) {
+    console.log('Usuario seleccionado:', userId);
+    // Aquí puedes agregar la lógica para manejar la selección del usuario
+  }
   log(value: string[]): void {
-    console.log(value);
+    this.obligatorio = value;
   }
 
   isDarkMode(): boolean {
@@ -107,7 +124,43 @@ export class NuevoMensajeComponent {
 
   submitForm(){
     if (this.validateForm.valid) {
-      console.log(this.archivos);
+
+      let crearMensaje:CrearMensajeModel = 
+      {
+        titulo: this.validateForm.value.titulo,
+        contenido: this.validateForm.value.mensaje,
+        tipoMensajeInstitucionalId: this.validateForm.value.tipoMensaje,
+        fechaCaducidad: this.validateForm.value.fechaCaducidad,
+        obligatorio: this.obligatorio.length > 0,
+        file: this.archivo,
+        cuentas: this.validateForm.value.cuentas,
+      }
+      //this.btnLoading = true;
+      const formData = new FormData();
+      
+      if(crearMensaje.cuentas != null){
+        crearMensaje.cuentas.forEach(function(str, index) {
+          formData.append('Cuentas[' + index + ']', str);
+        });
+      }
+      
+      
+      formData.append('Contenido',crearMensaje.contenido);
+      formData.append('FechaCaducidad', crearMensaje.fechaCaducidad);
+      formData.append('File', crearMensaje.file);
+      formData.append('Obligatorio', crearMensaje.obligatorio);
+      formData.append('TipoMensajeInstitucionalId',crearMensaje.tipoMensajeInstitucionalId.toString());
+      formData.append('Titulo',crearMensaje.titulo);
+
+      console.log(formData);
+      this.mensajesService.create(formData)
+      .subscribe({
+        next:(response)=>{
+          this.msg.success("Mensaje creado correctamente.");
+          this.validateForm.reset();
+          this.archivo = null;
+        }
+      })
       /*
      console.log(this.archivos);
      var archivosList:CrearTicketArchivoRequest[] = [];
@@ -134,15 +187,7 @@ export class NuevoMensajeComponent {
       };
 
       
-      this.ticketService.crearTicket(request)
-      .subscribe({
-        next:(response)=>{
-          this.msg.success("Ticket creado correctamente.");
-          
-          this.validateForm.reset();
-          this.loadData();
-        }
-      })
+      
       */
     } else {
       Object.values(this.validateForm.controls).forEach((control) => {

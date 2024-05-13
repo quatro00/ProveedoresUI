@@ -32,10 +32,10 @@
 
                 <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="2" nzFor="text2">Tipo de mensaje</nz-form-label>
                 <nz-form-control nzXs="3" nzErrorTip="Campo requerido.">
-                  <nz-select (change)="tipoMensajeChanged()" class="basic-select" name="basicSelect" formControlName="tipoMensaje">
-                    <nz-option nzValue="Servicios" nzLabel="Servicios"></nz-option>
-                    <nz-option nzValue="Mercaderia" nzLabel="Mercaderia"></nz-option>
-                    <nz-option nzValue="Cuenta" nzLabel="Cuenta"></nz-option>
+                  <nz-select (ngModelChange)="tipoMensajeChanged()" class="basic-select" name="basicSelect" formControlName="tipoMensaje">
+                    <nz-option nzValue="2" nzLabel="Servicios"></nz-option>
+                    <nz-option nzValue="1" nzLabel="Mercaderia"></nz-option>
+                    <nz-option nzValue="3" nzLabel="Cuenta"></nz-option>
                   </nz-select>
                 </nz-form-control>
               
@@ -59,11 +59,11 @@
 
               </nz-form-item>
 
-              <nz-form-item>
+              <nz-form-item *ngIf="tipoMensaje == '3'">
                 <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="3"
                   nzFor="pass">Cuentas</nz-form-label>
                   <nz-form-control nzXs="21">
-                    <nz-select class="basic-select" name="basicSelect" nzMode="tags">
+                    <nz-select class="basic-select" name="basicSelect" nzMode="tags"name="basicSelect" formControlName="cuentas">
                       <nz-option *ngFor="let option of usuarios" [nzLabel]="option.nombreCompleto" [nzValue]="option.id">
                       </nz-option>
                     </nz-select>
@@ -71,21 +71,16 @@
               </nz-form-item>
 
 
-              <nz-form-item>
+              <nz-form-item >
                 <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="3"
-                  nzFor="pass">Archivos</nz-form-label>
-                <nz-form-control nzErrorTip="Selecciona una prioridad." nzXs="21">
-                  <nz-upload
-                  
-                  class="block [&>div>div]:min-h-[110px] dark:[&>div]:bg-white/10 [&>div]:bg-[#fafafa] dark:[&>div]:border-white/10 dark:hover:[&>div]:border-primary"
-                    nzType="drag"
-                    [nzMultiple]="true"
-                    nzAction="https://localhost:7074/api/MensajesInstitucionales/UploadFile"
-                    (nzChange)="handleChange($event)"
-                  >
-                    <p class="ant-upload-text">Arrastra los archivos para adjuntarlos.</p>
-                  </nz-upload>
+                nzFor="pass">Archivo</nz-form-label>
+
+                <nz-form-control nzXs="21">
+                  <input accept=".pdf" formControlName="archivo" type="file" (change)="onFileSelect($event)">
                 </nz-form-control>
+
+                
+              
               </nz-form-item>
 
               <nz-form-item>
@@ -125,9 +120,9 @@
                 <nz-form-control nzXs="19"></nz-form-control>
                 <nz-form-control nzXs="3">
                   <div class="flex flex-wrap gap-[15px]">
-                    <button nz-button (click)="submitForm()"
+                    <button nz-button (click)="submitForm()" [nzLoading]="btnLoading"
                       class="bg-primary hover:bg-primary-hbr border-solid border-1 border-primary text-white dark:text-white/[.87] text-[14px] font-semibold leading-[22px] inline-flex items-center justify-center rounded-[4px] px-[20px] h-[44px] duration-300">
-                      <span>Crear ticket</span>
+                      <span>Crear mensaje</span>
                     </button>
                   </div>
                 </nz-form-control>
