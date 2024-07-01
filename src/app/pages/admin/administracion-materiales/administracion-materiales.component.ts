@@ -124,6 +124,8 @@ export class AdministracionMaterialesComponent {
       };
     });
 
+    console.log(arrayOfObjects);
+
     this.materialEntregaService.create(arrayOfObjects)
       .subscribe({
         next:(response)=>{

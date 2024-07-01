@@ -5,6 +5,7 @@ import { CitasComponent } from './citas/citas.component';
 import { NuevaCitaComponent } from './nueva-cita/nueva-cita.component';
 import { ReporteFacturasComponent } from './reporte-facturas/reporte-facturas.component';
 import { SubirFacturaComponent } from './subir-factura/subir-factura.component';
+import { OrdenesCompraComponent } from './ordenes-compra/ordenes-compra.component';
 
 const routes: Routes = [
   {
@@ -44,6 +45,14 @@ const routes: Routes = [
     component: ReporteFacturasComponent,
     data: {
         title: 'Reporte de facturas',
+    },
+    //canActivate: [authAdminGuard]
+  },
+  {
+    path: 'ordenes-compra',
+    component: OrdenesCompraComponent,
+    data: {
+        title: 'Ordenes de compra',
     },
     //canActivate: [authAdminGuard]
   }

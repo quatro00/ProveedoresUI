@@ -59,6 +59,7 @@ import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { FechaAndenPaqueteriaComponent } from './nueva-cita/fecha-anden-paqueteria';
 import { SubirFacturaComponent } from './subir-factura/subir-factura.component';
 import { ReporteFacturasComponent } from './reporte-facturas/reporte-facturas.component';
+import { OrdenesCompraComponent } from './ordenes-compra/ordenes-compra.component';
 
 const antdModule = [
   HotTableModule.forRoot(),
@@ -118,7 +119,8 @@ registerAllModules();
     SubirFacturaComponent,
     ReporteFacturasComponent,
     SubirFacturaComponent,
-    ReporteFacturasComponent
+    ReporteFacturasComponent,
+    OrdenesCompraComponent
   ],
   imports: [
     CommonModule,

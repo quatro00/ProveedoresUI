@@ -1,0 +1,450 @@
+<div nz-row nzGutter="25">
+    <!-- skeleton -->
+    <ng-template #loadingSkeleton>
+      <nz-skeleton class="bg-white dark:bg-white/10 rounded-6 p-[30px] pt-[15px]" [nzShape]="circle" [nzActive]="true"
+        [nzParagraph]="{ rows: 6 }"></nz-skeleton>
+    </ng-template>
+    <!-- skeleton -->
+    <nz-modal
+    [(nzVisible)]="isVisibleAceptar"
+    [nzTitle]="modalTitleAceptar"
+    [nzContent]="modalContentAceptar"
+    [nzFooter]="modalFooterAceptar"
+    (nzOnCancel)="handleCancelAceptar()"
+  >
+    <ng-template #modalTitleAceptar>Aceptar orden</ng-template>
+
+   
+
+    <ng-template #modalContentAceptar>
+          <div nz-col nzXs="24">
+            <div nz-row nzGutter="25">
+               <p>Deseas aceptar la orden de compra?</p>
+            </div>
+          </div>
+       
+    </ng-template>
+
+    <ng-template #modalFooterAceptar>
+        <button class="bg-primary hover:bg-primary-hbr hover:border-primary-hbr border-solid border-1 border-primary text-white dark:text-white/[.87] text-[14px] font-semibold leading-[22px] inline-flex items-center justify-center rounded-[4px] px-[20px] h-[44px]" nz-button nzType="warning" (click)="aceptarOrdenCompra()" [nzLoading]="btnLoadingAceptarOC">Aceptar</button>
+    </ng-template>
+  </nz-modal>
+
+    <nz-modal
+    [(nzVisible)]="isVisibleModificacion"
+    [nzTitle]="modalTitleModificacion"
+    [nzContent]="modalContentModificacion"
+    [nzFooter]="modalFooterModificacion"
+    (nzOnCancel)="handleCancelModificacion()"
+  >
+    <ng-template #modalTitleModificacion>Solicitar modificación</ng-template>
+
+   
+
+    <ng-template #modalContentModificacion>
+          <div nz-col nzXs="24">
+            <div >
+                <form nz-form class="max-w-full" [formGroup]="modificarOrdenForm" (ngSubmit)="submitCrearIncidenciaForm()">
+                   
+                   
+                   
+                 
+          
+                    <nz-form-item >
+                      <nz-form-control nzErrorTip="Campo requerido.">
+                        <nz-form-label class="text-[15px] font-semibold text-dark capitalize mb-[10px]">Motivo</nz-form-label>
+                        <textarea
+                        nz-input
+                        placeholder="Motivo de la modificación"
+                        [nzAutosize]="{ minRows: 3, maxRows: 3 }"
+                        formControlName="comentario"
+                        class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                      ></textarea>
+                      </nz-form-control>
+                    </nz-form-item>
+          
+                  
+          
+          
+                   </form>
+            </div>
+          </div>
+       
+    </ng-template>
+
+    <ng-template #modalFooterModificacion>
+        <button class="bg-primary hover:bg-primary-hbr hover:border-primary-hbr border-solid border-1 border-primary text-white dark:text-white/[.87] text-[14px] font-semibold leading-[22px] inline-flex items-center justify-center rounded-[4px] px-[20px] h-[44px]" nz-button nzType="warning" (click)="aceptarModificacion()" [nzLoading]="btnLoadingModificacion">Aceptar</button>
+    </ng-template>
+  </nz-modal>
+
+    <nz-modal
+    [nzWidth]="'80%'"
+    [(nzVisible)]="isVisible"
+    [nzTitle]="modalTitle"
+    [nzContent]="modalContent"
+    [nzFooter]="modalFooter"
+    (nzOnCancel)="handleCancel()"
+  >
+    <ng-template #modalTitle>Orden de compra</ng-template>
+
+   
+
+    <ng-template #modalContent>
+          <div nz-col nzXs="24">
+            <div nz-row nzGutter="25">
+                <div nz-col nzXXl="8" nzLg="8" nzSm="8" nzXs="8" class="mb-[25px]">
+                    <ng-container *ngIf="showContent; else loadingSkeleton">
+                      <div class="bg-white dark:bg-white/10 p-7 shadow-pricing dark:shadow-none rounded-10">
+                        <h1
+                          class="relative bottom-1.5 mb-0 text-dark dark:text-white/[.87] text-[24px] font-semibold capitalize flex items-center">
+                          <svg-icon class="[&>svg]:w-[20px] [&>svg]:h-[20px] text-body dark:text-white/60"
+                            src="assets/images/svg/unicons-line/bill.svg"></svg-icon>&nbsp;&nbsp;Facturación
+                        </h1>
+                        
+                        <div class="mt-6 mb-4 min-h-[210px]">
+                          <div class="flex items-center mb-3 text-body dark:text-white/60 gap-[15px]">
+                            <table>
+                                <tr>
+                                    <td><span class="font-medium text-body dark:text-white/60 text-13"><b>Número de proveedor:&nbsp;</b></span></td>
+                                    <td>{{ordenCompra.provnum}}</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="font-medium text-body dark:text-white/60 text-13"><b>Razon social:&nbsp;</b></span></td>
+                                    <td>{{ordenCompra.razonsocial}}</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="font-medium text-body dark:text-white/60 text-13"><b>Dirección:&nbsp;</b></span></td>
+                                    <td>{{ordenCompra.dir}}</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="font-medium text-body dark:text-white/60 text-13"><b>Representante:&nbsp;</b></span></td>
+                                    <td>{{ordenCompra.repres}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><span class="font-medium text-body dark:text-white/60 text-13">{{ordenCompra.telefonoprov}}</span></td>
+                                </tr>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                </div>
+
+                <div nz-col nzXXl="8" nzLg="8" nzSm="8" nzXs="8" class="mb-[25px]">
+                    <ng-container *ngIf="showContent; else loadingSkeleton">
+                      <div class="bg-white dark:bg-white/10 p-7 shadow-pricing dark:shadow-none rounded-10">
+                        <h1
+                          class="relative bottom-1.5 mb-0 text-dark dark:text-white/[.87] text-[24px] font-semibold capitalize flex items-center">
+                          <div class="flex items-center mb-[15px] gap-[6px]">
+                          </div>
+                          <svg-icon class="[&>svg]:w-[20px] [&>svg]:h-[20px] text-body dark:text-white/60"
+                            src="assets/images/svg/unicons-line/truck.svg"></svg-icon>&nbsp;&nbsp;Entrega
+                        </h1>
+                        
+                        <div class="mt-6 mb-4 min-h-[210px]">
+                          <div class="flex items-center mb-3 text-body dark:text-white/60 gap-[15px]">
+                            <table>
+                                <tr>
+                                    <td><span class="font-medium text-body dark:text-white/60 text-13"><b>CEDI:&nbsp;</b></span></td>
+                                    <td>{{ordenCompra.tname}}</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="font-medium text-body dark:text-white/60 text-13"><b>Dirección:&nbsp;</b></span></td>
+                                    <td>{{ordenCompra.calleynumenviar}}</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="font-medium text-body dark:text-white/60 text-13"><b>Teléfono:&nbsp;</b></span></td>
+                                    <td>{{ordenCompra.telenviar}}</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="font-medium text-body dark:text-white/60 text-13"><b>Departamento:&nbsp;</b></span></td>
+                                    <td>{{ordenCompra.dep}}</td>
+                                </tr>
+                              
+                                <tr>
+                                    <td><span class="font-medium text-body dark:text-white/60 text-13"><b>Publicidad:&nbsp;</b></span></td>
+                                    <td>{{ordenCompra.publicidad}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td><span class="font-medium text-body dark:text-white/60 text-13"><b>Distribución:&nbsp;</b></span></td>
+                                    <td>{{ordenCompra.distr}}</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="font-medium text-body dark:text-white/60 text-13"><b>Flete:&nbsp;</b></span></td>
+                                    <td>{{ordenCompra.flete}}</td>
+                                </tr>
+
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                </div>
+
+                <div nz-col nzXXl="8" nzLg="8" nzSm="8" nzXs="8" class="mb-[25px]">
+                    <ng-container *ngIf="showContent; else loadingSkeleton">
+                      <div class="bg-white dark:bg-white/10 p-7 shadow-pricing dark:shadow-none rounded-10">
+                        <h1
+                          class="relative bottom-1.5 mb-0 text-dark dark:text-white/[.87] text-[24px] font-semibold capitalize flex items-center">
+                          <svg-icon class="[&>svg]:w-[20px] [&>svg]:h-[20px] text-body dark:text-white/60"
+                            src="assets/images/svg/unicons-line/shopping-cart.svg"></svg-icon>&nbsp;&nbsp;Orden de compra
+                        </h1>
+                        
+                        <div class="mt-6 mb-4 min-h-[210px]">
+                          <div class="flex items-center mb-3 text-body dark:text-white/60 gap-[15px]">
+                            <table>
+                                <tr>
+                                    <td><span class="font-medium text-body dark:text-white/60 text-13"><b>Fecha:&nbsp;</b></span></td>
+                                    <td>{{ordenCompra.tname}}</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="font-medium text-body dark:text-white/60 text-13"><b>Comprador:&nbsp;</b></span></td>
+                                    <td>{{ordenCompra.calleynumenviar}}</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="font-medium text-body dark:text-white/60 text-13"><b>Fechas de entrega:&nbsp;</b></span></td>
+                                    <td>{{ordenCompra.telenviar}}</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="font-medium text-body dark:text-white/60 text-13"><b>Importes:&nbsp;</b></span></td>
+                                    <td>{{ordenCompra.dep}}</td>
+                                </tr>
+                              
+                                <tr>
+                                    <td><span class="font-medium text-body dark:text-white/60 text-13"><b>Cancelación:&nbsp;</b></span></td>
+                                    <td>{{ordenCompra.publicidad}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td><span class="font-medium text-body dark:text-white/60 text-13"><b>Tipo de embalaje:&nbsp;</b></span></td>
+                                    <td>{{ordenCompra.distr}}</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="font-medium text-body dark:text-white/60 text-13"><b>Método de procesamiento:&nbsp;</b></span></td>
+                                    <td>{{ordenCompra.flete}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td><span class="font-medium text-body dark:text-white/60 text-13"><b>Tiendas:&nbsp;</b></span></td>
+                                    <td>{{ordenCompra.flete}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td><span class="font-medium text-body dark:text-white/60 text-13"><b>Imprime etiquetas:&nbsp;</b></span></td>
+                                    <td>{{ordenCompra.flete}}</td>
+                                </tr>
+
+                             
+
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                </div>
+                <div style="width: 100%; text-align: center;">
+                    <span class="inline-block bg-warning/10 h-8 px-6 py-1.5 mb-8 text-warning text-13 font-medium rounded-2xl capitalize dark:[&.text-dark]:bg-white/10 dark:[&.text-dark]:border-white/10 [&.text-dark]:dark:text-white/[.87]">NO SE RECIBIRÁ MERCANCÍA SI NO SE CUMPLE CON LAS POLÍTICAS DE RECEPCIÓN DE BODESA S.A.P.I DE C.V. (SI NO CUENTA CON LAS POLÍTICAS FAVOR DE SOLICITARLAS)</span>
+                </div>
+                
+                <div nz-col nzXXl="24" nzLg="24" nzSm="24" nzXs="24" class="mb-[25px]">
+                    <ng-container *ngIf="showContent; else loadingSkeleton">
+                      <div class="bg-white dark:bg-white/10 p-7 shadow-pricing dark:shadow-none rounded-10">
+                        <h1
+                          class="relative bottom-1.5 mb-0 text-dark dark:text-white/[.87] text-[24px] font-semibold capitalize flex items-center">
+                          <svg-icon class="[&>svg]:w-[20px] [&>svg]:h-[20px] text-body dark:text-white/60"
+                            src="assets/images/svg/unicons-line/clipboard-alt.svg"></svg-icon>&nbsp;&nbsp;Detalle
+                        </h1>
+                        
+                        <div class="mt-6 mb-4 min-h-[210px]">
+                          <div class="flex items-center mb-3 text-body dark:text-white/60 gap-[15px]">
+
+                            <div class="p-[25px]" style="width: 100%;">
+                                <div class="w-full overflow-x-auto">
+                                    <nz-table #basicTable2 
+                            [nzData]="ordenCompraDetalle"
+                            [nzPageSize]="ordenCompraDetalle.length"
+                            [nzPagination]="false"
+                            >
+                              <thead>
+                                <tr>
+                                  
+                                  <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Material</th>
+                                  <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">SKU</th>
+                                  <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Descripción</th>
+                                  <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Destino</th>
+                                  <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Cantidad</th>
+                                  <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Precio unitario</th>
+                                  <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Precio</th>
+                                  <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Valor bruto pedido</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                              <tr class="group" *ngFor="let item of basicTable2.data">
+                                 <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.material }}</td>
+                                 <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.sku }}</td> 
+                                 <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.descripcion }}</td> 
+  
+                                 <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.destino }}</td> 
+                                 <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.cantidad }}</td>
+                                 <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.precioNeto | currency}}</td> 
+                                 <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.valorBrutoPedido | currency}}</td>
+                                 <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.valorNetoPedido | currency}}</td>
+                                </tr>
+                              </tbody>
+                            </nz-table>
+                                </div>
+                            </div>
+                            
+                          </div>
+                        </div>
+                      </div>
+                    </ng-container>
+                </div>
+
+            </div>
+          </div>
+       
+    </ng-template>
+
+    <ng-template #modalFooter>
+        <button class="bg-warning hover:bg-warning-hbr hover:border-warning-hbr border-solid border-1 border-warning text-white dark:text-white/[.87] text-[14px] font-semibold leading-[22px] inline-flex items-center justify-center rounded-[4px] px-[20px] h-[44px]" nz-button nzType="warning" (click)="solicitarModificacion()" [nzLoading]="btnLoadingModal" *ngIf="ordenCompraEstatus === 1">Solicitar modificación</button>
+        <button class="bg-success hover:bg-success-hbr hover:border-success-hbr border-solid border-1 border-success text-white dark:text-white/[.87] text-[14px] font-semibold leading-[22px] inline-flex items-center justify-center rounded-[4px] px-[20px] h-[44px]" nz-button nzType="success" (click)="aceptarOrden()" [nzLoading]="btnLoadingModal" *ngIf="ordenCompraEstatus === 1">Aceptar orden de compra</button>
+    </ng-template>
+  </nz-modal>
+
+
+    <div nz-col nzXs="24" class="mb-[25px]">
+      <ng-container *ngIf="showContent; else loadingSkeleton">
+        <div
+          class="bg-white dark:bg-white/10 m-0 p-0 text-theme-gray dark:text-white/60 text-[15px] rounded-10 relative h-full">
+          <div
+            class="py-[16px] px-[25px] text-dark dark:text-white/[.87] font-medium text-[17px] border-regular dark:border-white/10 border-b">
+            <h4 class="mb-0 text-lg font-medium text-dark dark:text-white/[.87]">Ordenes de compra</h4>
+          </div>
+          <div class="p-[25px]">
+            <div>
+              
+              <form class="max-w-full" [formGroup]="validateForm">
+                <nz-form-item>
+                  <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="3" nzFor="text2">Desde</nz-form-label>
+                  <nz-form-control nzXs="3" nzErrorTip="Campo requerido." >
+                    <input formControlName="desde"
+                      class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                      nz-input name="text2" type="date" id="text2">
+                  </nz-form-control>
+                  <nz-form-control nzXs="1">
+                  </nz-form-control>
+                  <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="2" nzFor="text2">Hasta</nz-form-label>
+                  <nz-form-control nzXs="3" nzErrorTip="Campo requerido." >
+                    <input formControlName="hasta"
+                      class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                      nz-input name="text2" type="date" id="text2">
+                  </nz-form-control>
+                  <nz-form-control nzXs="1">
+                  </nz-form-control>
+                  <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="2" nzFor="text2">Razon social</nz-form-label>
+                  <nz-form-control class="mb-[20px]" nzXs="5">
+                  <nz-select class="w-full capitalize [&>nz-select-top-control]:border-regular dark:[&>nz-select-top-control]:border-white/10 [&>nz-select-top-control]:bg-white [&>nz-select-top-control]:dark:bg-white/10 [&>nz-select-top-control]:shadow-none [&>nz-select-top-control]:text-dark [&>nz-select-top-control]:dark:text-white/60 [&>nz-select-top-control]:h-[50px] [&>nz-select-top-control]:flex [&>nz-select-top-control]:items-center [&>nz-select-top-control]:rounded-[6px] [&>nz-select-top-control]:px-[20px] [&>.ant-select-arrow]:text-theme-gray dark:[&>.ant-select-arrow]:text-white/60" 
+                  name="lucy" 
+                  formControlName="razonSocial" >
+            
+                  <nz-option *ngFor="let option of razonesSociales" [nzValue]="option.id" [nzLabel]="option.nombre"></nz-option>
+            
+                  </nz-select>
+                  </nz-form-control>
+                  <nz-form-control nzXs="1">
+                  </nz-form-control>
+                  <nz-form-control nzXs="1">
+                  <button [nzLoading]="btnLoading" (click)="submitForm()" class="bg-primary hover:bg-primary-hbr inline-flex items-center outline-none shadow-none w-fit duration-300 text-white capitalize px-[20px] text-[15px] border-primary hover:border-primary-hbr rounded-[5px] gap-[8px] h-[46px]" nz-button nzType="primary" >
+                        <span>Buscar</span>
+                        <span nz-icon nzType="search" nzTheme="outline"></span>
+                      </button>
+                  </nz-form-control>
+                </nz-form-item>
+              </form>
+              <div class="p-[25px]">
+                      <div class="w-full overflow-x-auto">
+                          <nz-table #basicTable 
+                          nzShowSizeChanger
+                          [nzData]="citas"
+                          >
+                            <thead>
+                              <tr>
+                                
+                                <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Orden</th>
+                                <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Fecha entrega</th>
+                                <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Fecha vencimiento</th>
+                                <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Departamento</th>
+                                <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Destino</th>
+                                <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Tienda</th>
+                                <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Estatus</th>
+                                <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize"></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="group" *ngFor="let item of basicTable.data">
+                               <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.noOrden }}</td>
+                               <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.fecha | date: 'dd/MM/yyyy' }}</td> 
+                               <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.fechaVencimiento | date: 'dd/MM/yyyy' }}</td> 
+
+                               <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.departamento }}</td> 
+                               <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.destino }}</td>
+                               <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.tienda }}</td> 
+                               <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.estatus }}</td>
+                               <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">
+                                <div class="flex items-center gap-[10px]">
+                                  <a class="text-light-extra text-18" nz-dropdown nzPlacement="bottomRight" nzTrigger="click"
+                                      [nzDropdownMenu]="projectListSetting2">
+                                      <span nz-icon nzType="more" nzTheme="outline"></span>
+                                    </a>
+                                    <nz-dropdown-menu #projectListSetting2="nzDropdownMenu">
+                                      <ul
+                                        class="block bg-white dark:bg-[#1b1e2b] shadow-regular dark:shadow-[0_5px_30px_rgba(1,4,19,.60)] rounded-4 capitalize"
+                                        nz-menu nzSelectable>
+        
+                                     
+                                      <li  (click)="showDetalleOrdenCompra(item)"
+                                      class="flex items-center text-theme-gray dark:text-white/60 hover:bg-primary/10 hover:text-primary dark:hover:bg-white/10 px-3 py-1.5 text-sm dark:hover:text-white/[.87] gap-[6px]"
+                                      nz-menu-item>
+                                        <i nz-icon nzType="search" theme="outline"></i>
+                                        <span class="m-l-10">Visualizar</span>
+                                      </li>
+  
+                                      <li  *ngIf="item.estatusId === 3" (click)="OrdenCompraPdf(item.id)"
+                                      class="flex items-center text-theme-gray dark:text-white/60 hover:bg-primary/10 hover:text-primary dark:hover:bg-white/10 px-3 py-1.5 text-sm dark:hover:text-white/[.87] gap-[6px]"
+                                      nz-menu-item>
+                                        <i nz-icon nzType="file-pdf" theme="outline"></i>
+                                        <span class="m-l-10">Descargar PDF</span>
+                                      </li>
+
+                                      <li *ngIf="item.estatusId === 3"   (click)="OrdenCompraExcel(item.id)"
+                                      class="flex items-center text-theme-gray dark:text-white/60 hover:bg-primary/10 hover:text-primary dark:hover:bg-white/10 px-3 py-1.5 text-sm dark:hover:text-white/[.87] gap-[6px]"
+                                      nz-menu-item>
+                                        <i nz-icon nzType="file-excel" theme="outline"></i>
+                                        <span class="m-l-10">Descargar Excel</span>
+                                      </li>
+
+                                      <li  *ngIf="item.estatusId === 3" (click)="OrdenCompraTxt(item.id)"
+                                      class="flex items-center text-theme-gray dark:text-white/60 hover:bg-primary/10 hover:text-primary dark:hover:bg-white/10 px-3 py-1.5 text-sm dark:hover:text-white/[.87] gap-[6px]"
+                                      nz-menu-item>
+                                        <i nz-icon nzType="file-text" theme="outline"></i>
+                                        <span class="m-l-10">Descargar TXT</span>
+                                      </li>
+  
+                                      </ul>
+                                    </nz-dropdown-menu>
+                                </div>
+                               </td>
+                              </tr>
+                            </tbody>
+                          </nz-table>
+                        </div>
+                    </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    </div>
+  
