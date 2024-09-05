@@ -88,7 +88,10 @@
                              <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.ordenesCompra }}</td>
                              <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.piezas | number: '1.0-0'}}</td>
                              <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.importe | currency}}</td> 
-                             <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.estatusCita }}</td>
+                             <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">
+                              <div *ngIf="item.estatusCita === 1">Vigente</div>
+                              <div *ngIf="item.estatusCita === 2">Cancelada</div>
+                            </td>
                              <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">
                               <div class="flex items-center gap-[10px]">
                                 <a class="text-light-extra text-18" nz-dropdown nzPlacement="bottomRight" nzTrigger="click"

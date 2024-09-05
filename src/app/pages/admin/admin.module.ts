@@ -63,6 +63,9 @@ import { ConfiguracionComponent } from './configuracion/configuracion.component'
 import { IncidenciasComponent } from './incidencias/incidencias.component';
 import { CrearIncidenciaComponent } from './crear-incidencia/crear-incidencia.component';
 import { TiposIncidenciaComponent } from './tipos-incidencia/tipos-incidencia.component';
+import { CrearIncidenciaOcComponent } from './crear-incidencia-oc/crear-incidencia-oc.component';
+import { DepartamentoComponent } from './departamento/departamento.component';
+import { CrearAdministradorComponent } from './crear-administrador/crear-administrador.component';
 
 const antdModule = [
   HotTableModule.forRoot(),
@@ -127,6 +130,9 @@ registerAllModules();
     IncidenciasComponent,
     CrearIncidenciaComponent,
     TiposIncidenciaComponent,
+    CrearIncidenciaOcComponent,
+    DepartamentoComponent,
+    CrearAdministradorComponent,
   ],
   imports: [
     CommonModule,

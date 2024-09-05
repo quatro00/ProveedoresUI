@@ -39,6 +39,30 @@
 
           <nz-form-item>
             <nz-form-control nzErrorTip="Campo requerido.">
+              <nz-form-label class="text-[15px] font-semibold text-dark capitalize mb-[10px]">Tipo</nz-form-label>
+              <nz-select class="basic-select" name="incidenciaCita" formControlName="incidenciaCita">
+                <nz-option nzValue="1" nzLabel="Cita"></nz-option>
+                <nz-option nzValue="0" nzLabel="Asn"></nz-option>
+              </nz-select>
+
+              
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-control nzErrorTip="Campo requerido.">
+              <nz-form-label class="text-[15px] font-semibold text-dark capitalize mb-[10px]">Interno/Externo</nz-form-label>
+              <nz-select class="basic-select" name="interno" formControlName="interno">
+                <nz-option nzValue="1" nzLabel="Interno"></nz-option>
+                <nz-option nzValue="0" nzLabel="Externo"></nz-option>
+              </nz-select>
+
+              
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item>
+            <nz-form-control nzErrorTip="Campo requerido.">
               <nz-form-label class="text-[15px] font-semibold text-dark capitalize mb-[10px]">Activo</nz-form-label>
               <nz-select class="basic-select" name="activo" formControlName="activo">
                 <nz-option nzValue="1" nzLabel="Si"></nz-option>
@@ -93,6 +117,8 @@
                                 <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Codigo</th>
                                 <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Nombre</th>
                                 <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Monto</th>
+                                <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Asn/Cita</th>
+                                <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Interno/Externo</th>
                                 <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize">Activo</th>
                                 <th class="bg-regularBG dark:bg-[#323440] px-[20px] py-[16px] text-start text-dark dark:text-white/[.87] text-[15px] font-medium border-none before:hidden capitalize"></th>
                               </tr>
@@ -103,6 +129,16 @@
                                <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.codigo }}</td> 
                                <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.descripcion }}</td>
                                <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.monto }}</td>
+                               <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">
+                                <div *ngIf="item.incidenciaCita === 1">Cita</div>
+                                <div *ngIf="item.incidenciaCita === 0">Asn</div>
+                              </td>
+
+                              <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">
+                                <div *ngIf="item.interno === 1">Interno</div>
+                                <div *ngIf="item.interno === 0">Externo</div>
+                              </td>
+
                                <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">{{ item.activo }}</td>
                                <td class="ltr:pr-[20px] rtl:pl-[20px] text-dark dark:text-white/[.87] text-[15px] py-4 before:hidden border-none group-hover:bg-transparent">
                                 <div class="flex items-center gap-[10px]">

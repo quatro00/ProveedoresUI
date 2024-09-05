@@ -1,0 +1,67 @@
+<div nz-row nzGutter="25">
+    <!-- skeleton -->
+    <ng-template #loadingSkeleton>
+      <nz-skeleton class="bg-white dark:bg-white/10 rounded-6 p-[30px] pt-[15px]" [nzShape]="circle" [nzActive]="true"
+        [nzParagraph]="{ rows: 6 }"></nz-skeleton>
+    </ng-template>
+
+    <!-- skeleton -->
+    <div nz-col nzXs="24" class="mb-[25px]">
+      <ng-container *ngIf="showContent; else loadingSkeleton">
+        <div
+          class="bg-white dark:bg-white/10 m-0 p-0 text-theme-gray dark:text-white/60 text-[15px] rounded-10 relative h-full">
+          <div
+            class="py-[16px] px-[25px] text-dark dark:text-white/[.87] font-medium text-[17px] border-regular dark:border-white/10 border-b">
+            <h4 class="mb-0 text-lg font-medium text-dark dark:text-white/[.87]">Registrar administrador</h4>
+          </div>
+
+          
+          <div class="p-[25px]">
+            <div>
+              
+              <form class="max-w-full" [formGroup]="validateForm">
+                <nz-form-item>
+                    <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="3" nzFor="text2">Nombre</nz-form-label>
+                  <nz-form-control nzXs="3" nzErrorTip="Campo requerido." >
+                    <input formControlName="desde"
+                      class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                      nz-input name="text2" type="text" id="text2">
+                  </nz-form-control>
+
+                    <nz-form-control nzXs="1">
+                    </nz-form-control>
+
+                  <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="3" nzFor="text2">Apellido</nz-form-label>
+                  <nz-form-control nzXs="3" nzErrorTip="Campo requerido." >
+                    <input formControlName="desde"
+                      class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                      nz-input name="text2" type="text" id="text2">
+                  </nz-form-control>
+                  <nz-form-control nzXs="1">
+                  </nz-form-control>
+                  <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="2" nzFor="text2">Correo</nz-form-label>
+                  <nz-form-control nzXs="3" nzErrorTip="Campo requerido." >
+                    <input formControlName="hasta"
+                      class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                      nz-input name="text2" type="text" id="text2">
+                  </nz-form-control>
+                  <nz-form-control nzXs="1">
+                  </nz-form-control>
+                  <nz-form-control nzXs="1">
+                  </nz-form-control>
+                  <nz-form-control nzXs="1">
+                  <button [nzLoading]="btnLoadingBusqueda" (click)="submitForm()" class="bg-primary hover:bg-primary-hbr inline-flex items-center outline-none shadow-none w-fit duration-300 text-white capitalize px-[20px] text-[15px] border-primary hover:border-primary-hbr rounded-[5px] gap-[8px] h-[46px]" nz-button nzType="primary" >
+                        <span>Buscar</span>
+                        <span nz-icon nzType="search" nzTheme="outline"></span>
+                      </button>
+                  </nz-form-control>
+                </nz-form-item>
+              </form>
+           
+            </div>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    </div>
+  

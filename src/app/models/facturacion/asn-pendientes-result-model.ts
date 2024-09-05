@@ -4,6 +4,7 @@ export interface AsnPendientesModel {
     fechaRecepcion: string;
     piezasRecibidas: number;
     importeAPagar:number;
+    subTotal:number;
     xml?:string;
     pdf?:string;
     detalle:AsnPendientesDetalleModel[];

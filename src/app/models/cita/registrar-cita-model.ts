@@ -11,6 +11,7 @@ export class RegistrarCitaOrdenCompra{
     ordenCompra:string;
     tipo:string;
     asn:string;
+    departamento:string;
     detalle:RegistrarCitaOrdenCompraDetalle[]=[];
 }
 

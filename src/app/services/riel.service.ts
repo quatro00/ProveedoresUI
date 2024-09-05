@@ -37,4 +37,8 @@ export class RielService {
   update(id:string, request:CentroModel):Observable<CentroModel>{
     return this.http.put<CentroModel>(`${environment.apiBaseUrl}/api/${this.service}/${id}`,request);
   }
+
+  updateHorario(id:string, request:RielModel):Observable<any>{
+    return this.http.put<any>(`${environment.apiBaseUrl}/api/${this.service}/UpdateHorario/${id}`,request);
+  }
 }

@@ -50,8 +50,12 @@ export class IncidenciasComponent {
     this.isVisibleEditarConfiguracion = false;
   }
 
-  registrarIncidencia(){
-    this.router.navigateByUrl(`administrador/incidencias/crear-incidencia`); 
+  registrarIncidenciaAsn(){
+    this.router.navigateByUrl(`administrador/incidencias/crear-incidencia-asn`); 
+  }
+
+  registrarIncidenciaOC(){
+    this.router.navigateByUrl(`administrador/incidencias/crear-incidencia-oc`); 
   }
 
   submitForm(){

@@ -38,6 +38,8 @@ export class TiposIncidenciaComponent {
       nombre: [null, [Validators.required]],
       monto: [null, [Validators.required]],
       activo: [null, [Validators.required]],
+      incidenciaCita: [null, [Validators.required]],
+      interno: [null, [Validators.required]],
     });
 
     this.loadData();
@@ -53,7 +55,9 @@ export class TiposIncidenciaComponent {
       codigo : model.codigo,
       nombre:model.descripcion,
       monto:model.monto,
-      activo:model.activo.toString()
+      incidenciaCita:model.incidenciaCita.toString(),
+      activo:model.activo.toString(),
+      interno:model.interno.toString(),
   })
     this.tipoIncidenciaSelected = model.id;
   }
@@ -89,8 +93,11 @@ export class TiposIncidenciaComponent {
         descripcion : this.validateForm.value.nombre,
         monto : this.validateForm.value.monto,
         activo : this.validateForm.value.activo,
+        interno: this.validateForm.value.interno,
+        incidenciaCita: this.validateForm.value.incidenciaCita
       }
 
+      console.log(tipoIncidencia);
       this.btnLoading=true;
 
       if(this.editar == false){

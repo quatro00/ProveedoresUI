@@ -139,10 +139,16 @@ export class BloquearAndenesComponent {
     this.bloqueoAndenes.crearBloqueoanden(request)
     .subscribe({
       next:(response)=>{
-        this.isLoading = false;
+        this.btnLoading = false;
         this.modalService.closeAll();
         this.validateFormBloqueo.reset();
-      }
+      },
+      error:(err:any)=>{
+        this.btnLoading = false;
+      },
+      complete() {
+        this.btnLoading = false;
+      },
     })
     
 

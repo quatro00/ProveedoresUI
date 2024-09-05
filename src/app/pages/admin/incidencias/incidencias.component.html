@@ -56,11 +56,19 @@
     <div nz-col nzXs="24" class="mb-[25px]">
         <!-- New Contact -->
         <div class="flex items-center justify-center md:justify-end">
-         <button class="flex items-center px-[14px] text-sm text-white rounded-md font-semibold bg-primary border-primary h-10 gap-[6px]" (click)="registrarIncidencia()" nz-button >
+         <button class="flex items-center px-[14px] text-sm text-white rounded-md font-semibold bg-primary border-primary h-10 gap-[6px]" (click)="registrarIncidenciaAsn()" nz-button >
            <i class="text-[12px]" nz-icon nzType="plus"></i>
-           <span class="m-0">Registrar incidencia</span>
+           <span class="m-0">Incidencia a asn</span>
          </button>
+         &nbsp;&nbsp;&nbsp;
+         <button class="flex items-center px-[14px] text-sm text-white rounded-md font-semibold bg-primary border-primary h-10 gap-[6px]" (click)="registrarIncidenciaOC()" nz-button >
+          <i class="text-[12px]" nz-icon nzType="plus"></i>
+          <span class="m-0">Incidencia a cita</span>
+        </button>
+
        </div>
+
+
          <!-- end: New Contact -->
       </div>
 

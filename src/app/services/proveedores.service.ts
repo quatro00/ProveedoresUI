@@ -18,7 +18,11 @@ export class ProveedorService {
     let params = new HttpParams();
     params = params.append('filtro', '');
 
-    return this.http.get<ProveedorFiltroResponsableModel[]>(`${environment.devApiBaseUrl}/api/${this.service}/GetProveedoresByFiltro`,{params});
+    return this.http.get<ProveedorFiltroResponsableModel[]>(`${environment.apiBaseUrl}/api/${this.service}/GetProveedoresByFiltro`,{params});
 
+  }
+
+  getAdministradores():Observable<any>{
+    return this.http.get<any>(`${environment.apiBaseUrl}/api/${this.service}/GetAdministradores`);
   }
 }

@@ -360,8 +360,20 @@
                                 <i nz-icon nzType="dropbox" theme="outline"></i>
                                 <span class="m-l-10">Grupos de articulo</span>
                               </li>
-                              
                               </ul>
+
+                              <ul
+                              class="block bg-white dark:bg-[#1b1e2b] shadow-regular dark:shadow-[0_5px_30px_rgba(1,4,19,.60)] rounded-4 capitalize"
+                              nz-menu nzSelectable>
+
+                              <li  (click)="showEditarRiel(newItem, person)"
+                              class="flex items-center text-theme-gray dark:text-white/60 hover:bg-primary/10 hover:text-primary dark:hover:bg-white/10 px-3 py-1.5 text-sm dark:hover:text-white/[.87] gap-[6px]"
+                              nz-menu-item>
+                              <i nz-icon nzType="dropbox" theme="outline"></i>
+                              <span class="m-l-10">Editar riel</span>
+                            </li>
+                            </ul>
+
                             </nz-dropdown-menu>
                         </div>
                   </td> 
@@ -380,6 +392,184 @@
         <button class="bg-primary hover:bg-primary-hbr hover:border-primary-hbr border-solid border-1 border-primary text-white dark:text-white/[.87] text-[14px] font-semibold leading-[22px] inline-flex items-center justify-center rounded-[4px] px-[20px] h-[44px]" nz-button nzType="primary" (click)="handleOk()" [nzLoading]="btnLoading">Guardar</button>
       </ng-template>
     </nz-modal>
+
+    <nz-modal
+      [nzWidth]="'95%'"
+      [(nzVisible)]="isVisibleEditar"
+      [nzTitle]="ModalRielesEditar"
+      [nzContent]="modalRielesEditar"
+      [nzFooter]="modalFooterRielesEditar"
+      (nzOnCancel)="handleCancel()"
+    >
+      <ng-template #ModalRielesEditar>Rieles</ng-template>
+
+      <ng-template #modalRielesEditar>
+        <form nz-form [formGroup]="rielFormEditar">
+          <nz-form-item>
+            <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="2" nzFor="codigo">Codigo</nz-form-label>
+            <nz-form-control nzXs="3" nzErrorTip="Campo requerido." >
+              <input formControlName="codigo"
+                class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                nz-input name="codigo" type="text" id="codigo">
+            </nz-form-control>
+         
+            <nz-form-control nzXs="1">
+            </nz-form-control>
+
+            <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="1" nzFor="nombre">Nombre</nz-form-label>
+            <nz-form-control nzXs="4" nzErrorTip="Campo requerido." >
+              <input formControlName="nombre"
+                class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                nz-input name="nombre" type="text" id="nombre">
+            </nz-form-control>
+
+            <nz-form-control nzXs="1">
+            </nz-form-control>
+            
+            <nz-form-control nzErrorTip="Campo requerido.">
+              <nz-checkbox-wrapper class="flex flex-col w-full capitalize basic-checkbox text-theme-gray dark:text-white/60 gap-[5px] mb-[15px]" (nzOnChange)="logRielEditar($event)">
+                <label class=" m-0 text-dark dark:text-white/[.87]" nz-checkbox nzValue="1" [nzChecked]="isCheckedRielEditar">Activo</label>
+              </nz-checkbox-wrapper>
+
+            </nz-form-control>
+
+          </nz-form-item>
+         
+          <nz-form-item>
+            <h5>Horarios</h5>
+          </nz-form-item>
+
+          <nz-form-item>
+            
+            <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="1" nzFor="lunesInicio">Lunes</nz-form-label>
+            <nz-form-control nzXs="2" nzErrorTip="Campo requerido." >
+              <input formControlName="lunesInicio"
+                class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                nz-input name="lunesInicio" type="time" id="lunesInicio">
+            </nz-form-control>
+            <nz-form-control nzXs="2" nzErrorTip="Campo requerido." >
+              <input formControlName="lunesTermino"
+                class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                nz-input name="lunesTermino" type="time" id="lunesTermino">
+            </nz-form-control>
+
+            <nz-form-control nzXs="1">
+            </nz-form-control>
+            
+            <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="1" nzFor="martesInicio">Martes</nz-form-label>
+            <nz-form-control nzXs="2" nzErrorTip="Campo requerido." >
+              <input formControlName="martesInicio"
+                class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                nz-input name="martesInicio" type="time" id="martesInicio">
+            </nz-form-control>
+            <nz-form-control nzXs="2" nzErrorTip="Campo requerido." >
+              <input formControlName="martesTermino"
+                class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                nz-input name="martesTermino" type="time" id="martesTermino">
+            </nz-form-control>
+
+            <nz-form-control nzXs="1">
+            </nz-form-control>
+            
+            <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="1" nzFor="miercolesInicio">Miercoles</nz-form-label>
+            <nz-form-control nzXs="2" nzErrorTip="Campo requerido." >
+              <input formControlName="miercolesInicio"
+                class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                nz-input name="miercolesInicio" type="time" id="miercolesInicio">
+            </nz-form-control>
+            <nz-form-control nzXs="2" nzErrorTip="Campo requerido." >
+              <input formControlName="miercolesTermino"
+                class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                nz-input name="miercolesTermino" type="time" id="miercolesTermino">
+            </nz-form-control>
+
+            <nz-form-control nzXs="1">
+            </nz-form-control>
+            
+            <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="1" nzFor="juevesInicio">Jueves</nz-form-label>
+            <nz-form-control nzXs="2" nzErrorTip="Campo requerido." >
+              <input formControlName="juevesInicio"
+                class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                nz-input name="juevesInicio" type="time" id="juevesInicio">
+            </nz-form-control>
+            <nz-form-control nzXs="2" nzErrorTip="Campo requerido." >
+              <input formControlName="juevesTermino"
+                class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                nz-input name="juevesTermino" type="time" id="juevesTermino">
+            </nz-form-control>
+
+            <nz-form-control nzXs="1">
+            </nz-form-control>
+            
+           
+          </nz-form-item>
+
+         
+          
+          <nz-form-item>
+
+            <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="1" nzFor="viernesInicio">Viernes</nz-form-label>
+            <nz-form-control nzXs="2" nzErrorTip="Campo requerido." >
+              <input formControlName="viernesInicio"
+                class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                nz-input name="viernesInicio" type="time" id="viernesInicio">
+            </nz-form-control>
+            <nz-form-control nzXs="2" nzErrorTip="Campo requerido." >
+              <input formControlName="viernesTermino"
+                class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                nz-input name="viernesTermino" type="time" id="viernesTermino">
+            </nz-form-control>
+
+            <nz-form-control nzXs="1">
+            </nz-form-control>
+            
+            <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="1" nzFor="sabadoInicio">Sabado</nz-form-label>
+            <nz-form-control nzXs="2" nzErrorTip="Campo requerido." >
+              <input formControlName="sabadoInicio"
+                class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                nz-input name="sabadoInicio" type="time" id="sabadoInicio">
+            </nz-form-control>
+            <nz-form-control nzXs="2" nzErrorTip="Campo requerido." >
+              <input formControlName="sabadoTermino"
+                class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                nz-input name="sabadoTermino" type="time" id="sabadoTermino">
+            </nz-form-control>
+
+            <nz-form-control nzXs="1">
+            </nz-form-control>
+            
+            <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="1" nzFor="domingoInicio">Domingo</nz-form-label>
+            <nz-form-control nzXs="2" nzErrorTip="Campo requerido." >
+              <input formControlName="domingoInicio"
+                class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                nz-input name="domingoInicio" type="time" id="domingoInicio">
+            </nz-form-control>
+            <nz-form-control nzXs="2" nzErrorTip="Campo requerido." >
+              <input formControlName="domingoTermino"
+                class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                nz-input name="domingoTermino" type="time" id="domingoTermino">
+            </nz-form-control>
+
+            <nz-form-control nzXs="5">
+            </nz-form-control>
+<!--
+            <nz-form-control nzXs="1" nzErrorTip="Campo requerido." >
+              <button class="bg-primary hover:bg-primary-hbr hover:border-primary-hbr border-solid border-1 border-primary text-white dark:text-white/[.87] text-[14px] font-semibold leading-[22px] inline-flex items-center justify-center rounded-[4px] px-[20px] h-[44px]" nz-button nzType="primary" (click)="guardarRielEditar()" [nzLoading]="btnLoadingRielEditar">Guardar</button>
+            </nz-form-control>
+-->
+            
+
+          </nz-form-item>
+        </form>
+
+      </ng-template>
+
+      <ng-template #modalFooterRielesEditar>
+        <button class="bg-primary hover:bg-primary-hbr hover:border-primary-hbr border-solid border-1 border-primary text-white dark:text-white/[.87] text-[14px] font-semibold leading-[22px] inline-flex items-center justify-center rounded-[4px] px-[20px] h-[44px]" nz-button nzType="primary" (click)="guardarRielEditar()" [nzLoading]="btnLoadingRielEditar">Guardar</button>
+      </ng-template>
+    </nz-modal>
+
+
 
     <div nz-col nzXs="24" nzMd="12">
       <ng-template #newItem>

@@ -38,6 +38,10 @@ export class IncidenciasService {
     return this.http.post<any>(`${environment.apiBaseUrl}/api/${this.service}/CreateIncidencia`, formData);
   }
 
+  CrearIncidenciaCita(formData:FormData):Observable<any>{
+    return this.http.post<any>(`${environment.apiBaseUrl}/api/${this.service}/CreateIncidenciaCita`, formData);
+  }
+
   CrearTipoIncidencia(request:TipoIncidenciaModel):Observable<any>{
     return this.http.post<any>(`${environment.apiBaseUrl}/api/${this.service}/CrearTipoIncidencia`,request);
   }

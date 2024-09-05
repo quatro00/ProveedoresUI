@@ -23,7 +23,7 @@ export class AsnService {
     params = params.append('fechaInicio', desde);
     params = params.append('fechaTermino', hasta);
 
-    return this.http.get<any[]>(`${environment.devApiBaseUrl}/api/${this.service}/GetAsnPorFecha`,{params});
+    return this.http.get<any[]>(`${environment.apiBaseUrl}/api/${this.service}/GetAsnPorFecha`,{params});
 
   }
 }

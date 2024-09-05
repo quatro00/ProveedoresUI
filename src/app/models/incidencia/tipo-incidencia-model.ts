@@ -3,5 +3,7 @@ export interface TipoIncidenciaModel{
     codigo:string;
     descripcion:string;
     monto:number;
+    interno:number;
+    incidenciaCita:number;
     activo:string;
 }   

@@ -32,4 +32,5 @@ export interface Detalle {
     precio:             number;
     cantidadAEntregar?:number;
     unidadMedida?:string;
+    sku?:string;
 }

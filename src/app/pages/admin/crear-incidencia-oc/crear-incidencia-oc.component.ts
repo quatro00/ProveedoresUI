@@ -2,33 +2,35 @@ import { Component } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { CitaFechaResponseModel } from 'src/app/models/cita/cita-fecha-response-model';
 import { CrearIncidenciaModel } from 'src/app/models/incidencia/crear-incidencia-model';
 import { ProveedorFiltroResponsableModel } from 'src/app/models/proveedores/proveedor-filtro-response-model';
 import { AsnService } from 'src/app/services/asn.service';
+import { CitasService } from 'src/app/services/citas.service';
 import { IncidenciasService } from 'src/app/services/incidencias.service';
 import { ProveedorService } from 'src/app/services/proveedores.service';
 
+
 @Component({
   styles:  [`
-  :host ::ng-deep .basic-select .ant-select-selector{
-    @apply h-[50px] rounded-4 border-normal px-[20px] flex items-center dark:bg-white/10 dark:border-white/10 dark:text-white/60 dark:hover:text-white/100;
-  }
-  :host ::ng-deep .basic-select.ant-select-multiple .ant-select-selection-item{
-      @apply bg-white dark:bg-white/10 border-normal dark:border-white/10;
+    :host ::ng-deep .basic-select .ant-select-selector{
+      @apply h-[50px] rounded-4 border-normal px-[20px] flex items-center dark:bg-white/10 dark:border-white/10 dark:text-white/60 dark:hover:text-white/100;
     }
-    ::ng-deep .ant-upload {
-      @apply w-full;
-    }
-    :host ::ng-deep .basic-select .ant-select-multiple.ant-select-disabled.ant-select:not(.ant-select-customize-input) .ant-select-selector{
-      @apply dark:bg-white/10 dark:border-white/10 dark:text-white/60 dark:hover:text-white/100;
-    }
-  `],
-  selector: 'app-crear-incidencia',
-  templateUrl: './crear-incidencia.component.html',
-  styleUrls: ['./crear-incidencia.component.css']
+    :host ::ng-deep .basic-select.ant-select-multiple .ant-select-selection-item{
+        @apply bg-white dark:bg-white/10 border-normal dark:border-white/10;
+      }
+      ::ng-deep .ant-upload {
+        @apply w-full;
+      }
+      :host ::ng-deep .basic-select .ant-select-multiple.ant-select-disabled.ant-select:not(.ant-select-customize-input) .ant-select-selector{
+        @apply dark:bg-white/10 dark:border-white/10 dark:text-white/60 dark:hover:text-white/100;
+      }
+    `],
+  selector: 'app-crear-incidencia-oc',
+  templateUrl: './crear-incidencia-oc.component.html',
+  styleUrls: ['./crear-incidencia-oc.component.css']
 })
-export class CrearIncidenciaComponent {
-
+export class CrearIncidenciaOcComponent {
   isVisibleEditarConfiguracion = false;
   isLoading = true;
   showContent = false;
@@ -45,6 +47,7 @@ export class CrearIncidenciaComponent {
   asn:string='';
   citaId:string='';
   ordenCompra:string='';
+  citas:CitaFechaResponseModel[]=[];
 
   constructor(
     private msg: NzMessageService,
@@ -52,7 +55,8 @@ export class CrearIncidenciaComponent {
     private fb: UntypedFormBuilder,
     private proveedorService:ProveedorService,
     private incidenciasService:IncidenciasService,
-    private asnService:AsnService
+    private asnService:AsnService,
+    private citasService:CitasService
     ) {}
 
   ngOnInit() {
@@ -108,6 +112,19 @@ export class CrearIncidenciaComponent {
       let fechaInicio:string = this.validateForm.value.desde;
       let fechaTermino:string = this.validateForm.value.hasta;
 
+      this.citasService.getCitasFechas(this.validateForm.value.desde, this.validateForm.value.hasta, this.validateForm.value.proveedor)
+      .subscribe({
+        next:(response)=>{
+          this.btnLoadingBusqueda = false;
+          this.citas = response;
+          //this.ordenesCompra=response;
+          //this.razonesSociales = response.razonesSociales;
+        },
+        complete:()=>{
+          this.btnLoadingBusqueda = false;
+        }
+      })
+      /*
       this.asnService.GetAsnPorFecha(proveedorId, fechaInicio, fechaTermino)
       .subscribe({
         next: (response) => {
@@ -121,6 +138,7 @@ export class CrearIncidenciaComponent {
           this.btnLoadingBusqueda = false;
         }
       })
+      */
     } else {
       Object.values(this.validateForm.controls).forEach((control) => {
         if (control.invalid) {
@@ -134,7 +152,7 @@ export class CrearIncidenciaComponent {
   muestraRegistraIncidencia(item):void{
     console.log(item);
     this.asn = item.asn;
-    this.citaId = item.citaId;
+    this.citaId = item.id;
     this.ordenCompra = item.ordenCompra;
     this.crearIncidenciaForm.reset();
     this.isVisible = true;
@@ -158,8 +176,8 @@ export class CrearIncidenciaComponent {
       const formData = new FormData();
     
 
-    formData.append('asn',this.asn);
-    formData.append('ordenCompra', this.ordenCompra);
+    //formData.append('asn',this.asn);
+    //formData.append('ordenCompra', this.ordenCompra);
     formData.append('citaId', this.citaId);
     formData.append('tipoIncidenciaId', this.crearIncidenciaForm.value.tipoIncidencia);
     formData.append('comentario', this.crearIncidenciaForm.value.comentario);
@@ -167,7 +185,7 @@ export class CrearIncidenciaComponent {
     formData.append('video',this.crearIncidenciaForm.value.video);
     formData.append('file', this.archivo);
 
-      this.incidenciasService.CrearIncidencia(formData)
+      this.incidenciasService.CrearIncidenciaCita(formData)
       .subscribe({
         next: (response) => {
           console.log(response);

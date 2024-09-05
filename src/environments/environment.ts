@@ -5,10 +5,9 @@
 export const environment = {
   production: false,
   apiBaseUrl:'https://apidevproveedores.bodesa.com.mx:7678',
-  devApiBaseUrl:' https://localhost:7074',
-  //apiBaseUrl:' https://localhost:7074'
- 
-   
+  devApiBaseUrl:'https://localhost:7074',
+  ///apiBaseUrl:'https://localhost:7074'
+  //apiBaseUrl:'https://10.77.0.153:7678'
 };
 
 /*

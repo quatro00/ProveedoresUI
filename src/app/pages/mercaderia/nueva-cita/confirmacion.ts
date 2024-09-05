@@ -159,6 +159,7 @@ export class ConfirmacionComponent {
         ordenCompra: element.ordenCompra,
         tipo:element.tipo,
         asn:element.asn,
+        departamento:element.departamento,
         detalle:[]
       }
       element.detalle.forEach(det => {

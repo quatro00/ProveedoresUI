@@ -29,15 +29,19 @@ import { HotTableRegisterer } from '@handsontable/angular';
   styleUrls: ['./centros-distribucion.component.css']
 })
 export class CentrosDistribucionComponent {
+  rielIdEditar;
   btnLoading_GrupoArticulo=false;
   rielSelected:string='';
   isCheckedRiel=false;
+  isCheckedRielEditar = false;
   rielActivo = true;
   btnLoadingRiel = false;
   btnLoading = false;
+  btnLoadingRielEditar = false;
   isVisible = false;
   isVisibleRieles = false;
   isVisibleGruposArticulo = false;
+  isVisibleEditar = false;
   isLoading = true;
   showContent = false;
   centros:CentroModel[] = [];
@@ -57,6 +61,7 @@ export class CentrosDistribucionComponent {
   ];
   validateForm!: UntypedFormGroup;
   rielForm!: UntypedFormGroup;
+  rielFormEditar!: UntypedFormGroup;
 
   centroId:string;
   isChecked:boolean;
@@ -105,6 +110,30 @@ export class CentrosDistribucionComponent {
       activo: [''],
     });
 
+    this.rielFormEditar = this.fb.group({
+      codigo: ['',[Validators.required]],
+      nombre: ['',[Validators.required]],
+
+      lunesInicio: ['',[Validators.required]],
+      martesInicio: ['',[Validators.required]],
+      miercolesInicio: ['',[Validators.required]],
+      juevesInicio: ['',[Validators.required]],
+      viernesInicio: ['',[Validators.required]],
+      sabadoInicio: ['',[Validators.required]],
+      domingoInicio: ['',[Validators.required]],
+
+      lunesTermino: ['',[Validators.required]],
+      martesTermino: ['',[Validators.required]],
+      miercolesTermino: ['',[Validators.required]],
+      juevesTermino: ['',[Validators.required]],
+      viernesTermino: ['',[Validators.required]],
+      sabadoTermino: ['',[Validators.required]],
+      domingoTermino: ['',[Validators.required]],
+
+
+      activo: [''],
+    });
+
     this.loadData();
     
   }
@@ -120,6 +149,53 @@ export class CentrosDistribucionComponent {
         this.isLoading = false;
         this.showContent = true;
       }})
+  }
+
+  guardarRielEditar(){
+    //console.log(this.validateForm);
+    //
+    if (this.rielFormEditar.valid) {
+      this.btnLoadingRielEditar = true;
+      //console.log(this.validateForm);
+      var riel:RielModel = {
+        codigo: this.rielFormEditar.value.codigo,
+        centroId: this.centroId,
+        riel: this.rielFormEditar.value.nombre,
+        activo: this.isCheckedRielEditar,
+        horarios:[
+          { id:'', rielId:'', dia:1, activo:true, horaDesde: this.rielFormEditar.value.lunesInicio, horaHasta: this.rielFormEditar.value.lunesTermino,},
+          { id:'', rielId:'', dia:2, activo:true, horaDesde: this.rielFormEditar.value.martesInicio, horaHasta: this.rielFormEditar.value.martesTermino,},
+          { id:'', rielId:'', dia:3, activo:true, horaDesde: this.rielFormEditar.value.miercolesInicio, horaHasta: this.rielFormEditar.value.miercolesTermino,},
+          { id:'', rielId:'', dia:4, activo:true, horaDesde: this.rielFormEditar.value.juevesInicio, horaHasta: this.rielFormEditar.value.juevesTermino,},
+          { id:'', rielId:'', dia:5, activo:true, horaDesde: this.rielFormEditar.value.viernesInicio, horaHasta: this.rielFormEditar.value.viernesTermino,},
+          { id:'', rielId:'', dia:6, activo:true, horaDesde: this.rielFormEditar.value.sabadoInicio, horaHasta: this.rielFormEditar.value.sabadoTermino,},
+          { id:'', rielId:'', dia:7, activo:true, horaDesde: this.rielFormEditar.value.domingoInicio, horaHasta: this.rielFormEditar.value.domingoTermino,},
+        ]
+      }
+
+      console.log(riel);
+      console.log(this.rielIdEditar);
+      
+      //this.btnLoading = true;
+      this.rielService.updateHorario(this.rielIdEditar, riel)
+      .subscribe({
+        next:(response)=>{
+          this.btnLoadingRielEditar = false;
+          this.modalService.closeAll();
+          this.rielFormEditar.reset();
+          this.loadData();
+        }
+      })
+      
+      
+    } else {
+      Object.values(this.rielForm.controls).forEach((control) => {
+        if (control.invalid) {
+          control.markAsDirty();
+          control.updateValueAndValidity({ onlySelf: true });
+        }
+      });
+    }
   }
 
   guardarRiel(){
@@ -171,6 +247,7 @@ export class CentrosDistribucionComponent {
   handleCancel(){
     this.isVisible = false;
     this.isVisibleRieles = false; 
+    this.isVisibleEditar = false; 
   }
 
   handleCancel_GruposArticulo(){
@@ -192,17 +269,45 @@ export class CentrosDistribucionComponent {
     this.btnLoading_GrupoArticulo = false;
     this.isVisibleGruposArticulo = true;
     this.rielSelected = model;
-    /*
-    this.rielService.getByCentro(model.id)
-    .subscribe({
-      next:(response)=>{
-        console.log(response);
-        this.filteredData_Riel = response;
-        this.centroId = model.id;
-        this.btnLoadingRiel = false;
-        this.isVisibleRieles = true;
-      }})
-      */
+  }
+
+  showEditarRiel(newItem: TemplateRef<{}>, model:any) {
+    //this.btnLoading_GrupoArticulo = false;
+    //this.isVisibleGruposArticulo = true;
+    //this.rielSelected = model;
+    this.rielIdEditar = model.id;
+    this.isCheckedRielEditar = model.activo;
+
+    this.rielFormEditar.setValue({
+      codigo : model.codigo,
+      nombre : model.riel,
+      activo:1,
+
+
+      lunesInicio:model.horarios[0].desde,
+      martesInicio: model.horarios[1].desde,
+      miercolesInicio: model.horarios[2].desde,
+      juevesInicio: model.horarios[3].desde,
+      viernesInicio: model.horarios[4].desde,
+      sabadoInicio: model.horarios[5].desde,
+      domingoInicio: model.horarios[6].desde,
+
+      lunesTermino: model.horarios[0].hasta,
+      martesTermino: model.horarios[1].hasta,
+      miercolesTermino: model.horarios[2].hasta,
+      juevesTermino: model.horarios[3].hasta,
+      viernesTermino: model.horarios[4].hasta,
+      sabadoTermino: model.horarios[5].hasta,
+      domingoTermino: model.horarios[6].hasta,
+
+
+//      diasPaqueteria:model.diasPaqueteria
+  })
+    
+    this.isVisibleEditar = true;
+
+    console.log(newItem);
+    console.log(model);
   }
 
   handleOk_GrupoArticulo(){
@@ -318,6 +423,16 @@ export class CentrosDistribucionComponent {
     }
     else{
       this.isCheckedRiel = true;
+    }
+  }
+
+  logRielEditar(value: string[]): void {
+    //console.log(value);
+    if(value.length == 0){
+      this.isCheckedRielEditar = false;
+    }
+    else{
+      this.isCheckedRielEditar = true;
     }
   }
 

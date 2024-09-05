@@ -48,7 +48,7 @@ export class FechaAndenComponent {
         dayMaxEventRows: 0, // No muestra eventos de todo el día en la vista de timeGridWeek
         slotMinTime: '08:00:00', // Hora mínima (8 am)
         //slotMaxTime: '18:00:00',  // Hora máxima (6 pm)
-        slotDuration: '00:15:00',
+        slotDuration: '00:05:00',
         displayEventTime: true
       }
       // Puedes configurar más vistas si es necesario

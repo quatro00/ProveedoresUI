@@ -16,6 +16,9 @@ import { ConfiguracionComponent } from './configuracion/configuracion.component'
 import { IncidenciasComponent } from './incidencias/incidencias.component';
 import { CrearIncidenciaComponent } from './crear-incidencia/crear-incidencia.component';
 import { TiposIncidenciaComponent } from './tipos-incidencia/tipos-incidencia.component';
+import { CrearIncidenciaOcComponent } from './crear-incidencia-oc/crear-incidencia-oc.component';
+import { DepartamentoComponent } from './departamento/departamento.component';
+import { CrearAdministradorComponent } from './crear-administrador/crear-administrador.component';
 
 const routes: Routes = [
   {
@@ -83,6 +86,14 @@ const routes: Routes = [
     //canActivate: [authAdminGuard]
   },
   {
+    path: 'crear-administrador',
+    component: CrearAdministradorComponent,
+    data: {
+        title: 'Crear administrador',
+    },
+    //canActivate: [authAdminGuard]
+  },
+  {
     path: 'proveedores',
     component: ProveedoresComponent,
     data: {
@@ -131,10 +142,26 @@ const routes: Routes = [
     //canActivate: [authAdminGuard]
   },
   {
-    path: 'incidencias/crear-incidencia',
+    path: 'incidencias/crear-incidencia-asn',
     component: CrearIncidenciaComponent,
     data: {
         title: 'Incidencias',
+    },
+    //canActivate: [authAdminGuard]
+  },
+  {
+    path: 'incidencias/crear-incidencia-oc',
+    component: CrearIncidenciaOcComponent,
+    data: {
+        title: 'Incidencias',
+    },
+    //canActivate: [authAdminGuard]
+  },
+  {
+    path: 'departamentos',
+    component: DepartamentoComponent,
+    data: {
+        title: 'departamentos',
     },
     //canActivate: [authAdminGuard]
   },
