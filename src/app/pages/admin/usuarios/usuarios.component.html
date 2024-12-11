@@ -7,6 +7,7 @@
     <!-- skeleton -->
     
     <nz-modal
+    [nzWidth]="'80%'"
       [(nzVisible)]="isVisibleEditar"
       [nzTitle]="modalTitleEditar"
       [nzContent]="modalContentEditar"
@@ -62,6 +63,7 @@
     </nz-modal>
 
     <nz-modal
+      [nzWidth]="'80%'"
       [(nzVisible)]="isVisible"
       [nzTitle]="modalTitle"
       [nzContent]="modalContent"
@@ -71,66 +73,72 @@
       <ng-template #modalTitle>Crear administrador</ng-template>
 
       <ng-template #modalContent>
-        <form nz-form nzLayout="vertical" [formGroup]="validateForm" (ngSubmit)="submitForm()">
-          
-            <nz-form-item>
-              <nz-form-control nzErrorTip="Campo requerido.">
-                <nz-form-label class="text-[15px] font-semibold text-dark capitalize mb-[10px]">Nombre de usuario:</nz-form-label>
-                <input formControlName="nombreUsuario" style="color:white" class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60" type="text" nz-input >
-              </nz-form-control>
-            </nz-form-item>
-           
-            <nz-form-item>
-             <nz-form-control nzErrorTip="Campo requerido.">
-               <nz-form-label class="text-[15px] font-semibold text-dark capitalize mb-[10px]">Nombre:</nz-form-label>
-               <input formControlName="nombre" style="color:white" class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60" type="text" nz-input>
-             </nz-form-control>
-           </nz-form-item>
-           
-           <nz-form-item>
-            <nz-form-control nzErrorTip="Campo requerido.">
-              <nz-form-label class="text-[15px] font-semibold text-dark capitalize mb-[10px]">Apellidos:</nz-form-label>
-              <input formControlName="apellido" style="color:white" class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60" type="text" nz-input>
+        <form nz-form [formGroup]="validateForm">
+          <nz-form-item>
+            <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="2" nzFor="text2">Nombre</nz-form-label>
+            <nz-form-control nzXs="5" nzErrorTip="Campo requerido." >
+              <input formControlName="nombre"
+                class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                nz-input name="text2" type="text" >
+            </nz-form-control>
+            <nz-form-control nzXs="1"></nz-form-control>
+            <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="2" nzFor="text2">Apellido</nz-form-label>
+            <nz-form-control nzXs="5" nzErrorTip="Campo requerido." >
+              <input formControlName="apellido"
+                class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                nz-input name="text2" type="text" >
+            </nz-form-control>
+            <nz-form-control nzXs="1"></nz-form-control>
+            <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="2" nzFor="text2">Correo</nz-form-label>
+            <nz-form-control nzXs="5" nzErrorTip="Campo requerido." >
+              <input formControlName="correo"
+                class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                nz-input name="text2" type="text" >
             </nz-form-control>
           </nz-form-item>
+
 
           <nz-form-item>
-            <nz-form-control nzErrorTip="Campo requerido.">
-              <nz-form-label class="text-[15px] font-semibold text-dark capitalize mb-[10px]">Correo:</nz-form-label>
-              <input formControlName="correo" style="color:white" class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60" type="text" nz-input>
+            <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="2" nzFor="text2">Cargo</nz-form-label>
+            <nz-form-control nzXs="5" nzErrorTip="Campo requerido." >
+              <input formControlName="cargo"
+                class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                nz-input name="text2" type="text">
             </nz-form-control>
+            <nz-form-control nzXs="1"></nz-form-control>
+            <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="2" nzFor="text2">Telefono</nz-form-label>
+            <nz-form-control nzXs="5" nzErrorTip="Campo requerido." >
+              <input formControlName="telefono"
+                class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                nz-input name="text2" type="text">
+            </nz-form-control>
+            <nz-form-control nzXs="1"></nz-form-control>
           </nz-form-item>
 
+       
           <nz-form-item>
-            <nz-form-control nzErrorTip="Campo requerido.">
-              <nz-form-label class="text-[15px] font-semibold text-dark capitalize mb-[10px]">Cargo:</nz-form-label>
-              <input formControlName="cargo" style="color:white" class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60" type="text" nz-input>
+            <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="2" nzFor="text2">Nombre<br/>de usuario</nz-form-label>
+            <nz-form-control nzXs="5" nzErrorTip="Campo requerido." >
+              <input formControlName="nombreUsuario"
+                class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                nz-input name="text2" type="text">
+            </nz-form-control>
+            <nz-form-control nzXs="1"></nz-form-control>
+            <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="2" nzFor="text2">Contraseña</nz-form-label>
+            <nz-form-control nzXs="5" nzErrorTip="Campo requerido." >
+              <input formControlName="password"
+                class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                nz-input name="text2" type="password">
+            </nz-form-control>
+            <nz-form-control nzXs="1"></nz-form-control>
+            <nz-form-label class="flex items-center font-medium dark:text-white/60" nzXs="2" nzFor="text2">Confirmar<br/>contraseña</nz-form-label>
+            <nz-form-control nzXs="5" nzErrorTip="Campo requerido." >
+              <input formControlName="passwordConfirm"
+                class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60"
+                nz-input name="text2" type="password">
             </nz-form-control>
           </nz-form-item>
-
-          <nz-form-item>
-            <nz-form-control nzErrorTip="Campo requerido.">
-              <nz-form-label class="text-[15px] font-semibold text-dark capitalize mb-[10px]">Teléfono:</nz-form-label>
-              <input formControlName="telefono" style="color:white" class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60" type="text" nz-input>
-            </nz-form-control>
-          </nz-form-item>
-          
-          <nz-form-item>
-            <nz-form-control nzErrorTip="Campo requerido.">
-              <nz-form-label class="text-[15px] font-semibold text-dark capitalize mb-[10px]">Contraseña:</nz-form-label>
-              <input formControlName="password" style="color:white" class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60" type="text" nz-input #nombre>
-            </nz-form-control>
-          </nz-form-item>
-
-          <nz-form-item>
-            <nz-form-control nzErrorTip="Campo requerido.">
-              <nz-form-label class="text-[15px] font-semibold text-dark capitalize mb-[10px]">Confirmar contraseña:</nz-form-label>
-              <input formControlName="passwordConfirm" style="color:white" class="w-full rounded-4 border-normal border-1 text-[15px] dark:bg-white/10 dark:border-white/10 px-[20px] py-[12px] h-[46px] outline-none placeholder:text-[#A0A0A0] text-theme-gray dark:text-white/60" type="text" nz-input #nombre>
-            </nz-form-control>
-          </nz-form-item>
-
-
-         </form>
+        </form>
       </ng-template>
 
       <ng-template #modalFooter>
@@ -155,7 +163,7 @@
     <div nz-col nzXs="24" class="mb-[25px]">
         <!-- New Contact -->
         <div class="flex items-center justify-center md:justify-end">
-         <button class="flex items-center px-[14px] text-sm text-white rounded-md font-semibold bg-primary border-primary h-10 gap-[6px]" (click)="nuevoAdministrador()" nz-button >
+         <button class="flex items-center px-[14px] text-sm text-white rounded-md font-semibold bg-primary border-primary h-10 gap-[6px]" (click)="showNew()" nz-button >
            <i class="text-[12px]" nz-icon nzType="plus"></i>
            <span class="m-0">Crear administrador</span>
          </button>

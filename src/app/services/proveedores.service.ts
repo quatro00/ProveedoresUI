@@ -25,4 +25,8 @@ export class ProveedorService {
   getAdministradores():Observable<any>{
     return this.http.get<any>(`${environment.apiBaseUrl}/api/${this.service}/GetAdministradores`);
   }
+
+  getProveedores():Observable<any>{
+    return this.http.get<any>(`${environment.apiBaseUrl}/api/${this.service}/GetProveedores`);
+  }
 }

@@ -42,7 +42,7 @@ export class UsuariosComponent {
     this.isVisibleEditar = false;
   }
 
-  showNew(newItem: TemplateRef<{}>) {
+  showNew() {
     this.validateForm.reset();
 
     this.isVisible = true;

@@ -34,4 +34,9 @@ export class UsuariosService {
   updateAdministrador(id:string, request:UpdateUsuarioModel):Observable<any>{
     return this.http.put<any>(`${environment.apiBaseUrl}/api/${this.service}/UpdateAdministrador/${id}`,request);
   }
+
+  buscarProveedorSAP(numProveedor:string):Observable<any>{
+    return this.http.get<any>(`${environment.apiBaseUrl}/api/${this.service}/SearchProveedorSAP/${numProveedor}`);
+  }
+
 }
